@@ -103,8 +103,7 @@ public class WarehouseOrderController {
                 LocalDateTime.now(),
                 Status.PENDING,
                 "Warehouse Order created",
-                warehouseOrder,
-                warehouseOrder.getItems()
+                warehouseOrder
         );
 
         warehouseOrder.addRevision(revision);

@@ -1,5 +1,6 @@
 package controller;
 
+import database.DAOInterface;
 import database.DataAccessException;
 import database.ProviderDB;
 import model.Provider;
@@ -7,30 +8,30 @@ import model.Provider;
 import java.util.List;
 
 public class ProviderController {
-    private final ProviderDB providerDB;
+    private final DAOInterface<Provider> providerDAO;
 
 
     public ProviderController() throws DataAccessException {
-        providerDB = new ProviderDB();
+        providerDAO = new ProviderDB();
     }
 
     public int createProvider(Provider value) throws DataAccessException {
-        return providerDB.create(value);
+        return providerDAO.create(value);
     }
 
     public Provider getProviderByID(int id) throws DataAccessException {
-        return providerDB.selectByID(id);
+        return providerDAO.selectByID(id);
     }
 
     public int deleteProvider(Provider value) throws DataAccessException {
-        return providerDB.delete(value);
+        return providerDAO.delete(value);
     }
 
     public List<Provider> all() throws DataAccessException {
-        return providerDB.all();
+        return providerDAO.all();
     }
 
     public int updateProvider(Provider value) throws DataAccessException {
-        return providerDB.update(value);
+        return providerDAO.update(value);
     }
 }

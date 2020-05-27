@@ -206,15 +206,16 @@ CREATE TABLE [WarehouseOrderItem]
 );
 GO
 
-CREATE TABLE [WarehouseOrderStatus]
+CREATE TABLE [WarehouseOrderRevision]
 (
  [id]      int NOT NULL IDENTITY (1,1),
  [orderID] int NOT NULL ,
  [date]    datetime2(7) NOT NULL ,
+ [status]  varchar(32) NOT NULL ,
  [note]    varchar(32) NOT NULL ,
 
 
- CONSTRAINT [PK_WarehouseOrderStatus] PRIMARY KEY CLUSTERED ([id] ASC),
+ CONSTRAINT [PK_WarehouseOrderRevision] PRIMARY KEY CLUSTERED ([id] ASC),
  CONSTRAINT [FK_68] FOREIGN KEY ([orderID])  REFERENCES [WarehouseOrder]([id]) ON DELETE CASCADE ON UPDATE CASCADE
 );
 GO

@@ -1,10 +1,8 @@
 package model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.List;
 
 public class WarehouseOrderRevision {
     private int id;
@@ -12,20 +10,19 @@ public class WarehouseOrderRevision {
     private String note;
     private Status status;
     private WarehouseOrder warehouseOrder;
-    private List<WarehouseOrderItem> itemsChanged;
 
-    public WarehouseOrderRevision(int id, LocalDateTime date, String note, Status status) {
+    public WarehouseOrderRevision(int id, LocalDateTime date, String note, Status status, WarehouseOrder warehouseOrder) {
         this.id = id;
         this.date = date;
         this.note = note;
         this.status = status;
+        this.warehouseOrder = warehouseOrder;
     }
-    public WarehouseOrderRevision(LocalDateTime date, Status status, String note, WarehouseOrder warehouseOrder, List<WarehouseOrderItem> itemsChanged) {
+    public WarehouseOrderRevision(LocalDateTime date, Status status, String note, WarehouseOrder warehouseOrder) {
         this.date = date;
         this.note = note;
         this.status = status;
         this.warehouseOrder = warehouseOrder;
-        this.itemsChanged = itemsChanged;
     }
 
     public WarehouseOrderRevision(LocalDateTime date, String note, Status status) {
@@ -60,6 +57,14 @@ public class WarehouseOrderRevision {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public WarehouseOrder getWarehouseOrder() {
+        return warehouseOrder;
+    }
+
+    public void setWarehouseOrder(WarehouseOrder warehouseOrder) {
+        this.warehouseOrder = warehouseOrder;
     }
 
     @Override
