@@ -1,45 +1,50 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.LinkedList;
 import java.util.List;
 
 public class OrderRevision {
     private int id;
-    private LocalDate date;
+    private LocalDateTime date;
     private Status status;
     private String note;
-    private Double priceChange;
     private Order order;
     private List<OrderItem> itemsChanged;
 
-    public OrderRevision(LocalDate date, Status status, String note, Double priceChange, Order order, List<OrderItem> itemsChanged) {
+    public OrderRevision(LocalDateTime date, Status status, String note, Order order, List<OrderItem> itemsChanged) {
         this.date = date;
         this.status = status;
         this.note = note;
-        this.priceChange = priceChange;
         this.order = order;
         this.itemsChanged = itemsChanged;
     }
 
-    public OrderRevision(int id, LocalDate date, Status status, String note, Double priceChange, Order order, List<OrderItem> itemsChanged) {
+    public OrderRevision(int id, LocalDateTime date, Status status, String note, Order order, List<OrderItem> itemsChanged) {
         this.id = id;
         this.date = date;
         this.status = status;
         this.note = note;
-        this.priceChange = priceChange;
         this.order = order;
         this.itemsChanged = itemsChanged;
+    }
+    
+    public OrderRevision(Order order) {
+    	this.order = order;
+    	this.itemsChanged = new LinkedList<OrderItem>();
     }
 
     public int getId() {
         return id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -59,14 +64,6 @@ public class OrderRevision {
         this.note = note;
     }
 
-    public Double getPriceChange() {
-        return priceChange;
-    }
-
-    public void setPriceChange(Double priceChange) {
-        this.priceChange = priceChange;
-    }
-
     public Order getOrder() {
         return order;
     }
@@ -81,5 +78,49 @@ public class OrderRevision {
 
     public void setItemsChanged(List<OrderItem> itemsChanged) {
         this.itemsChanged = itemsChanged;
+    }
+
+    public boolean addItemChanged(OrderItem orderItem) {
+        for (int i = 0; i < itemsChanged.size(); i++) {
+            if (itemsChanged.get(i).getProduct().getId() == orderItem.getProduct().getId()) {
+                itemsChanged.set(i, orderItem);
+                return true;
+            }
+        }
+        return itemsChanged.add(orderItem);
+    }
+
+    public boolean changeProductQuantity(Product product, int quantity) {
+        for (OrderItem item : itemsChanged) {
+            if (item.getProduct().getId() == product.getId()) {
+                item.setQuantity(quantity);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasOrderItem(OrderItem orderItem) {
+        for (OrderItem item: itemsChanged) {
+            if (orderItem.getProduct().getId() == item.getProduct().getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addQuantity(OrderItem orderItem, int quantity) {
+        for (OrderItem item : itemsChanged) {
+            if (item.getProduct().getId() == orderItem.getProduct().getId()) {
+                item.setQuantity(item.getQuantity() + quantity);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) + " - " + status.value + " (" + note + ")";
     }
 }

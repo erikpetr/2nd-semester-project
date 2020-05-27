@@ -1,9 +1,12 @@
 package main;
 
-import database.DBConnection;
+import gui.LoginMenu;
+import gui.StoreWindow;
+import gui.WarehouseWindow;
 
 public class Main {
-  public static void main(String[] args) {
-    DBConnection.getInstance();
-  }
+	public static void main(String[] args) 
+	{
+		LoginMenu.main(args);
+	}
 }

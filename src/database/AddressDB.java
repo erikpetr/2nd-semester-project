@@ -5,62 +5,72 @@ import model.Address;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-public class AddressDB implements DBInterface<Address> {
+/**
+ * DAO class for Address via DAOInterface
+ * @author dmai0919-group3@UCNDK.onmicrosoft.com
+ */
+public class AddressDB implements DAOInterface<Address> {
+
     DBConnection db = DBConnection.getInstance();
 
-    private static String tableName = "Address";
-
     /**
-     * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
-     * Given a valid Address which doesn't exist in the database, it inserts it to the DB
-     * @param value it's the given T type object (in this case Address)
-     * @return the generated key after the insertion to the DB
-     * @see DBConnection executeInsertWithID() method
+     * Default empty constructor so we can pass along the DataAccessException from DBConnection when it occurs
+     *
+     * @throws DataAccessException when DBConnection.getInstance() throws an exception.
      */
-    @Override
-    public int create(Address value) {
-        String query = "INSERT INTO '?' ('number', 'supplement', 'street', 'city', 'zipcode', 'region', 'country') VALUES (?, ? ,? , ?, ?, ?, ?);";
-
-        int resultID = -1;
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
-
-            s.setString(1, AddressDB.tableName);
-            s.setString(2, value.getNumber());
-            s.setString(3, value.getSupplement());
-            s.setString(4, value.getStreet());
-            s.setString(5, value.getCity());
-            s.setString(6, value.getZipcode());
-            s.setString(7, value.getRegion());
-            s.setString(8, value.getCountry());
-            resultID = db.executeInsertWithID(s.toString());
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return resultID;
+    public AddressDB() throws DataAccessException {
+        /*
+         This constructor doesn't need any contents because it's only purpose is to pass along an already
+         thrown DataAccessException from a lower layer towards the controllers and GUI
+         */
     }
 
     /**
-     * This method takes an ID and converts it to a valid SQL SELECT query, which is the executed
-     * Given an ID this method returns a single Address which has the given ID
-     *
+     * @param value it's the given Address object
+     * @return the generated key after the insertion to the DB
+     * @throws DataAccessException when SQLException inside the method
+     * @inheritDoc
+     * @see DBConnection executeInsertWithID() method
+     */
+    @Override
+    public int create(Address value) throws DataAccessException {
+        String query = "insert into Address (country, region, zipcode, city, street, number, supplement)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            s.setString(1, value.getCountry());
+            s.setString(2, value.getRegion());
+            s.setString(3, value.getZipcode());
+            s.setString(4, value.getCity());
+            s.setString(5, value.getStreet());
+            s.setString(6, value.getNumber());
+            s.setString(7, value.getSupplement());
+
+            return db.executeInsertWithID(s);
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    /**
      * @param id is the ID which we want to search for in the database
-     * @return the single object with the given ID
+     * @return the single Address object with the given ID
+     * @throws DataAccessException when SQLException inside the method
+     * @inheritDoc
      * @see DBConnection executeSelect() method
      */
     @Override
-    public Address selectByID(int id) {
-        String query = "SELECT TOP 1 * FROM '?' WHERE id=?;";
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
+    public Address selectByID(int id) throws DataAccessException {
+        String query = "SELECT TOP 1 * FROM Address WHERE id=?";
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
 
-            s.setString(1, AddressDB.tableName);
-            s.setInt(2, id);
+            s.setInt(1, id);
 
-            ResultSet rs = db.executeSelect(s.toString());
+            ResultSet rs = db.executeSelect(s);
             if (rs.next()) {
                 return new Address(
                         rs.getInt("id"),
@@ -70,94 +80,88 @@ public class AddressDB implements DBInterface<Address> {
                         rs.getString("city"),
                         rs.getString("zipcode"),
                         rs.getString("region"),
-                        rs.getString("country"));
+                        rs.getString("country")
+                );
             }
-
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            throw new DataAccessException(e.getMessage());
         }
         return null;
     }
 
     /**
-     * This method takes a column name and a search value, converts it to a valid SQL SELECT query, which is the executed
-     * Given a column (Address name) and a value it finds all the products which name contains the given value
-     *
-     * @param column the columns name we want to search in
-     * @param value  the value we want to search for
-     * @return the ResultSet containing all the results of the query
-     * @see DBConnection executeSelect() method
-     */
-    @Override
-    public ResultSet selectByString(String column, String value) {
-        String query = "SELECT * FROM '?' WHERE ?=?;";
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
-
-            s.setString(2, column);
-            s.setString(1, AddressDB.tableName);
-            s.setString(3, value);
-
-            return db.executeSelect(s.toString());
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
-    }
-
-    /**
-     * This method takes an object and converts it to a valid SQL UPDATE query, which is the executed
-     * Given a Address which exists in the DB, it updates it's details in the DB
-     * @param value it's the given T type object (in this case Address)
-     *
+     * @param value it's the given Address object
      * @return the number of rows affected by the update
+     * @throws DataAccessException when SQLException inside the method
+     * @inheritDoc
      * @see DBConnection executeQuery() method
      */
     @Override
-    public int update(Address value) {
-        String query= "UPDATE '?' SET (number=?, supplement=?, street=?, city=?, zipcode=?, region=?, country=?) WHERE id=?;";
+    public int update(Address value) throws DataAccessException {
+        String query = "UPDATE Address SET number=?, supplement=?, street=?, city=?, zipcode=?, region=?, country=? WHERE id=?";
         int rows = -1;
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
-
-            s.setString(1, AddressDB.tableName);
-            s.setString(2, value.getNumber());
-            s.setString(3, value.getSupplement());
-            s.setString(4, value.getStreet());
-            s.setString(5, value.getCity());
-            s.setString(6, value.getZipcode());
-            s.setString(7, value.getRegion());
-            s.setString(8, value.getCountry());
-            s.setInt(9, value.getId());
-
-            rows = db.executeQuery(s.toString());
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            s.setString(1, value.getNumber());
+            s.setString(2, value.getSupplement());
+            s.setString(3, value.getStreet());
+            s.setString(4, value.getCity());
+            s.setString(5, value.getZipcode());
+            s.setString(6, value.getRegion());
+            s.setString(7, value.getCountry());
+            s.setInt(8, value.getId());
+            rows = db.executeQuery(s);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            throw new DataAccessException(e.getMessage());
         }
         return rows;
     }
 
     /**
-     * This method takes an object and converts it to a valid SQL DELETE query, which is the executed
-     * Given a Address which exists in the DB, it deletes it from the DB
-     * @param value it's the given T type object (in this case Address)
-     * @return the number of rows deleted from the table (1 or 0)
+     * @param value it's the given Address object
+     * @return the number of rows deleted from the table
+     * @throws DataAccessException when SQLException inside the method
+     * @inheritDoc
      * @see DBConnection executeQuery()
      */
     @Override
-    public int delete(Address value) {
-        // Because of the tables cascade rule, we dont need to have separate stock query
-        String query = "DELETE FROM '?' WHERE id=?";
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
-
-            s.setString(1, AddressDB.tableName);
-            s.setInt(2, value.getId());
-
-            return db.executeQuery(s.toString());
+    public int delete(Address value) throws DataAccessException {
+        String query = "DELETE FROM Address WHERE id=?";
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            s.setInt(1, value.getId());
+            return db.executeQuery(s);
         } catch (SQLException e) {
-             System.err.println(e.getMessage());
+            throw new DataAccessException(e.getMessage());
         }
-        return -1;
+    }
+
+    /**
+     * @return a List containing all the Address objects from the database
+     * @throws DataAccessException when SQLException inside the method
+     * @inheritDoc
+     */
+    @Override
+    public List<Address> all() throws DataAccessException {
+        String query = "SELECT * FROM Address;";
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            ResultSet rs = db.executeSelect(s);
+            List<Address> resultList = new ArrayList<>();
+
+            while (rs.next()) {
+                Address address = new Address(
+                        rs.getInt("id"),
+                        rs.getString("number"),
+                        rs.getString("supplement"),
+                        rs.getString("street"),
+                        rs.getString("city"),
+                        rs.getString("zipcode"),
+                        rs.getString("region"),
+                        rs.getString("country")
+                );
+                resultList.add(address);
+            }
+            return resultList;
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 }

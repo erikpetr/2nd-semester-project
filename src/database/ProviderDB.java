@@ -5,9 +5,16 @@ import model.Provider;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ProviderDB implements DBInterface<Provider>{
+public class ProviderDB implements DAOInterface<Provider> {
     DBConnection db = DBConnection.getInstance();
+    
+    public ProviderDB() throws DataAccessException {
+        //This constructor is empty because it only exists to pass along DataAccessException from DBConnection.getInstance()
+    }
 
     /**
      * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
@@ -18,20 +25,18 @@ public class ProviderDB implements DBInterface<Provider>{
      */
     @Override
     public int create(Provider value) throws DataAccessException {
-        String query = "INSERT INTO 'Provider' ('name', 'email','available', 'addressID') VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Provider (name, email, available, addressID) VALUES (?, ?, ?, ?)";
         AddressDB addressDB = new AddressDB();
         int addressID = addressDB.create(value.getAddress());
         int providerID = -1;
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             s.setString(1, value.getName());
             s.setString(2, value.getEmail());
             s.setBoolean(3, value.getAvailable());
             s.setInt(4, addressID);
-            providerID = db.executeInsertWithID(s.toString());
+            providerID = db.executeInsertWithID(s);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
         return providerID;
     }
@@ -45,11 +50,10 @@ public class ProviderDB implements DBInterface<Provider>{
      */
     @Override
     public Provider selectByID(int id) throws DataAccessException {
-        String query = "SELECT TOP 1 * FROM 'Provider' WHERE id=?;";
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
+        String query = "SELECT TOP 1 * FROM Provider WHERE id=?;";
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
             s.setInt(1, id);
-            ResultSet rs = db.executeSelect(s.toString());
+            ResultSet rs = db.executeSelect(s);
             AddressDB addressDB = new AddressDB();
             if (rs.next()) {
                 return new Provider(
@@ -61,32 +65,36 @@ public class ProviderDB implements DBInterface<Provider>{
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
         return null;
     }
 
     /**
-     * This method takes a column name and a search value, converts it to a valid SQL SELECT query, which is the executed
      *
-     * @param column the columns name we want to search in
-     * @param value  the value we want to search for
-     * @return the ResultSet containing all the results of the query
-     * @see DBConnection executeSelect() method
+     * @return List of all entities
+     * @throws DataAccessException
      */
     @Override
-    public ResultSet selectByString(String column, String value) throws DataAccessException {
-        String query = "SELECT * FROM 'Provider' WHERE ?=?";
-        ResultSet rs;
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
-            s.setString(1, column);
-            s.setString(2, value);
-            return db.executeSelect(s.toString());
+    public List<Provider> all() throws DataAccessException {
+        String query = "SELECT * FROM Provider;";
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            AddressDB addressDB = new AddressDB();
+            ResultSet rs = db.executeSelect(s);
+            List<Provider> resultList = new ArrayList<>();
+
+            while (rs.next()) {
+                resultList.add(new Provider(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getBoolean("available"),
+                        addressDB.selectByID(rs.getInt("addressID"))));
+            }
+            return resultList;
+
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
     }
 
@@ -99,17 +107,15 @@ public class ProviderDB implements DBInterface<Provider>{
      */
     @Override
     public int update(Provider value) throws DataAccessException {
-        String queryProduct = "UPDATE 'Provider' SET (name=?, email=?, available=?) WHERE id=" + value.getId() + ";";
+        String queryProduct = "UPDATE Provider SET (name=?, email=?, available=?) WHERE id=" + value.getId() + ";";
         int rows = -1;
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(queryProduct);
+        try (PreparedStatement s = db.getDBConn().prepareStatement(queryProduct)) {
             s.setString(1, value.getName());
             s.setString(2, value.getEmail());
             s.setBoolean(3, value.getAvailable());
-            rows = db.executeQuery(s.toString());
+            rows = db.executeQuery(s);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
         return rows;
     }
@@ -123,14 +129,12 @@ public class ProviderDB implements DBInterface<Provider>{
      */
     @Override
     public int delete(Provider value) throws DataAccessException {
-        String query = "DELETE FROM 'Provider' WHERE id=?";
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
+        String query = "DELETE FROM Provider WHERE id=?";
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
             s.setInt(1, value.getId());
-            return db.executeQuery(s.toString());
+            return db.executeQuery(s);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
     }
 }

@@ -44,4 +44,9 @@ public class Stock {
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
     }
+
+    @Override
+    public String toString() {
+        return warehouse.toString() + " / " + product.toString() + "(" + quantity + " pcs)";
+    }
 }

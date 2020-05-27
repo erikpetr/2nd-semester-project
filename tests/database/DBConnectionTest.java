@@ -17,14 +17,22 @@ class DBConnectionTest {
 
     @AfterEach
     void tearDown() {
-        dbConn.closeConnection();
+        try {
+            dbConn.closeConnection();
+        } catch (DataAccessException e) {
+            Assertions.fail("Exception thrown");
+        }
         dbConn = null;
     }
 
     @Test
     void getInstance() {
         //Arrange + Act
-        dbConn = DBConnection.getInstance();
+        try {
+            dbConn = DBConnection.getInstance();
+        } catch (DataAccessException e) {
+            Assertions.fail("Exception thrown");
+        }
 
         //Assert
         Assertions.assertNotNull(dbConn, "The instance cannot be null using the getInstance() method.");
@@ -33,7 +41,11 @@ class DBConnectionTest {
     @Test
     void getDBConn() {
         //Arrange
-        dbConn = DBConnection.getInstance();
+        try {
+            dbConn = DBConnection.getInstance();
+        } catch (DataAccessException e) {
+            Assertions.fail("Exception thrown");
+        }
         String expected = "Microsoft SQL Server";
 
         //Act
@@ -42,7 +54,7 @@ class DBConnectionTest {
         try {
             actual = connection.getMetaData().getDatabaseProductName();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Assertions.fail("Exception thrown");
         }
 
         //Assert
@@ -53,12 +65,20 @@ class DBConnectionTest {
     @Test
     void closeConnection() {
         //Arrange
-        dbConn = DBConnection.getInstance();
+        try {
+            dbConn = DBConnection.getInstance();
+        } catch (DataAccessException e) {
+            Assertions.fail("Exception thrown");
+        }
         boolean result = dbConn.instanceIsNull();
         Assertions.assertFalse(result, "Before closing the connection, the DBConnection instance should be not null");
 
         //Act
-        dbConn.closeConnection();
+        try {
+            dbConn.closeConnection();
+        } catch (DataAccessException e) {
+            Assertions.fail("Exception thrown");
+        }
 
         //Assert
         result = dbConn.instanceIsNull();

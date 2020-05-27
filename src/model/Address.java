@@ -95,5 +95,38 @@ public class Address {
         this.country = country;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        String value = "";
+        if (country != null) {
+            value += getCountry();
+        }
+        if (region != null) {
+            value += " " + getRegion();
+        }
+        if (zipcode != null) {
+            if (!value.equals("")) value += "\n";
+            value += getZipcode();
+        }
+        if (city != null) {
+            value += " " + getCity();
+        }
+        if (street != null) {
+            value += "\n" + getStreet();
+        }
+        if (number != null) {
+            value += " " + getNumber();
+        }
+        if (supplement != null) {
+            value += " " + getSupplement();
+        }
+
+        return value;
+    }
+
 }
 

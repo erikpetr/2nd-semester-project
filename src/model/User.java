@@ -52,6 +52,7 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+    public void setId(int id) { this.id = id; }
 
     public void setPassword(String password) {
         this.password = password;
@@ -63,6 +64,11 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
 

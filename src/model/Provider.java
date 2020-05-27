@@ -55,9 +55,16 @@ public class Provider {
     public void setAvailable(boolean available) {
         this.available = available;
     }
-    
+
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        String text = getName() + " (" + getAddress().getCity() + ", " + getAddress().getStreet() + ")";
+        if (!available) text += " - [Not available]";
+        return text;
     }
 }
 

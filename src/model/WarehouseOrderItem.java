@@ -37,4 +37,9 @@ public class WarehouseOrderItem {
         this.product = product;
     }
 
+    @Override
+    public String toString() {
+        return this.product.getName() + " (" + this.quantity + " pcs)";
+    }
+
 }

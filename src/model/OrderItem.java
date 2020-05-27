@@ -4,9 +4,11 @@ public class OrderItem {
 
     private int quantity;
     private Product product;
+    private double unitPrice;
 
-    public OrderItem(Product product, int quantity) {
+    public OrderItem(Product product, double unitPrice, int quantity) {
         this.product = product;
+        this.unitPrice = unitPrice;
         this.quantity = quantity;
     }
 
@@ -24,5 +26,18 @@ public class OrderItem {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    @Override
+    public String toString() {
+        return this.product.getName() + " (" + this.quantity + " pcs)";
     }
 }

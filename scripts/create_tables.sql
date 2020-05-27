@@ -1,6 +1,26 @@
+DECLARE @Sql NVARCHAR(500) DECLARE @Cursor CURSOR
+
+SET @Cursor = CURSOR FAST_FORWARD FOR
+    SELECT DISTINCT sql = 'ALTER TABLE [' + tc2.TABLE_SCHEMA + '].[' +  tc2.TABLE_NAME + '] DROP [' + rc1.CONSTRAINT_NAME + '];'
+    FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc1
+             LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc2 ON tc2.CONSTRAINT_NAME =rc1.CONSTRAINT_NAME
+
+OPEN @Cursor FETCH NEXT FROM @Cursor INTO @Sql
+
+WHILE (@@FETCH_STATUS = 0)
+    BEGIN
+        Exec sp_executesql @Sql
+        FETCH NEXT FROM @Cursor INTO @Sql
+    END
+
+CLOSE @Cursor DEALLOCATE @Cursor
+GO
+
+EXEC sp_MSforeachtable 'DROP TABLE ?'
+GO
 CREATE TABLE [Address]
 (
- [id]         int NOT NULL ,
+ [id]         int NOT NULL IDENTITY (1,1),
  [country]    varchar(120) NOT NULL ,
  [region]     varchar(120) NOT NULL ,
  [zipcode]    varchar(12) NOT NULL ,
@@ -16,10 +36,9 @@ GO
 
 CREATE TABLE [Provider]
 (
- [id]        int NOT NULL ,
+ [id]        int NOT NULL IDENTITY (1,1),
  [name]      varchar(120) NOT NULL ,
  [email]     varchar(256) NOT NULL ,
- [password]  varchar(256) NOT NULL ,
  [available] bit NOT NULL ,
  [addressID] int NOT NULL ,
 
@@ -31,9 +50,9 @@ GO
 
 CREATE TABLE [Store]
 (
- [id]        int NOT NULL ,
- [name]      varchar(120) NOT NULL ,
- [email]     varchar(256) NOT NULL ,
+ [id]        int NOT NULL IDENTITY (1,1),
+ [name]      varchar(120) NOT NULL UNIQUE ,
+ [email]     varchar(256) NOT NULL UNIQUE ,
  [password]  varchar(256) NOT NULL ,
  [addressID] int NOT NULL ,
 
@@ -45,9 +64,9 @@ GO
 
 CREATE TABLE [Warehouse]
 (
- [id]        int NOT NULL ,
- [name]      varchar(120) NOT NULL ,
- [email]     varchar(256) NOT NULL ,
+ [id]        int NOT NULL IDENTITY (1,1),
+ [name]      varchar(120) NOT NULL UNIQUE ,
+ [email]     varchar(256) NOT NULL UNIQUE ,
  [password]  varchar(256) NOT NULL ,
  [addressID] int NOT NULL ,
 
@@ -59,7 +78,7 @@ GO
 
 CREATE TABLE [Product]
 (
- [id]     int NOT NULL ,
+ [id]     int NOT NULL IDENTITY (1,1),
  [name]   varchar(120) NOT NULL ,
  [weight] real NOT NULL ,
  [price]  money NOT NULL ,
@@ -85,10 +104,10 @@ GO
 
 CREATE TABLE [Order]
 (
- [id]          int NOT NULL ,
+ [id]          int NOT NULL IDENTITY (1,1),
  [storeID]     int NOT NULL ,
  [warehouseID] int NOT NULL ,
- [price]       money NOT NULL ,
+ [status]      varchar(32) not null ,
  [date]        datetime2(7) NOT NULL ,
 
 
@@ -98,25 +117,13 @@ CREATE TABLE [Order]
 );
 GO
 
-CREATE TABLE [OrderItem]
+CREATE TABLE [OrderRevision]
 (
- [orderID]   int NOT NULL ,
- [quantity]  int NOT NULL ,
- [productID] int NOT NULL ,
-
-
- CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([productID] ASC, [orderID] ASC),
- CONSTRAINT [FK_145] FOREIGN KEY ([orderID])  REFERENCES [Order]([id]) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT [FK_149] FOREIGN KEY ([productID])  REFERENCES [Product]([id]) ON DELETE CASCADE ON UPDATE CASCADE
-);
-GO
-
-CREATE TABLE [OrderStatus]
-(
- [id]      int NOT NULL ,
+ [id]      int NOT NULL IDENTITY (1,1),
  [orderID] int NOT NULL ,
+ [status]  varchar(32) not null ,
  [date]    datetime2(7) NOT NULL ,
- [note]    varchar(32) NOT NULL ,
+ [note]    text NOT NULL ,
 
 
  CONSTRAINT [PK_OrderStatus] PRIMARY KEY CLUSTERED ([id] ASC),
@@ -124,9 +131,24 @@ CREATE TABLE [OrderStatus]
 );
 GO
 
+CREATE TABLE [OrderItem]
+(
+    [orderID]   int null ,
+    [orderRevisionID] int null ,
+    [quantity]  int NOT NULL ,
+    [unitPrice] money not null ,
+    [productID] int NOT NULL ,
+
+
+    CONSTRAINT [FK_145] FOREIGN KEY ([orderID])  REFERENCES [Order]([id]) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT [FK_149] FOREIGN KEY ([productID])  REFERENCES [Product]([id]) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT [FK_150] foreign key ([orderRevisionID]) references [OrderRevision]([id]) on DELETE no action on UPDATE no action
+);
+GO
+
 CREATE TABLE [StoreStockReport]
 (
- [id]      int NOT NULL ,
+ [id]      int NOT NULL IDENTITY (1,1),
  [storeID] int NOT NULL ,
  [date]    datetime2(7) NOT NULL ,
  [note]    varchar(256) NOT NULL ,
@@ -157,7 +179,7 @@ GO
 
 CREATE TABLE [WarehouseOrder]
 (
- [id]          int NOT NULL ,
+ [id]          int NOT NULL IDENTITY (1,1),
  [date]        datetime2(7) NOT NULL ,
  [status]      varchar NOT NULL ,
  [providerID]  int NOT NULL ,
@@ -186,7 +208,7 @@ GO
 
 CREATE TABLE [WarehouseOrderStatus]
 (
- [id]      int NOT NULL ,
+ [id]      int NOT NULL IDENTITY (1,1),
  [orderID] int NOT NULL ,
  [date]    datetime2(7) NOT NULL ,
  [note]    varchar(32) NOT NULL ,
