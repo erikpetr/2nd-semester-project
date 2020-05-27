@@ -1,12 +1,9 @@
 package gui;
 
-import controller.ControlException;
-import controller.ProductController;
-import controller.WarehouseOrderController;
-import database.DataAccessException;
-import model.Product;
-import model.Warehouse;
-import model.WarehouseOrderItem;
+
+import database.*;
+import model.*;
+import controller.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,11 +62,9 @@ public class CreateWarehouseOrderMenu extends JPanel {
         JPanel sidePanel = new JPanel();
         add(sidePanel, BorderLayout.EAST);
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
-         // TODO: we dont need this, do we?
-        // TODO: implement choose provider
         JButton btnChooseProvider = new JButton("Choose provider");
         btnChooseProvider.addActionListener(button -> {
-//            chooseProvider();
+            chooseProvider();
         });
 
         lblProvider = new JLabel("Choose a provider");
@@ -177,6 +172,9 @@ public class CreateWarehouseOrderMenu extends JPanel {
 
         optionsPanel.revalidate();
         optionsPanel.repaint();
+    }
+    private void chooseProvider() {
+        CreateWhOrderProviderChooser.main(this, warehouseOrderController);
     }
 
     private void resetOptionsPanel() {

@@ -87,6 +87,9 @@ public class WarehouseOrderController {
     public WarehouseOrder getWarehouseOrder(int id) throws DataAccessException {
         return warehouseOrderDAO.selectByID(id);
     }
+    public void addProvider(Provider provider) {
+        warehouseOrder.setProvider(provider);
+    }
 
 
     public int finishWarehouseOrder() throws ControlException {
