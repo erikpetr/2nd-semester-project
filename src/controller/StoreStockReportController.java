@@ -39,6 +39,20 @@ public class StoreStockReportController {
         return reports ;
     }
 
+    public static List<StoreStockReport> getReportStoreStockReportByStore(Store store) throws ControlException {
+        // Get reports
+        List<StoreStockReport> reports = null;
+        try {
+            StoreStockReportDB storeStockReportDB = new StoreStockReportDB();
+
+            reports = storeStockReportDB.getByStore(store);
+        } catch (DataAccessException e1) {
+            throw new ControlException(e1.getMessage());
+        }
+
+        return reports ;
+    }
+
     /**
      * Creates a new report for a given store
      *
