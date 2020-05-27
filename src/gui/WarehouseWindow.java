@@ -131,6 +131,10 @@ public class WarehouseWindow extends JFrame
 		btnStocks.addActionListener(arg0 -> openStocksMenu());
 		menuPanel.add(btnStocks);
 
+		JButton btnWarehouseOrders = new JButton("Warehouse orders");
+		btnWarehouseOrders.addActionListener(arg0 -> openWarehouseOrdersMenu());
+		menuPanel.add(btnWarehouseOrders);
+
 		JButton btnStores = new JButton("Stores");
 		btnStores.addActionListener(arg0 -> openStoresMenu());
 		menuPanel.add(btnStores);
@@ -174,6 +178,12 @@ public class WarehouseWindow extends JFrame
 			ordersCard = new WarehouseOrderMenu();
 		}
 		LayoutChangeMonitor.getInstance().setLayout(ordersCard, "orders");
+	}
+
+	public void openWarehouseOrdersMenu() {
+		WarehouseWarehouseOrderMenu warehouseWarehouseOrderMenu = new WarehouseWarehouseOrderMenu();
+		LayoutChangeMonitor.getInstance().setLayout(warehouseWarehouseOrderMenu, "warehouse_orders");
+		System.out.println("opened");
 	}
 	
 	/*

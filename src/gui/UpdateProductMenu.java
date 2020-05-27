@@ -19,10 +19,8 @@ public class UpdateProductMenu extends JPanel {
      * Create the panel.
      */
     public UpdateProductMenu(Product p) {
-        FlowLayout flowLayout = new FlowLayout();
-        flowLayout.setAlignment(FlowLayout.CENTER);
-        setLayout(flowLayout);
         panel = new JPanel();
+        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 
         setVisible(true);

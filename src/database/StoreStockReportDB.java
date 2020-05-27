@@ -164,76 +164,60 @@ public class StoreStockReportDB implements StoreStockReportDAO {
      */
     @Override
     public List<StoreStockReport> getByStore(Store store) throws DataAccessException {
-        String query = "SELECT "
+        String queryReport = "SELECT "
                + "[StoreStockReport].id as storestockreport_id,"
-               + "[StoreStockReportItem].quantity,"
-               + "[StoreStockReport].note, [StoreStockReport].date,"
-               + "[Product].id as product_id, [Product].name, [Product].price, [Product].weight "
+               + "[StoreStockReport].note, [StoreStockReport].date "
                + "FROM [StoreStockReport] "
-               + "  JOIN [StoreStockReportItem] ON [StoreStockReport].id = [StoreStockReportItem].productID "
-               + "  JOIN [Product] ON [StoreStockReportItem].productID = [product].id "
                + "WHERE [StoreStockReport].storeID= ? "
                + "ORDER BY [StoreStockReport].id DESC;";
 
+        String queryItem = "SELECT "
+                + "[StoreStockReportItem].quantity,"
+                + "[Product].id as product_id, [Product].name, [Product].price, [Product].weight "
+                + "FROM [StoreStockReportItem] "
+                + "  JOIN [Product] ON [StoreStockReportItem].productID = [product].id "
+                + "WHERE [StoreStockReportItem].storeStockReportID = ?";
 
-        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
-            s.setInt(1, store.getId());
-            ResultSet rs = db.executeSelect(s);
-            List<StoreStockReport> resultList = new LinkedList<>();
-            List<Product> productList = new LinkedList<>();
+        List<StoreStockReport> resultList = new LinkedList<>();
 
-            StoreStockReport actualReport = null;
-            while (rs.next()) {
+        try {
+            PreparedStatement sReport = db.getDBConn().prepareStatement(queryReport);
 
-                String lol = "";
-                for (int i = 1; i < 9; i++) {
-                    lol += rs.getString(i) + " , ";
-                }
-                System.out.println(lol);
-
-
-                // Keep only one instance of each product
-                int newProductId = rs.getInt("product_id");
-                Product actualProduct = null;
-                for (Product product: productList) {
-                    if (product.getId() == newProductId) {
-                        actualProduct = product;
-                        break;
-                    }
-                }
-
-                if (actualProduct == null) {
-                    actualProduct = new Product(
-                        newProductId,
-                        rs.getString("name"),
-                        rs.getDouble("weight"),
-                        rs.getDouble("price")
-                    );
-                    productList.add(actualProduct);
-                }
-
-                // Keep only one instance of each report
-                int newReportId = rs.getInt("storestockreport_id");
-                if ((actualReport == null) || (newReportId != actualReport.getId())) {
-                    actualReport = new StoreStockReport(
-                        newReportId,
-                        rs.getDate("date").toLocalDate(),
-                        rs.getString("note"),
+            sReport.setInt(1, store.getId());
+            ResultSet rsReport = db.executeSelect(sReport);
+            while (rsReport.next()) {
+                int reportId = rsReport.getInt("storestockreport_id");
+                StoreStockReport report = new StoreStockReport(
+                        reportId,
+                        rsReport.getDate("date").toLocalDate(),
+                        rsReport.getString("note"),
                         store,
-                        new LinkedList<StoreStockReportItem>()
+                        new LinkedList<>()
+                );
+
+                PreparedStatement sItem = db.getDBConn().prepareStatement(queryItem);
+                sItem.setInt(1, reportId);
+                ResultSet rsItem = db.executeSelect(sItem);
+                while (rsItem.next()) {
+                    Product product = new Product(
+                            rsItem.getInt("product_id"),
+                            rsItem.getString("name"),
+                            rsItem.getInt("weight"),
+                            rsItem.getDouble("price")
                     );
-                    resultList.add(actualReport);
+
+                    // Add StoreStockReportItem to StoreStockReport
+                    report.addItem(new StoreStockReportItem(
+                            product,
+                            rsItem.getInt("quantity")
+                    ));
                 }
-                
-                // Add StoreStockReportItem to StoreStockReport
-                actualReport.addItem(new StoreStockReportItem(
-                    actualProduct,
-                    rs.getInt("quantity")
-                ));
+
+                resultList.add(report);
             }
             return resultList;
-
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DataAccessException(e.getMessage());
         }
     }

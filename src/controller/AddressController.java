@@ -8,7 +8,7 @@ import model.Address;
 import java.util.List;
 
 public class AddressController {
-    private DAOInterface<Address> addressDB;
+    private final DAOInterface<Address> addressDB;
 
     public AddressController() throws DataAccessException {
         addressDB = new AddressDB();
@@ -18,11 +18,8 @@ public class AddressController {
         return addressDB.create(address);
     }
 
-    public boolean updateAddress(Address address) throws DataAccessException {
-        if (addressDB.update(address) == 1) {
-            return true;
-        }
-        else { return false;}
+    public int updateAddress(Address address) throws DataAccessException {
+        return addressDB.update(address);
     }
 
     public int deleteAddress(Address address) throws DataAccessException {
