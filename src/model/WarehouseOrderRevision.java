@@ -30,6 +30,10 @@ public class WarehouseOrderRevision {
         this.note = note;
         this.status = status;
     }
+    public WarehouseOrderRevision(WarehouseOrder warehouseOrder) {
+        this.warehouseOrder = warehouseOrder;
+
+    }
 
     public int getId() {
         return id;
