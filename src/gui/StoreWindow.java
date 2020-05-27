@@ -182,7 +182,7 @@ public class StoreWindow extends JFrame
 	{
 		if (storeStockReportsCard == null)
 		{
-			storeStockReportsCard = new StoreStockReportMenu();
+			storeStockReportsCard = new StoreStockReportMenuStore();
 		}
 		LayoutChangeMonitor.getInstance().setLayout(storeStockReportsCard, "store_stock_report");	
 	}

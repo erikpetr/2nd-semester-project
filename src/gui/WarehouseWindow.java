@@ -241,7 +241,7 @@ public class WarehouseWindow extends JFrame
 	{
 		if (storeStockReportsCard == null)
 		{
-			storeStockReportsCard = new StoreStockReportMenu();
+			storeStockReportsCard = new StoreStockReportMenuWarehouse();
 		}
 		LayoutChangeMonitor.getInstance().setLayout(storeStockReportsCard, "store_stock_report");	
 	}
