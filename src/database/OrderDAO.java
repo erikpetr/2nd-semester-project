@@ -24,4 +24,8 @@ public interface OrderDAO extends DAOInterface<Order> {
     int insertOrderRevision(List<OrderRevision> orderRevisions, int orderId) throws DataAccessException;
 
     int insertOrderRevisionItems(List<OrderItem> orderItems, int revisionId) throws DataAccessException;
+
+    int getOrdersAmount(User user) throws DataAccessException;
+
+    int getPendingOrdersAmount(User user) throws DataAccessException;
 }

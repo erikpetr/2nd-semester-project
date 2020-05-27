@@ -3,7 +3,6 @@ package database;
 import model.*;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -407,6 +406,48 @@ public class OrderDB implements OrderDAO {
 			}
 
 			return updated;
+		} catch (SQLException e) {
+			throw new DataAccessException(e.getMessage());
+		}
+	}
+
+	@Override
+	public int getOrdersAmount(User user) throws DataAccessException {
+		String query;
+		if (user instanceof Warehouse) {
+			query = "SELECT count * FROM [Order] where warehouseID=?";
+		} else {
+			query = "select count * from [Order] where storeID=?";
+		}
+
+		try {
+			PreparedStatement statement = db.getDBConn().prepareStatement(query);
+
+			statement.setInt(1, user.getId());
+
+			return db.executeQuery(statement);
+
+		} catch (SQLException e) {
+			throw new DataAccessException(e.getMessage());
+		}
+	}
+
+	@Override
+	public int getPendingOrdersAmount(User user) throws DataAccessException{
+		String query;
+		if (user instanceof Warehouse) {
+			query = "SELECT count * FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
+		} else {
+			query = "select count * from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
+		}
+
+		try {
+			PreparedStatement statement = db.getDBConn().prepareStatement(query);
+
+			statement.setInt(1, user.getId());
+
+			return db.executeQuery(statement);
+
 		} catch (SQLException e) {
 			throw new DataAccessException(e.getMessage());
 		}
