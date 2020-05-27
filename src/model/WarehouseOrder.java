@@ -61,10 +61,6 @@ public class WarehouseOrder {
         this.status = status;
     }
 
-    public void addItem(WarehouseOrderItem item) {
-        items.add(item);
-    }
-
     public List<WarehouseOrderItem> getItems() {
         return items;
     }
