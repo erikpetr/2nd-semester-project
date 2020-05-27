@@ -197,4 +197,30 @@ public class StockDB implements StockDAO {
             throw new DataAccessException(e.getMessage());
         }
     }
+
+    @Override
+    public int getStocksAmount(Warehouse warehouse) throws DataAccessException {
+        String query = "SELECT count(*) FROM Stock where warehouseID=?;";
+
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            s.setInt(1, warehouse.getId());
+
+            return db.executeQuery(s);
+
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    public int getStocksBelowMinQuantityAmount(Warehouse warehouse) throws DataAccessException {
+        String query = "SELECT count(*) from Stock where warehouseID=? and quantity > minQuantity";
+
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            s.setInt(1, warehouse.getId());
+
+            return db.executeQuery(s);
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
 }

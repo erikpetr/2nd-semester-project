@@ -38,7 +38,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
         String queryItem = "INSERT INTO StoreStockReportItem (storeStockReportID, quantity, productID) VALUES (?, ?, ?);";
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryReport, Statement.RETURN_GENERATED_KEYS)) {
             s.setInt(1, value.getStore().getId());
-            s.setDate(2, Date.valueOf(value.getDate()));
+            s.setTimestamp(2, Timestamp.valueOf(value.getDate()));
             s.setString(3, value.getNote());
             int reportId = db.executeInsertWithID(s);
             for (StoreStockReportItem item : value.getItems()) {
@@ -109,10 +109,10 @@ public class StoreStockReportDB implements StoreStockReportDAO {
     @Override
     public int update(StoreStockReport value) throws DataAccessException {
         String queryReport = "UPDATE StoreStockReport SET date=?, note=? WHERE id=? AND storeID=?;";
-        String queryItem = "UPDATE StoreStockReportItem SET quantity=? WHERE stpreStockReportID=?;";
+        String queryItem = "UPDATE StoreStockReportItem SET quantity=? WHERE storeStockReportID=?;";
         int rows = -1;
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryReport)) {
-            s.setDate(1, Date.valueOf(value.getDate()));
+            s.setTimestamp(1, Timestamp.valueOf(value.getDate()));
             s.setString(2, value.getNote());
             s.setInt(3, value.getId());
             s.setInt(4, value.getStore().getId());
@@ -189,7 +189,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
                 int reportId = rsReport.getInt("storestockreport_id");
                 StoreStockReport report = new StoreStockReport(
                         reportId,
-                        rsReport.getDate("date").toLocalDate(),
+                        rsReport.getTimestamp("date").toLocalDateTime(),
                         rsReport.getString("note"),
                         store,
                         new LinkedList<>()

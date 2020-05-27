@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.List;
 public class StoreStockReport {
 
     private int id;
-    private LocalDate date;
+    private LocalDateTime date;
     private String note;
     private Store store;
     private List<StoreStockReportItem> items;
 
-    public StoreStockReport(int id, LocalDate date, String note, Store store, List<StoreStockReportItem> items) {
+    public StoreStockReport(int id, LocalDateTime date, String note, Store store, List<StoreStockReportItem> items) {
         this.id = id;
         this.date = date;
         this.note = note;
@@ -21,7 +21,7 @@ public class StoreStockReport {
         this.items = items;
     }
 
-    public StoreStockReport(LocalDate date, String note, Store store, List<StoreStockReportItem> items) {
+    public StoreStockReport(LocalDateTime date, String note, Store store, List<StoreStockReportItem> items) {
         this.date = date;
         this.note = note;
         this.store = store;
@@ -39,7 +39,7 @@ public class StoreStockReport {
         return id;
     }
 
-    public LocalDate getDate(){
+    public LocalDateTime getDate(){
         return date;
     }
 
@@ -47,7 +47,7 @@ public class StoreStockReport {
         return note;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

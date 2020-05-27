@@ -415,9 +415,9 @@ public class OrderDB implements OrderDAO {
 	public int getOrdersAmount(User user) throws DataAccessException {
 		String query;
 		if (user instanceof Warehouse) {
-			query = "SELECT count * FROM [Order] where warehouseID=?";
+			query = "SELECT count(*) FROM [Order] where warehouseID=?";
 		} else {
-			query = "select count * from [Order] where storeID=?";
+			query = "select count(*) from [Order] where storeID=?";
 		}
 
 		try {
@@ -436,9 +436,9 @@ public class OrderDB implements OrderDAO {
 	public int getPendingOrdersAmount(User user) throws DataAccessException{
 		String query;
 		if (user instanceof Warehouse) {
-			query = "SELECT count * FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
+			query = "SELECT count(*) FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
 		} else {
-			query = "select count * from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
+			query = "select count(*) from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
 		}
 
 		try {

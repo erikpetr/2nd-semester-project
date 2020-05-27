@@ -16,4 +16,8 @@ public interface StockDAO extends DAOInterface<Stock> {
 
     Stock getStock(int warehouseId, int productId) throws DataAccessException;
 
+    int getStocksAmount(Warehouse warehouse) throws DataAccessException;
+
+    int getStocksBelowMinQuantityAmount(Warehouse warehouse) throws DataAccessException;
+
 }

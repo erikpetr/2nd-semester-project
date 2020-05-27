@@ -16,10 +16,6 @@ public class User {
         this.email = email;
         this.address = address;
     }
-    
-    public User() {
-    	
-    }
 
     public User(String name, String password, String email, Address address)
     {

@@ -1,6 +1,6 @@
 package controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import database.DataAccessException;
@@ -10,7 +10,6 @@ import model.Product;
 import model.Store;
 import model.StoreStockReport;
 import model.StoreStockReportItem;
-import model.User;
 
 /**
  * Controller class which connects the GUI with the DAO
@@ -163,7 +162,7 @@ public class StoreStockReportController {
         if (report.getItems().isEmpty()) {
             throw new ControlException("Please add items to your order");
         }
-        report.setDate(LocalDate.now());
+        report.setDate(LocalDateTime.now());
 
         try {
             StoreStockReportDAO reportDAO = new StoreStockReportDB();
