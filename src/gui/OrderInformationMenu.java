@@ -3,6 +3,7 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import controller.LoginController;
 import controller.OrderController;
@@ -10,6 +11,7 @@ import database.DataAccessException;
 import model.Order;
 import model.OrderItem;
 import model.OrderRevision;
+import model.Store;
 import model.Warehouse;
 
 import java.awt.BorderLayout;
@@ -27,47 +29,6 @@ public class OrderInformationMenu extends JPanel {
 	
 	// Panels
 	private JPanel panel;
-		
-	/**
-	 * Create the panel.
-	 */
-	/*public OrderInformationMenu(int orderId) {
-		setLayout(new BorderLayout(0, 0));
-		
-		JPanel contentPane = new JPanel();
-		add(contentPane, BorderLayout.CENTER);
-		
-		JPanel buttonPane = new JPanel();
-		add(buttonPane, BorderLayout.SOUTH);
-		
-		JButton button = new JButton();
-		add(button,BorderLayout.NORTH);
-		
-		
-		if (LoginController.getLoggedInUser() instanceof Warehouse) {
-			JButton btnUpdateStatus = new JButton("Update status");
-			btnUpdateStatus.addActionListener(event -> {
-				openUpdateWindow();
-			});
-			buttonPane.add(btnUpdateStatus);
-		}
-		
-		try {
-			OrderController orderController = new OrderController();
-			order = orderController.getOrder(orderId);
-		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// TODO: Add some fancy looking order information
-	}*/
-	
-
-	/*private void openUpdateWindow() {
-		UpdateOrderMenu updateOrderMenu = new UpdateOrderMenu(order.getId());
-		LayoutChangeMonitor.getInstance().setLayout(updateOrderMenu, "update_order_menu");
-	}*/
 	
 	public OrderInformationMenu(int orderId) 
 	{
@@ -159,10 +120,18 @@ public class OrderInformationMenu extends JPanel {
 		// labels
 		JLabel date = new JLabel("Date: " + order.getDate());
 		details.add(date);
-		JLabel warehouse = new JLabel("Warehouse: " + order.getWarehouse());
-		details.add(warehouse);
-		JLabel store = new JLabel("Store: " + order.getStore());
-		details.add(store);
+		if (LoginController.getLoggedInUser() instanceof Warehouse)
+		{
+			JLabel store = new JLabel("Store: " + order.getStore());
+			details.add(store);
+		}
+		else if (LoginController.getLoggedInUser() instanceof Store)
+		{
+			JLabel warehouse = new JLabel("Warehouse: " + order.getWarehouse());
+			details.add(warehouse);
+		}
+		
+		
 		JLabel price = new JLabel("Total Price: " + order.calculateTotalPrice());
 		details.add(price);
 		
@@ -178,7 +147,7 @@ public class OrderInformationMenu extends JPanel {
 
 		// Title
 		JLabel title = new JLabel("Items");
-		//title_items.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
 		items.add(title);
 		
 		if (order.getItems().size() > 0)
@@ -238,6 +207,7 @@ public class OrderInformationMenu extends JPanel {
 		revisions.setLayout(new BoxLayout(revisions, BoxLayout.Y_AXIS));
 		
 		JLabel title = new JLabel("Revisions");
+		title.setHorizontalAlignment(SwingConstants.CENTER);
 		revisions.add(title);
 		
 		for(OrderRevision revision : order.getRevisions())
@@ -246,6 +216,25 @@ public class OrderInformationMenu extends JPanel {
 			single_revision.add(revisions);
 		}
 		
+		
+		if (LoginController.getLoggedInUser() instanceof Warehouse) 
+		{
+			JPanel buttonPane = new JPanel();
+			revisions.add(buttonPane);
+			
+			JButton btnUpdateStatus = new JButton("Update status");
+			btnUpdateStatus.addActionListener(event -> {
+				openUpdateWindow();
+			});
+			buttonPane.add(btnUpdateStatus);
+		}
+		
 		return revisions;
+	}
+	
+	private void openUpdateWindow() 
+	{
+		UpdateOrderMenu updateOrderMenu = new UpdateOrderMenu(order.getId());
+		LayoutChangeMonitor.getInstance().setLayout(updateOrderMenu, "update_order_menu");
 	}
 }

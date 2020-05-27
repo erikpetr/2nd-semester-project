@@ -43,7 +43,7 @@ public class WarehouseOrderMenu extends JPanel
 		// List of orders
 		scroll_orders = new JScrollPane(ordersTable());
 		add(scroll_orders);
-		
+
 		orderInfo = new OrderInformationMenu();
 		add(orderInfo);
 	}
@@ -130,14 +130,14 @@ public class WarehouseOrderMenu extends JPanel
 						System.out.println("Removing order info");
 						// Remove old panel
 						remove(orderInfo);
-						revalidate();
-						repaint();
 					}
 
 					// Create new panel
 					orderInfo = new OrderInformationMenu((int) valueAt);
 					// Add panel 
 					add(orderInfo);
+					revalidate();
+					repaint();
 				}
 		    });
 			
