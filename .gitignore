@@ -31,3 +31,6 @@ hs_err_pid*
 # Eclipse files
 .project
 .classpath
+
+# SVN Folder
+.svn
