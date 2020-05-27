@@ -26,4 +26,4 @@ jobs:
       - name: Run program
         env:
           TEVOS_JDBC_URL: ${{ secrets.TEVOS_JDBC_URL }}
-        run: java -Xmx256m -classpath "lib/mssql-jdbc-8.2.2.jre11.jar:src/" main.Main
+        run: java -Xmx256m -classpath "lib/mssql-jdbc-8.2.2.jre11.jar:lib/commons-lang3-3.9.jar:lib/commons-text-1.8.jar:src/" main.Main
