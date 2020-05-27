@@ -21,23 +21,6 @@ public class WarehouseWindow extends JFrame
 	JComponent providersCard;
 	JComponent storeStockReportsCard;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main() {
-		EventQueue.invokeLater(() -> {
-			WarehouseWindow frame = null;
-			try {
-				frame = new WarehouseWindow();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				PopUp.newPopUp(frame, "Couldn't start the application.\nThere has been a catastrophic error.\nThe program will terminate\n" +
-						e.getMessage(), "Failure", PopUp.PopUpType.ERROR);
-				System.exit(-1);
-			}
-		});
-	}
-	
 	public WarehouseWindow()
 	{
 		// Frame size
@@ -64,13 +47,31 @@ public class WarehouseWindow extends JFrame
 		// Add to panel
 		panel.add(contentPanel);
 		
-		// Set operation close ofJFrame
+		// Set operation close of JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// Set content pane
 		setContentPane(panel);
 		
 		// Start layout monitor
 		new LayoutMonitor().start();
+	}
+	
+	/*
+	 * Launch the application.
+	 */
+	public static void main() {
+		EventQueue.invokeLater(() -> {
+			WarehouseWindow frame = null;
+			try {
+				frame = new WarehouseWindow();
+				frame.setTitle("Tevos Management System - Logged in as: " + LoginController.getLoggedInUser().getName());
+				frame.setVisible(true);
+			} catch (Exception e) {
+				PopUp.newPopUp(frame, "Couldn't start the application.\nThere has been a catastrophic error.\nThe program will terminate\n" +
+						e.getMessage(), "Failure", PopUp.PopUpType.ERROR);
+				System.exit(-1);
+			}
+		});
 	}
 	
 	/*
@@ -257,7 +258,7 @@ public class WarehouseWindow extends JFrame
 				String componentName = monitor.getConstrains();
 				contentPanel.add(component, componentName);
 				cardLayout.show(contentPanel, componentName);
-				System.out.println("Component shown: "+componentName);
+				System.out.println("Component shown: "+ componentName);
 			}
 		}
 	}
