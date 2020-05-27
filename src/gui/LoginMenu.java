@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class LoginMenu extends JDialog {
+public class LoginMenu extends JFrame {
 
     private final JPanel contentPanel = new JPanel();
     private final JTextField username;

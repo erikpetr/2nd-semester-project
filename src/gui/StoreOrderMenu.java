@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.List;
 
+// TODO: Make this faster and make orderInfo better
 public class StoreOrderMenu extends JPanel 
 {
 	// Controllers
@@ -80,7 +81,7 @@ public class StoreOrderMenu extends JPanel
 		String[] columnNames = {"ID",
 				"Date",
 				"Warehouse",
-				"Revisons",
+				"Status",
 				""};
 
 		// Create table with row edit disable
@@ -100,7 +101,7 @@ public class StoreOrderMenu extends JPanel
 						row.getId(),
 						row.getDate(),
 						row.getWarehouse(),
-						row.getRevisions().size(),
+						row.getStatus(),
 						"See more"
 				};
 

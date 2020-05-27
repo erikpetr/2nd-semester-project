@@ -264,8 +264,6 @@ public class OrderDB implements OrderDAO {
 						rs.getTimestamp("date").toLocalDateTime(),
 						Status.valueOf(rs.getString("status"))
 				);
-				order.setRevisions(getOrderRevisions(order));
-				order.setItems(getOrderItems(order.getId()));
 				orders.add(order);
 			}
 		} catch (SQLException e) {
@@ -455,6 +453,25 @@ public class OrderDB implements OrderDAO {
 			}
 			return 0;
 
+		} catch (SQLException e) {
+			throw new DataAccessException(e.getMessage());
+		}
+	}
+
+	@Override
+	public Status getOrderStatus(int orderId) throws DataAccessException {
+		String query = "SELECT status from [Order] where id=?;";
+
+		try {
+			PreparedStatement statement = db.getDBConn().prepareStatement(query);
+
+			statement.setInt(1, orderId);
+
+			ResultSet resultSet = db.executeSelect(statement);
+			if (resultSet.next()) {
+				return Status.valueOf(resultSet.getString("status"));
+			}
+			return null;
 		} catch (SQLException e) {
 			throw new DataAccessException(e.getMessage());
 		}

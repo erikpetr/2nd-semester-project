@@ -182,7 +182,21 @@ public class OrderController {
 
     public boolean updateOrder(Order order) throws ControlException {
         try {
+            Status oldStatus = orderDAO.getOrderStatus(order.getId());
+            for (OrderRevision orderRevision : order.getRevisions()) {
+                if (orderRevision.getId() == 0) {
+                    updateStock(orderRevision);
+                }
+            }
             if (orderDAO.update(order) != 0) {
+                if (oldStatus.equals(Status.PENDING) && !order.getStatus().equals(Status.REJECTED)) {
+                    order = orderDAO.selectByID(order.getId());
+                    updateStock(order, true);
+                }
+                if (!oldStatus.equals(Status.PENDING) && order.getStatus().equals(Status.REJECTED)) {
+                    order = orderDAO.selectByID(order.getId());
+                    updateStock(order, false);
+                }
                 return true;
             } else {
                 return false;
@@ -193,14 +207,35 @@ public class OrderController {
         }
     }
 
-    // Call this method ONLY when Warehouse Manager approves order
-    public boolean updateStock(Order order) throws ControlException {
-        StockDAO stockDAO = null;
+    // Call this method ONLY when Warehouse Manager approves order or rejects accepted order
+    public boolean updateStock(Order order, boolean decrease) throws ControlException {
         try {
-            stockDAO = new StockDB();
+            StockDAO stockDAO = new StockDB();
 
             for (OrderItem orderItem : order.getItems()) {
                 Stock stock = stockDAO.getStock(order.getWarehouse().getId(), orderItem.getProduct().getId());
+                int quantity = stock.getQuantity();
+                if (decrease) {
+                    quantity = quantity - orderItem.getQuantity();
+                } else {
+                    quantity = quantity + orderItem.getQuantity();
+                }
+                stock.setQuantity(quantity);
+                stockDAO.update(stock);
+            }
+        } catch (DataAccessException e) {
+            throw new ControlException(e.getMessage());
+        }
+        return true;
+    }
+
+    // Call this method every time orderRevision contains items
+    public boolean updateStock(OrderRevision orderRevision) throws ControlException {
+        try {
+            StockDAO stockDAO = new StockDB();
+
+            for (OrderItem orderItem : orderRevision.getItemsChanged()) {
+                Stock stock = stockDAO.getStock(orderRevision.getOrder().getWarehouse().getId(), orderItem.getProduct().getId());
                 int quantity = stock.getQuantity();
                 quantity = quantity - orderItem.getQuantity();
                 stock.setQuantity(quantity);

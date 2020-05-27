@@ -97,7 +97,7 @@ public class UpdateOrderMenu extends JPanel {
 
 	public void submit() {
 		try {
-			Status status = Status.get(statusBox.getSelectedItem().toString());
+			Status status = Status.get((String) statusBox.getSelectedItem());
 			revision.setNote(textRevisionNote.getText());
 			revision.setStatus(status);
 			revision.setDate(LocalDateTime.now());

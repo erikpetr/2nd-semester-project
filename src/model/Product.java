@@ -4,7 +4,6 @@ public class Product {
 
     private int id;
     private String name;
-    // TODO: REfactor to double
     private double weight;
     private double price;
 

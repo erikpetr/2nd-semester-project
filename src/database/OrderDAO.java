@@ -28,4 +28,6 @@ public interface OrderDAO extends DAOInterface<Order> {
     int getOrdersAmount(User user) throws DataAccessException;
 
     int getPendingOrdersAmount(User user) throws DataAccessException;
+
+    Status getOrderStatus(int orderId) throws  DataAccessException;
 }
