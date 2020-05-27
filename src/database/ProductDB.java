@@ -148,8 +148,8 @@ public class ProductDB implements ProductDAO {
      */
     public List<Product> getProducts(Warehouse warehouse) throws DataAccessException {
         String query = "SELECT * FROM Product p " +
-                //"JOIN Stock s ON p.id = s.productID " + TODO implement stock connection
-                //"JOIN Warehouse w ON s.warehouseID = w.id " +
+                "JOIN Stock s ON p.id = s.productID " +
+                "JOIN Warehouse w ON s.warehouseID = w.id " +
                 "WHERE w.id = ?;";
 
         try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {

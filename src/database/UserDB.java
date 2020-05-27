@@ -10,6 +10,11 @@ import java.sql.SQLException;
 
 public class UserDB implements DBInterface<User>{
     DBConnection db = DBConnection.getInstance();
+
+    public UserDB() throws DataAccessException {
+
+    }
+
     /**
      * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
      * Given a valid user which doesnt exist in the database, it inserts it to the DB
@@ -35,7 +40,7 @@ public class UserDB implements DBInterface<User>{
             s.setString(3, value.getPassword());
             s.setInt(4, addressID);
 
-            return db.executeInsertWithID(s.toString());
+            return db.executeInsertWithID(s);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new DataAccessException();
@@ -56,7 +61,7 @@ public class UserDB implements DBInterface<User>{
         try {
             PreparedStatement s = db.getDBConn().prepareStatement(queryStore);
             s.setInt(1, id);
-            ResultSet rs = db.executeSelect(s.toString());
+            ResultSet rs = db.executeSelect(s);
             AddressDB addressDB = new AddressDB();
             if (rs.next()) {
                 return new Store(
@@ -69,7 +74,7 @@ public class UserDB implements DBInterface<User>{
             } else {
                 s = db.getDBConn().prepareStatement(queryWarehouse);
                 s.setInt(1, id);
-                rs = db.executeSelect(s.toString());
+                rs = db.executeSelect(s);
                 if (rs.next()) {
                     return new Warehouse(
                             rs.getInt("id"),
@@ -104,14 +109,14 @@ public class UserDB implements DBInterface<User>{
             PreparedStatement s = db.getDBConn().prepareStatement(queryStore);
             s.setString(1, column);
             s.setString(2, value);
-            rs = db.executeSelect(s.toString());
+            rs = db.executeSelect(s);
             if (rs.first()) {
                 return rs;
             } else {
                 s = db.getDBConn().prepareStatement(queryWarehouse);
                 s.setString(1, column);
                 s.setString(2, value);
-                rs = db.executeSelect(s.toString());
+                rs = db.executeSelect(s);
                 return rs;
             }
         } catch (SQLException e) {
@@ -129,8 +134,8 @@ public class UserDB implements DBInterface<User>{
      */
     @Override
     public int update(User value) throws DataAccessException {
-        String queryStore = "UPDATE 'Store' SET (name=?, email=?, password=?);";
-        String queryWarehouse = "UPDATE 'Warehouse' SET (name=?, email=?, password=?);";
+        String queryStore = "UPDATE 'Store' SET name=?, email=?, password=?;";
+        String queryWarehouse = "UPDATE 'Warehouse' SET name=?, email=?, password=?;";
         PreparedStatement s;
         AddressDB addressDB = new AddressDB();
         int rows = -1;
@@ -143,7 +148,7 @@ public class UserDB implements DBInterface<User>{
             s.setString(1, value.getName());
             s.setString(2, value.getEmail());
             s.setString(3, value.getPassword());
-            rows = db.executeQuery(s.toString());
+            rows = db.executeQuery(s);
             rows += addressDB.update(value.getAddress());
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -172,7 +177,7 @@ public class UserDB implements DBInterface<User>{
                 s = db.getDBConn().prepareStatement(queryWarehouse);
             } else return rows;
             s.setInt(1, value.getId());
-            rows = db.executeQuery(s.toString());
+            rows = db.executeQuery(s);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new DataAccessException();
