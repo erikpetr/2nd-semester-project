@@ -94,7 +94,7 @@ public class CreateWhOrderProviderChooser extends JDialog {
             parent.init();
             this.dispose();
         } else {
-            PopUp.newPopUp(this, "Please choose a Warehouse", "Can't continue", PopUp.PopUpType.WARNING);
+            PopUp.newPopUp(this, "Please choose a Provider", "Can't continue", PopUp.PopUpType.WARNING);
         }
 
     }
