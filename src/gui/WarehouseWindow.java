@@ -51,6 +51,10 @@ public class WarehouseWindow extends JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// Set content pane
 		setContentPane(panel);
+
+		WarehouseDashboard dashboard = new WarehouseDashboard();
+		contentPanel.add(dashboard, "dashboard");
+		cardLayout.show(contentPanel,"dashboard");
 		
 		// Start layout monitor
 		new LayoutMonitor().start();

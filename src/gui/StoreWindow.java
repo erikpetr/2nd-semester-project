@@ -16,6 +16,7 @@ public class StoreWindow extends JFrame
 	// Cards
 	JComponent ordersCard;
 	JComponent storeStockReportsCard;
+	JComponent dashboardCard;
 	
 	public StoreWindow()
 	{
@@ -47,6 +48,10 @@ public class StoreWindow extends JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// Set content pane
 		setContentPane(panel);
+
+		dashboardCard = new StoreDashboard();
+		contentPanel.add(dashboardCard,"dashboard");
+		cardLayout.show(contentPanel, "dashboard");
 		
 		// Start layout monitor
 		new LayoutMonitor().start();
@@ -153,14 +158,7 @@ public class StoreWindow extends JFrame
 	 */
 	public void openDashboardMenu() 
 	{
-		/*
-		 * TODO Create dashboard gui
-		 * 
-		if (dashboardCard == null)
-		{
-			dashboardCard = new DashboardMenu();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(dashboardCard, "dashboard");*/
+		LayoutChangeMonitor.getInstance().setLayout(dashboardCard, "dashboard");
 	}
 	
 	/*

@@ -10,7 +10,7 @@ import java.awt.*;
 import javax.swing.*;
 import model.Store;
 
-
+// TODO: Fix this whole class, like WTF
 public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
     private JSplitPane storeSplit;
     protected JList<Store> storeList;
@@ -38,7 +38,6 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         storeSplit = new JSplitPane();
         storeSplit.setOrientation(SwingConstants.VERTICAL);
 
-        refreshStoreSplitPanel();
         storeSplit.setResizeWeight(0.3);
 
         // List Reports

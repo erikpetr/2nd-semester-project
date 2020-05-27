@@ -7,8 +7,9 @@ import model.Warehouse;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class UserDB implements DBInterface<User>{
+public class UserDB implements DAOInterface<User>{
     DBConnection db = DBConnection.getInstance();
 
     public UserDB() throws DataAccessException {
@@ -92,37 +93,9 @@ public class UserDB implements DBInterface<User>{
         return null;
     }
 
-    /**
-     * This method takes a column name and a search value, converts it to a valid SQL SELECT query, which is the executed
-     *
-     * @param column the columns name we want to search in
-     * @param value  the value we want to search for
-     * @return the ResultSet containing all the results of the query
-     * @see DBConnection executeSelect() method
-     */
     @Override
-    public ResultSet selectByString(String column, String value) throws DataAccessException {
-        String queryStore = "SELECT * FROM 'Store' WHERE ?=?";
-        String queryWarehouse = "SELECT * FROM 'Warehouse' WHERE ?=?";
-        ResultSet rs;
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(queryStore);
-            s.setString(1, column);
-            s.setString(2, value);
-            rs = db.executeSelect(s);
-            if (rs.first()) {
-                return rs;
-            } else {
-                s = db.getDBConn().prepareStatement(queryWarehouse);
-                s.setString(1, column);
-                s.setString(2, value);
-                rs = db.executeSelect(s);
-                return rs;
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
-        }
+    public List<User> all() throws DataAccessException {
+        return null;
     }
 
     /**

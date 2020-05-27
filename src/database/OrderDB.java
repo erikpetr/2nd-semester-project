@@ -415,9 +415,9 @@ public class OrderDB implements OrderDAO {
 	public int getOrdersAmount(User user) throws DataAccessException {
 		String query;
 		if (user instanceof Warehouse) {
-			query = "SELECT count(*) FROM [Order] where warehouseID=?";
+			query = "SELECT count(*) as total FROM [Order] where warehouseID=?";
 		} else {
-			query = "select count(*) from [Order] where storeID=?";
+			query = "select count(*) as total from [Order] where storeID=?";
 		}
 
 		try {
@@ -425,8 +425,11 @@ public class OrderDB implements OrderDAO {
 
 			statement.setInt(1, user.getId());
 
-			return db.executeQuery(statement);
-
+			ResultSet resultSet = db.executeSelect(statement);
+			if (resultSet.next()) {
+				return resultSet.getInt("total");
+			}
+			return 0;
 		} catch (SQLException e) {
 			throw new DataAccessException(e.getMessage());
 		}
@@ -436,9 +439,9 @@ public class OrderDB implements OrderDAO {
 	public int getPendingOrdersAmount(User user) throws DataAccessException{
 		String query;
 		if (user instanceof Warehouse) {
-			query = "SELECT count(*) FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
+			query = "SELECT count(*) as total FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
 		} else {
-			query = "select count(*) from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
+			query = "select count(*) as total from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
 		}
 
 		try {
@@ -446,7 +449,11 @@ public class OrderDB implements OrderDAO {
 
 			statement.setInt(1, user.getId());
 
-			return db.executeQuery(statement);
+			ResultSet resultSet = db.executeSelect(statement);
+			if (resultSet.next()) {
+				return resultSet.getInt("total");
+			}
+			return 0;
 
 		} catch (SQLException e) {
 			throw new DataAccessException(e.getMessage());
