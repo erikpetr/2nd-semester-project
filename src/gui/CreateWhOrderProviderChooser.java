@@ -85,7 +85,6 @@ public class CreateWhOrderProviderChooser extends JDialog {
     private void ok() {
         if (providerList.getSelectedIndex() != -1) {
             Provider chosenProvider = providerList.getSelectedValue();
-            Store store = (Store) LoginController.getLoggedInUser();
 
             if (warehouseOrderController.getWarehouseOrder() != null) {
                 if (warehouseOrderController.getWarehouseOrder().getProvider().getId() != chosenProvider.getId()) {
