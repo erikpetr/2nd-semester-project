@@ -207,23 +207,20 @@ public class UpdateProviderMenu extends JPanel {
             ProviderController providerController = new ProviderController();
             AddressController addressController = new AddressController();
             Address address;
-            if (provider.getAddress() != null) {
+            if (provider != null) {
                 address = new Address(provider.getAddress().getId(), this.number.getText(), this.supplement.getText(), this.street.getText(),
                         this.city.getText(), this.zipcode.getText(), "Slovakia", "Slovakia");
                 addressController.updateAddress(address);
+                Provider p = new Provider(provider.getId(), name, email, available.isSelected(), address);
+                providerController.updateProvider(p);
+                provider = p;
+                PopUp.newPopUp(this, "Provider updated successfully!", "Success", PopUp.PopUpType.INFORMATION);
             } else {
                 int addressID;
                 address = new Address(this.number.getText(), this.supplement.getText(), this.street.getText(),
                         this.city.getText(), this.zipcode.getText(), "Slovakia", "Slovakia");
                 addressID = addressController.createAddress(address);
                 address.setId(addressID);
-            }
-            if (provider != null) {
-                Provider p = new Provider(provider.getId(), name, email, available.isSelected(), address);
-                providerController.updateProvider(p);
-                provider = p;
-                PopUp.newPopUp(this, "Provider updated successfully!", "Success", PopUp.PopUpType.INFORMATION);
-            } else {
                 Provider p = new Provider(name, email, available.isSelected(), address);
                 int id = providerController.createProvider(p);
                 p.setId(id);

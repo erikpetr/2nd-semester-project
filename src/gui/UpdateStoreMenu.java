@@ -1,7 +1,9 @@
 package gui;
 
+import controller.AddressController;
 import controller.StoreController;
 import database.DataAccessException;
+import model.Address;
 import model.Store;
 
 import javax.swing.*;
@@ -10,24 +12,151 @@ import java.awt.*;
 public class UpdateStoreMenu extends JPanel {
 	private final JTextField name;
 	private final JTextField email;
-	private final JTextField password;
-	private final JTextField address;
+	private final JPasswordField password;
 	private final JPanel panel;
+	private final JLabel lblStoreView;
+	private final JPanel addressPane;
+	private final JPanel namePane;
+	private final JPanel emailPane;
+	private final JPanel passwordPane;
+	private final JTextField city;
+	private final JTextField zipcode;
+	private final JTextField street;
+	private final JTextField number;
+	private final JTextField supplement;
 	private Store store;
-	private JLabel lblStoreView;
 
 	/**
 	 * Create the panel.
 	 */
-	public UpdateStoreMenu(Store s) {
-		setLayout(new FlowLayout());
+	public UpdateStoreMenu(Store p) {
+		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel = new JPanel();
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JPanel northPane = new JPanel();
+		northPane.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+		lblStoreView = new JLabel("New Store");
+		lblStoreView.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblStoreView.setBounds(10, 10, 132, 24);
+		northPane.add(lblStoreView);
+
+		panel.add(northPane, BorderLayout.NORTH);
 		{
+			JPanel centerPane = new JPanel();
+			centerPane.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+			namePane = new JPanel();
+			namePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			{
+				JLabel lblName = new JLabel("Name: ");
+				lblName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblName.setBounds(70, 60, 72, 16);
+				namePane.add(lblName);
+
+				name = new JTextField();
+				name.setBounds(148, 60, 116, 22);
+				namePane.add(name);
+				name.setColumns(20);
+			}
+			centerPane.add(namePane);
+
+			emailPane = new JPanel();
+			emailPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			{
+				JLabel lblEmail = new JLabel("Email: ");
+				lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblEmail.setBounds(70, 130, 72, 16);
+				emailPane.add(lblEmail);
+
+				email = new JTextField();
+				email.setBounds(148, 130, 116, 22);
+				emailPane.add(email);
+				email.setColumns(20);
+			}
+			centerPane.add(emailPane);
+
+			passwordPane = new JPanel();
+			passwordPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			{
+				JLabel lblPassword = new JLabel("Password: ");
+				lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblPassword.setBounds(70, 200, 72, 16);
+				passwordPane.add(lblPassword);
+
+				password = new JPasswordField();
+				password.setBounds(148, 200, 116, 22);
+				passwordPane.add(password);
+				password.setColumns(20);
+			}
+			centerPane.add(passwordPane);
+
+			panel.add(centerPane, BorderLayout.CENTER);
+
+			JPanel southPane = new JPanel();
+			southPane.setLayout(new BorderLayout(0, 0));
+
+			addressPane = new JPanel();
+			addressPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			{
+				JLabel zipcode_1 = new JLabel("Zipcode: ");
+				zipcode_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				zipcode_1.setBounds(70, 130, 72, 16);
+				addressPane.add(zipcode_1);
+
+				zipcode = new JTextField();
+				zipcode.setBounds(148, 130, 116, 22);
+				addressPane.add(zipcode);
+				zipcode.setColumns(10);
+
+				JLabel lblCity = new JLabel("City: ");
+				lblCity.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblCity.setBounds(70, 60, 72, 16);
+				addressPane.add(lblCity);
+
+				city = new JTextField();
+				city.setBounds(148, 60, 116, 22);
+				addressPane.add(city);
+				city.setColumns(10);
+
+				JLabel lblStreet = new JLabel("Street: ");
+				lblStreet.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblStreet.setBounds(70, 165, 72, 16);
+				addressPane.add(lblStreet);
+
+				street = new JTextField();
+				street.setBounds(148, 165, 116, 22);
+				addressPane.add(street);
+				street.setColumns(10);
+
+				JLabel lblNumber = new JLabel("Number: ");
+				lblNumber.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblNumber.setBounds(70, 200, 72, 16);
+				addressPane.add(lblNumber);
+
+				number = new JTextField();
+				number.setBounds(148, 200, 116, 22);
+				addressPane.add(number);
+				number.setColumns(10);
+
+				JLabel lblSupplement = new JLabel("Supplement: ");
+				lblSupplement.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				lblSupplement.setBounds(70, 235, 72, 16);
+				addressPane.add(lblSupplement);
+
+				supplement = new JTextField();
+				supplement.setBounds(148, 200, 116, 22);
+				addressPane.add(supplement);
+				supplement.setColumns(10);
+			}
+			southPane.add(addressPane, BorderLayout.NORTH);
+
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBounds(0, 232, 436, 31);
 			buttonPane.setBackground(Color.LIGHT_GRAY);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			panel.add(buttonPane);
+			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			southPane.add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Save");
 				buttonPane.add(okButton);
@@ -38,63 +167,19 @@ public class UpdateStoreMenu extends JPanel {
 				buttonPane.add(cancelButton);
 				cancelButton.addActionListener(e -> goBack());
 			}
+
+			panel.add(southPane, BorderLayout.SOUTH);
 		}
-
-		lblStoreView = new JLabel("New Store");
-		lblStoreView.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblStoreView.setBounds(10, 10, 132, 24);
-		panel.add(lblStoreView);
-
-		JLabel lblName = new JLabel("Name: ");
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblName.setBounds(70, 60, 72, 16);
-		panel.add(lblName);
-
-		name = new JTextField();
-		name.setBounds(148, 60, 116, 22);
-		panel.add(name);
-		name.setColumns(10);
-
-		JLabel lblMail = new JLabel("Mail: ");
-		lblMail.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblMail.setBounds(70, 130, 72, 16);
-		panel.add(lblMail);
-
-
-		JLabel lblPassword = new JLabel("Password: ");
-		lblPassword.setBounds(70, 165, 72, 16);
-		panel.add(lblPassword);
-
-		JLabel lblAddress = new JLabel("Address: ");
-		lblAddress.setBounds(70, 200, 72, 16);
-		panel.add(lblAddress);
-
-
-		email = new JTextField();
-		email.setBounds(148, 130, 116, 22);
-		panel.add(email);
-		email.setColumns(10);
-
-		password = new JTextField();
-		password.setBounds(148, 165, 116, 22);
-		panel.add(password);
-		password.setColumns(10);
-
-		address = new JTextField();
-		address.setBounds(148, 200, 116, 22);
-		panel.add(address);
-		address.setColumns(10);
-
 		setVisible(true);
 
-		init(s);
+		init(p);
 		add(panel);
 	}
 
-	private void init(Store s) {
-		this.store = s;
+	private void init(Store p) {
+		this.store = p;
 		System.out.println("yep");
-		if (s != null) {
+		if (p != null) {
 			fillFields();
 		}
 	}
@@ -103,32 +188,52 @@ public class UpdateStoreMenu extends JPanel {
 		lblStoreView.setText("Edit store");
 		this.name.setText("" + store.getName());
 		this.email.setText("" + store.getEmail());
-		this.password.setText("" + store.getPassword());
-		this.address.setText("" + store.getAddress().toString());
+		this.password.setText(store.getPassword());
+		this.city.setText(store.getAddress().getCity());
+		this.zipcode.setText(store.getAddress().getZipcode());
+		this.street.setText(store.getAddress().getStreet());
+		this.number.setText(store.getAddress().getNumber());
+		this.supplement.setText(store.getAddress().getSupplement());
 	}
 
 	private void goBack() {
-		this.setVisible(false);
+		LayoutChangeMonitor.getInstance().setLayout(new StoreMenu(), "stores");
 	}
 
 	private void okClicked() {
 		try {
 			String name = this.name.getText();
-			String mail = this.email.getText();
-			String password = this.password.getText();
-			String Address = this.address.getText();
-			StoreController sctrl = new StoreController();
+			String email = this.email.getText();
+			String password = String.valueOf(this.password.getPassword());
+
+			StoreController storeController = new StoreController();
+			AddressController addressController = new AddressController();
+			Address address;
 			if (store != null) {
-				Store s = new Store(name, password, mail, null);
-				sctrl.updateStore(s);
+				address = new Address(store.getAddress().getId(), this.number.getText(), this.supplement.getText(), this.street.getText(),
+						this.city.getText(), this.zipcode.getText(), "Slovakia", "Slovakia");
+				addressController.updateAddress(address);
+				Store p = new Store(store.getId(), name, password, email, address);
+				storeController.updateStore(p);
+				store = p;
+				PopUp.newPopUp(this, "Store updated successfully!", "Success", PopUp.PopUpType.INFORMATION);
 			} else {
-				Store s = new Store(name, password, mail, null);
-				sctrl.createStore(s);
+				int addressID;
+				address = new Address(this.number.getText(), this.supplement.getText(), this.street.getText(),
+						this.city.getText(), this.zipcode.getText(), "Slovakia", "Slovakia");
+				addressID = addressController.createAddress(address);
+				address.setId(addressID);
+				Store p = new Store(name, email, password, address);
+				int id = storeController.createStore(p);
+				p.setId(id);
+				store = p;
+				PopUp.newPopUp(this, "Store created successfully!", "Success", PopUp.PopUpType.INFORMATION);
 			}
 		} catch (NumberFormatException | DataAccessException nfe) {
-			JOptionPane.showMessageDialog(null, "Number for price and amount, please enter number");
+			PopUp.newPopUp(this, nfe.getMessage(), "Error", PopUp.PopUpType.WARNING);
 		}
-		this.setVisible(false);
+		setVisible(false);
+		LayoutChangeMonitor.getInstance().setLayout(new StoreMenu(), "stores");
 	}
 
 }
