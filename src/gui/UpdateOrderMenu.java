@@ -70,6 +70,7 @@ public class UpdateOrderMenu extends JPanel {
 		DefaultComboBoxModel<String> comboModel = new DefaultComboBoxModel<>(loadStatuses());
 		statusBox = new JComboBox<>(comboModel);
 		statusBox.setAlignmentX(0.0f);
+		statusBox.setSelectedItem(order.getStatus().value);
 		controlPanel.add(statusBox);
 
 		JPanel buttonPanel = new JPanel();
@@ -95,12 +96,16 @@ public class UpdateOrderMenu extends JPanel {
 	}
 
 	public void submit() {
-		revision.setNote(textRevisionNote.getText());
-		revision.setStatus(Status.get(statusBox.getSelectedItem().toString()));
-		revision.setDate(LocalDateTime.now());
-		order.addRevision(revision);
 		try {
+			Status status = Status.get(statusBox.getSelectedItem().toString());
+			revision.setNote(textRevisionNote.getText());
+			revision.setStatus(status);
+			revision.setDate(LocalDateTime.now());
+			order.addRevision(revision);
+			order.setStatus(status);
 			controller.updateOrder(order);
+			OrderInformationMenu informationMenu = new OrderInformationMenu(order.getId());
+			LayoutChangeMonitor.getInstance().setLayout(informationMenu, "order_info");
 		} catch (ControlException e) {
 			PopUp.newPopUp(this, e.getMessage(), "Can't update order", PopUpType.ERROR);
 		}
@@ -208,7 +213,6 @@ public class UpdateOrderMenu extends JPanel {
 		
 	}
 
-	// TODO: Set current order status as selected
 	private String[] loadStatuses() {
 		Status [] statuses = Status.values();
 		String [] options = new String [statuses.length];		

@@ -111,7 +111,6 @@ public class StoreDB implements DAOInterface<Store>{
 
     @Override
     public int update(Store value) throws DataAccessException {
-        // TODO : See how to update the Address
         // Address is to be updated in updateAddress method in AddressCtrl
         // TODO : See if password have to be salted and hashed
         String query = "UPDATE Store SET name=?, password=?, email=? WHERE id=?;";

@@ -23,6 +23,7 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
 
         String pstmtString = "INSERT INTO WarehouseOrder (providerID, warehouseID, date, status) VALUES (?, ?, ?, ?) ;";
 
+        // TODO: Insert orderItems and revisions too
         try (PreparedStatement pstmt = con.prepareStatement(pstmtString, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, value.getProvider().getId());
             pstmt.setInt(2, value.getWarehouse().getId());
@@ -46,6 +47,8 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
         Connection con = dbConn.getDBConn();
 
         String query = "SELECT * FROM WarehouseOrder WHERE id=?";
+        String itemQuery = "select * from WarehouseOrderItem as w, Product as p " +
+                "JOIN Product on w.productID=p.id where orderID=?";
 
         try (PreparedStatement s = con.prepareStatement(query)) {
             s.setInt(1, id);
@@ -58,10 +61,9 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
                 Warehouse warehouse = warehouseDAO.selectByID(rs.getInt("warehouseID"));
                 Provider provider = providerDAO.selectByID(rs.getInt("providerID"));
 
-                // TODO : Implement Warehouse Order Items
-                List<WarehouseOrderItem> warehouseOrderItems = null;
+                List<WarehouseOrderItem> warehouseOrderItems = new LinkedList<>();
 
-                return new WarehouseOrder(
+                WarehouseOrder order = new WarehouseOrder(
                         rs.getInt("id"),
                         rs.getDate("date").toLocalDate(),
                         Status.valueOf(rs.getString("status")),
@@ -69,6 +71,26 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
                         provider,
                         warehouseOrderItems
                 );
+
+                PreparedStatement statement = con.prepareStatement(itemQuery);
+                statement.setInt(1, order.getId());
+                ResultSet resultSet = dbConn.executeSelect(statement);
+                while (resultSet.next()) {
+                    WarehouseOrderItem orderItem = new WarehouseOrderItem(
+                            resultSet.getInt("w.quantity"),
+                            resultSet.getDouble("w.unitPrice"),
+                            new Product(
+                                    resultSet.getInt("p.id"),
+                                    resultSet.getString("p.name"),
+                                    resultSet.getDouble("p.weight"),
+                                    resultSet.getDouble("p.price")
+                            )
+                    );
+                    warehouseOrderItems.add(orderItem);
+                }
+
+                order.setItems(warehouseOrderItems);
+                return order;
             }
         }
         catch (Exception e) {

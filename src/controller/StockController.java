@@ -20,7 +20,6 @@ public class StockController {
     /**
      * Get stocks of the current warehouse logged in
      *
-     * TODO
      * @return List of Stock
      */
     public static List<Stock> getStocks () throws ControlException

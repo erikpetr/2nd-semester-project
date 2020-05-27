@@ -36,7 +36,7 @@ public class StoreStockReportMenu extends JPanel {
         JButton btnCreateReport = new JButton("Create Stock Report");
         optionsPanel.add(btnCreateReport);
         btnCreateReport.addActionListener(actionEvent -> {
-            // TODO : Adding a report
+            openCreateStoreStockMenu();
         });
 
         // Button Actualize
@@ -121,5 +121,10 @@ public class StoreStockReportMenu extends JPanel {
         // Set border
         table.setBorder(BorderFactory.createLineBorder(Color.blue));
         return table;
+    }
+
+    public void openCreateStoreStockMenu () {
+        JComponent createStoreStockReports = new CreateStoreStockReportMenu();
+        LayoutChangeMonitor.getInstance().setLayout(createStoreStockReports, "createStoreStockMenu");
     }
 }

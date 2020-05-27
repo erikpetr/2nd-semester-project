@@ -27,7 +27,6 @@ public class UpdateProductMenu extends JPanel {
 
         setVisible(true);
 
-        init(p);
         add(panel);
         panel.setLayout(new BorderLayout(0, 0));
 
@@ -103,8 +102,8 @@ public class UpdateProductMenu extends JPanel {
                 cancelButton.addActionListener(e -> goBack());
             }
         }
-		
-		init();
+
+        init(p);
 
     }
 
@@ -124,26 +123,27 @@ public class UpdateProductMenu extends JPanel {
     }
 
     private void goBack() {
-        this.setVisible(false);
+        LayoutChangeMonitor.getInstance().setLayout(new ProductMenu(), "products");
     }
 
     private void okClicked() {
         try {
-            String name = this.name.getText();
-            int weight = Integer.parseInt(this.weight.getText());
-            double price = Double.parseDouble(this.price.getText());
+            product.setName(this.name.getText());
+            product.setWeight(Integer.parseInt(this.weight.getText()));
+            product.setPrice(Double.parseDouble(this.price.getText()));
             ProductController productController = new ProductController();
             if (product != null) {
-                Product p = new Product(name, weight, price);
-                productController.updateProduct(p);
+                productController.updateProduct(product);
+                PopUp.newPopUp(this, "Product updated successfully!", "Success", PopUp.PopUpType.INFORMATION);
             } else {
-                Product p = new Product(name, weight, price);
-                productController.createProduct(p);
+                productController.createProduct(product);
+                PopUp.newPopUp(this, "Product created successfully!", "Success", PopUp.PopUpType.INFORMATION);
             }
         } catch (NumberFormatException | DataAccessException nfe) {
             PopUp.newPopUp(this, nfe.getMessage(), "Error", PopUp.PopUpType.WARNING);
         }
-        this.setVisible(false);
+        setVisible(false);
+        LayoutChangeMonitor.getInstance().setLayout(new ProductMenu(), "products");
     }
 
 }

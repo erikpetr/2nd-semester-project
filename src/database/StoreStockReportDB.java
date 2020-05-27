@@ -25,22 +25,31 @@ public class StoreStockReportDB implements StoreStockReportDAO {
      */
     @Override
     public int create(StoreStockReport value) throws DataAccessException {
+        // TODO : Test and remove
+        System.out.println("######################################");
+        List<StoreStockReportItem> l = value.getItems();
+        for (int i = 0; i < l.size(); i++) {
+            System.out.print(value.getItems().get(i) + " , ");
+        }
+        System.out.println();
+
+
         String queryReport = "INSERT INTO StoreStockReport (storeID, date, note) VALUES (?, ?, ?);";
         String queryItem = "INSERT INTO StoreStockReportItem (storeStockReportID, quantity, productID) VALUES (?, ?, ?);";
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryReport, Statement.RETURN_GENERATED_KEYS)) {
-            //s.setInt(1, value.getStore().getId());
+            s.setInt(1, value.getStore().getId());
             s.setDate(2, Date.valueOf(value.getDate()));
             s.setString(3, value.getNote());
-            int id = db.executeInsertWithID(s);
+            int reportId = db.executeInsertWithID(s);
             for (StoreStockReportItem item : value.getItems()) {
                 try (PreparedStatement ps = db.getDBConn().prepareStatement(queryItem, Statement.RETURN_GENERATED_KEYS)) {
-                    ps.setInt(1, id);
-                    //s.setInt(2, item.getQuantity());
+                    ps.setInt(1, reportId);
+                    ps.setInt(2, item.getQuantity());
                     ps.setInt(3, item.getProduct().getId());
                     db.executeInsertWithID(ps);
                 }
             }
-            return id;
+            return reportId;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
@@ -106,12 +115,11 @@ public class StoreStockReportDB implements StoreStockReportDAO {
             s.setDate(1, Date.valueOf(value.getDate()));
             s.setString(2, value.getNote());
             s.setInt(3, value.getId());
-            //s.setInt(4, value.getStore().getId());
+            s.setInt(4, value.getStore().getId());
             rows = db.executeQuery(s);
             for (StoreStockReportItem item : value.getItems()) {
-                //TODO FIX
                 try (PreparedStatement ps = db.getDBConn().prepareStatement(queryItem)) {
-                    //s.setInt(1, item.getQuantity());
+                    s.setInt(1, item.getQuantity());
                     s.setInt(2, value.getId());
                     rows += db.executeQuery(s);
                 }
@@ -165,7 +173,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
                + "  JOIN [StoreStockReportItem] ON [StoreStockReport].id = [StoreStockReportItem].productID "
                + "  JOIN [Product] ON [StoreStockReportItem].productID = [product].id "
                + "WHERE [StoreStockReport].storeID= ? "
-               + "ORDER BY [StoreStockReport].date DESC;";
+               + "ORDER BY [StoreStockReport].id DESC;";
 
 
         try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
@@ -176,6 +184,14 @@ public class StoreStockReportDB implements StoreStockReportDAO {
 
             StoreStockReport actualReport = null;
             while (rs.next()) {
+
+                String lol = "";
+                for (int i = 1; i < 9; i++) {
+                    lol += rs.getString(i) + " , ";
+                }
+                System.out.println(lol);
+
+
                 // Keep only one instance of each product
                 int newProductId = rs.getInt("product_id");
                 Product actualProduct = null;
@@ -190,9 +206,10 @@ public class StoreStockReportDB implements StoreStockReportDAO {
                     actualProduct = new Product(
                         newProductId,
                         rs.getString("name"),
-                        rs.getInt("weight"),
+                        rs.getDouble("weight"),
                         rs.getDouble("price")
                     );
+                    productList.add(actualProduct);
                 }
 
                 // Keep only one instance of each report

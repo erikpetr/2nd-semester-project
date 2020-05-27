@@ -10,8 +10,6 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class OrderControllerTest {
 
-    // TODO: Fix, use real products in the database
-
     OrderController orderController;
 
     @BeforeEach

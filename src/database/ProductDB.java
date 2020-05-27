@@ -40,7 +40,7 @@ public class ProductDB implements ProductDAO {
         int productID = -1;
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryProd, Statement.RETURN_GENERATED_KEYS)) {
             s.setString(1, value.getName()); // name
-            s.setInt(2, value.getWeight()); // weight
+            s.setDouble(2, value.getWeight()); // weight
             s.setDouble(3, value.getPrice()); // price
             productID = db.executeInsertWithID(s);
         } catch (SQLException e) {
@@ -66,7 +66,7 @@ public class ProductDB implements ProductDAO {
                     return new Product(
                             rs.getInt("id"),
                             rs.getString("name"),
-                            rs.getInt("weight"),
+                            rs.getDouble("weight"),
                             rs.getDouble("price"));
                 } else return null;
             } else return null;
@@ -92,7 +92,7 @@ public class ProductDB implements ProductDAO {
                 resultList.add(new Product(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getInt("weight"),
+                        rs.getDouble("weight"),
                         rs.getDouble("price")));
             }
             return resultList;
@@ -110,10 +110,10 @@ public class ProductDB implements ProductDAO {
      */
     @Override
     public int update(Product value) throws DataAccessException {
-        String queryProduct = "UPDATE Product SET (name=?, weight=?, price=?, minQuantity=?) WHERE id=?;";
+        String queryProduct = "UPDATE Product SET name=?, weight=?, price=? WHERE id=?;";
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryProduct)) {
             s.setString(1, value.getName());
-            s.setInt(2, value.getWeight());
+            s.setDouble(2, value.getWeight());
             s.setDouble(3, value.getPrice());
             s.setInt(4, value.getId());
             return db.executeQuery(s);
@@ -146,11 +146,10 @@ public class ProductDB implements ProductDAO {
      * @return the list of products of the warehouse
      * @see DBConnection executeSelect() method
      */
-    @Override
     public List<Product> getProducts(Warehouse warehouse) throws DataAccessException {
         String query = "SELECT * FROM Product p " +
-                "JOIN Stock s ON p.id = s.productID " +
-                "JOIN Warehouse w ON s.warehouseID = w.id " +
+                //"JOIN Stock s ON p.id = s.productID " + TODO implement stock connection
+                //"JOIN Warehouse w ON s.warehouseID = w.id " +
                 "WHERE w.id = ?;";
 
         try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
@@ -162,7 +161,7 @@ public class ProductDB implements ProductDAO {
                 resultList.add(new Product(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getInt("weight"),
+                        rs.getDouble("weight"),
                         rs.getDouble("price")));
             }
             return resultList;

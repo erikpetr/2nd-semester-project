@@ -4,10 +4,11 @@ public class Product {
 
     private int id;
     private String name;
-    private int weight;
+    // TODO: REfactor to double
+    private double weight;
     private double price;
 
-    public Product(int id, String name, int weight, Double price)
+    public Product(int id, String name, double weight, Double price)
     {
         this.id = id;
         this.name = name;
@@ -15,7 +16,7 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String name, int weight, double price)
+    public Product(String name, double weight, double price)
     {
         this.name = name;
         this.weight = weight;
@@ -34,7 +35,7 @@ public class Product {
         this.id = id;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -46,7 +47,7 @@ public class Product {
         this.name = name;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

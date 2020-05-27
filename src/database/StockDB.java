@@ -129,8 +129,7 @@ public class StockDB implements StockDAO {
     public int update(Stock value) throws DataAccessException {
         String queryStock = "UPDATE Stock SET quantity=?, minQuantity=? " +
                 "WHERE productID=? AND warehouseID=?;";
-        // TODO : Think how to update as Stock does not have any id and the others can change
-        // Aswer: There are two keys which point to product and a warehouse.
+        // There are two keys which point to product and a warehouse.
         // Since stock is attached to only one product and one warehouse it's enough
         // We DO NOT update warehouseID nor productID
         int rows = -1;

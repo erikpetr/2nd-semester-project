@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StoreStockReport {
@@ -25,6 +26,13 @@ public class StoreStockReport {
         this.note = note;
         this.store = store;
         this.items = items;
+    }
+
+    public StoreStockReport(Store store) {
+        this.date = null;
+        this.note = "";
+        this.store = store;
+        this.items = new LinkedList<StoreStockReportItem>();
     }
 
     public int getId(){
@@ -55,8 +63,8 @@ public class StoreStockReport {
         this.store = store;
     }
 
-    public void addItem(StoreStockReportItem item) {
-        items.add(item);
+    public boolean addItem(StoreStockReportItem item) {
+        return items.add(item);
     }
 
     public List<StoreStockReportItem> getItems() {
@@ -69,6 +77,26 @@ public class StoreStockReport {
 
     public String toString() {
         return String.valueOf(this.getId()) + " : " + this.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " , " + this.getNote();
+    }
+
+    public boolean removeReportItem(StoreStockReportItem reportItem) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getProduct().getId() == reportItem.getProduct().getId()) {
+                items.remove(i);
+                return true;
+            }
+        }
+        return items.remove(reportItem);
+    }
+
+    public double calculateTotalPrice() {
+        double price = 0;
+
+        for (StoreStockReportItem reportItem: items) {
+            price += reportItem.getProduct().getPrice() * reportItem.getQuantity();
+        }
+
+        return price;
     }
 }
 

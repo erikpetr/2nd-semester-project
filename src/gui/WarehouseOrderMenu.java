@@ -27,10 +27,6 @@ import javax.swing.JSplitPane;
 
 public class WarehouseOrderMenu extends JPanel
 {
-	// Controller
-	private OrderController orderController;
-	
-	// Panes
 	JScrollPane scroll_orders;
 	JComponent orderInfo;
 	
@@ -39,16 +35,6 @@ public class WarehouseOrderMenu extends JPanel
 	 */
 	public WarehouseOrderMenu() 
 	{
-		// Inicialize controllers
-		try 
-		{
-			orderController = new OrderController();
-		} 
-		catch (DataAccessException e) 
-		{
-			PopUp.newPopUp(this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
-		}
-		
 		// Set layout
 		GridLayout gridLayout = new GridLayout(1,2);
 		gridLayout.setHgap(10);
@@ -57,13 +43,15 @@ public class WarehouseOrderMenu extends JPanel
 		// List of orders
 		scroll_orders = new JScrollPane(ordersTable());
 		add(scroll_orders);
+
+		orderInfo = new OrderInformationMenu();
+		add(orderInfo);
 	}
 	
 	/*
 	 * Create table and fetch data
 	 */
-	private JTable ordersTable() 
-	{
+	private JTable ordersTable() {
 		// Column names
 		String[] columnNames = {"ID",
 				"Date",
@@ -148,7 +136,6 @@ public class WarehouseOrderMenu extends JPanel
 					orderInfo = new OrderInformationMenu((int) valueAt);
 					// Add panel 
 					add(orderInfo);
-					
 					revalidate();
 					repaint();
 				}

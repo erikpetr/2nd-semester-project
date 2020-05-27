@@ -13,7 +13,7 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
     DBConnection db = DBConnection.getInstance();
     
     public WarehouseDB() throws DataAccessException {
-		// TODO Auto-generated constructor stub
+
 	}
     
     /**
@@ -108,8 +108,7 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
      */
     @Override
     public int update(Warehouse value) throws DataAccessException {
-        // TODO : See how to update the Address
-        // TODO : See if password have to be salted and hashed
+        // Address is updated separately in AddressController
         String query= "UPDATE Warehouse SET name=?, password=?, email=? WHERE id=?;";
         int rows = -1;
         try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
