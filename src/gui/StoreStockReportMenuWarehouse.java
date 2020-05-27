@@ -5,14 +5,11 @@ import java.util.List;
 
 import controller.StoreController;
 import database.DataAccessException;
-import gui.StoreStockReportMenu;
-import java.awt.*;
 import javax.swing.*;
 import model.Store;
 
-// TODO: Fix this whole class, like WTF
 public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
-    private JSplitPane storeSplit;
+    private JSplitPane storePanel;
     protected JList<Store> storeList;
     private List<Store> stores = new LinkedList<>();
 
@@ -21,60 +18,64 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         super();
         this.currentStore = null;
 
-        refreshStoreJList();
+        reloadDataAndGui();
         refreshStoreSplitPanel();
-        refreshReportSplitPanel();
 
-        // Add Report split panel to Right store panel
-        storeSplit.setRightComponent(reportPanel);
-
-        this.add(storeSplit);
-
+        this.add(storePanel);
         this.setVisible(true);
     }
 
     protected void refreshStoreSplitPanel () {
         // Report Split Panel
-        storeSplit = new JSplitPane();
-        storeSplit.setOrientation(SwingConstants.VERTICAL);
+        storePanel = new JSplitPane();
+        storePanel.setOrientation(SwingConstants.VERTICAL);
+        //storePanel.setResizeWeight(0.3);
 
-        storeSplit.setResizeWeight(0.3);
+        storePanel.setLeftComponent(storeList);
 
         // List Reports
         refreshStoreJList();
-        storeList.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting() && (storeList.getSelectedValue() != null)) {
-                currentStore = storeList.getSelectedValue();
-                loadReports();
-                reportPanel.setLeftComponent(getReportJList());
-                this.revalidate();
-            }
-        });
-        storeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        storeList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        storeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-        storeSplit.setLeftComponent(storeList);
+        storePanel.setLeftComponent(storeList);
 
         // Item Table
         itemTable = new JTable();
-        storeSplit.setRightComponent(itemTable);
+        refreshReportSplitPanel();
+        storePanel.setRightComponent(reportPanel);
     }
 
     private void refreshStoreJList () {
         storeList = new JList<>(stores.toArray(new Store[reports.size()]));
+
+        storeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        storeList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        storeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+        storeList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {// && (storeList.getSelectedValue() != null)) {
+                currentStore = storeList.getSelectedValue();
+                loadReports();
+                refreshReportSplitPanel();
+                storePanel.setRightComponent(reportPanel);
+                this.revalidate();
+            }
+        });
     }
 
-    protected void reloadDataAndGui () {
+    private void loadStores () {
         try {
             StoreController storeController = new StoreController();
             stores = storeController.getStores();
-            refreshStoreJList();
-            storeSplit.setLeftComponent(storeList);
-        }
-        catch (DataAccessException e) {
+            System.out.println(stores);
+        } catch (DataAccessException e) {
             PopUp.newPopUp(this, e.getMessage(), "Error", PopUp.PopUpType.WARNING);
         }
+    }
+
+    protected void reloadDataAndGui () {
+        loadStores();
+        //refreshStoreSplitPanel();
+        //this.revalidate();
     }
 }
 
