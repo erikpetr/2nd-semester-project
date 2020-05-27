@@ -1,23 +1,34 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
 
 public class WarehouseOrderRevision {
     private int id;
-    private LocalDate date;
+    private LocalDateTime date;
     private String note;
     private Status status;
+    private WarehouseOrder warehouseOrder;
+    private List<WarehouseOrderItem> itemsChanged;
 
-    public WarehouseOrderRevision(int id, LocalDate date, String note, Status status) {
+    public WarehouseOrderRevision(int id, LocalDateTime date, String note, Status status) {
         this.id = id;
         this.date = date;
         this.note = note;
         this.status = status;
     }
+    public WarehouseOrderRevision(LocalDateTime date, Status status, String note, WarehouseOrder warehouseOrder, List<WarehouseOrderItem> itemsChanged) {
+        this.date = date;
+        this.note = note;
+        this.status = status;
+        this.warehouseOrder = warehouseOrder;
+        this.itemsChanged = itemsChanged;
+    }
 
-    public WarehouseOrderRevision(LocalDate date, String note, Status status) {
+    public WarehouseOrderRevision(LocalDateTime date, String note, Status status) {
         this.date = date;
         this.note = note;
         this.status = status;
@@ -27,11 +38,11 @@ public class WarehouseOrderRevision {
         return id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

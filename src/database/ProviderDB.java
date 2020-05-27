@@ -107,7 +107,7 @@ public class ProviderDB implements DAOInterface<Provider> {
      */
     @Override
     public int update(Provider value) throws DataAccessException {
-        String queryProduct = "UPDATE Provider SET (name=?, email=?, available=?) WHERE id=" + value.getId() + ";";
+        String queryProduct = "UPDATE Provider SET name=?, email=?, available=? WHERE id=" + value.getId() + ";";
         int rows = -1;
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryProduct)) {
             s.setString(1, value.getName());

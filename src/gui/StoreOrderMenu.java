@@ -20,7 +20,7 @@ public class StoreOrderMenu extends JPanel
 	 * Create the panel.
 	 */
 	public StoreOrderMenu() {
-		// Inicialize controllers
+		// Initialize controllers
 		try {
 			orderController = new OrderController();
 		} catch (DataAccessException e) {

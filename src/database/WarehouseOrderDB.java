@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * This class is used in connection with the DAO pattern
  */
-public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
+public class WarehouseOrderDB implements WarehouseOrderDAO {
 
     /**
      * This method takes a WarehouseOrder and converts it to a valid SQL INSERT query, which is the executed
@@ -27,7 +27,7 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
         try (PreparedStatement pstmt = con.prepareStatement(pstmtString, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, value.getProvider().getId());
             pstmt.setInt(2, value.getWarehouse().getId());
-            pstmt.setDate(2, Date.valueOf(value.getDate()));
+            pstmt.setTimestamp(2, Timestamp.valueOf(value.getDate()));
             pstmt.setString(3, value.getStatus().name());
 
             return dbConn.executeQuery(pstmt);
@@ -65,7 +65,7 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
 
                 WarehouseOrder order = new WarehouseOrder(
                         rs.getInt("id"),
-                        rs.getDate("date").toLocalDate(),
+                        rs.getTimestamp("date").toLocalDateTime(),
                         Status.valueOf(rs.getString("status")),
                         warehouse,
                         provider,
@@ -120,7 +120,7 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
 
         // TODO: Also WarehousOrderRevision should be added when update happened
         try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setDate(1, Date.valueOf(value.getDate()));
+            pstmt.setTimestamp(1, Timestamp.valueOf(value.getDate()));
             pstmt.setString(2, value.getStatus().name());
             pstmt.setInt(3, value.getId());
 
@@ -149,6 +149,31 @@ public class WarehouseOrderDB implements DAOInterface<WarehouseOrder> {
         } catch (Exception e) {
             throw new DataAccessException();
         }
+    }
+
+    @Override
+    public List<WarehouseOrder> getWarehouseOrders(Warehouse warehouse) throws DataAccessException {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public List<WarehouseOrder> getWarehouseOrders(Provider provider) throws DataAccessException {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public List<WarehouseOrderItem> getWarehouseOrderItems(int warehouseOrderID) throws DataAccessException {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public List<WarehouseOrderRevision> getWarehouseOrderRevisions(WarehouseOrder warehouseOrder) throws DataAccessException {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public int insertWarehouseOrderRevision(List<WarehouseOrderRevision> warehouseOrderRevisions, int warehouseOrderId) throws DataAccessException {
+        return 0;
     }
 
 }

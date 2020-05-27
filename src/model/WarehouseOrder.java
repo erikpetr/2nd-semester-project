@@ -1,20 +1,29 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WarehouseOrder {
 
     private int id;
-    private LocalDate date;
+    private LocalDateTime date;
     private Status status;
     private Warehouse warehouse;
     private Provider provider;
     private List<WarehouseOrderItem> items;
+    private List<WarehouseOrderRevision> revisions;
 
-    public WarehouseOrder(int id, LocalDate date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items)
+    public WarehouseOrder(Warehouse warehouse) {
+        this.warehouse = warehouse;
+        items = new LinkedList<>();
+        revisions = new LinkedList<>();
+    }
+
+    public WarehouseOrder(int id, LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items)
     {
         this.id = id;
         this.date = date;
@@ -24,7 +33,7 @@ public class WarehouseOrder {
         this.items = items;
     }
 
-    public WarehouseOrder(LocalDate date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items) {
+    public WarehouseOrder(LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items) {
         this.date = date;
         this.status = status;
         this.warehouse = warehouse;
@@ -36,7 +45,7 @@ public class WarehouseOrder {
         return id;
     }
 
-    public LocalDate getDate(){
+    public LocalDateTime getDate(){
         return date;
     }
 
@@ -44,7 +53,7 @@ public class WarehouseOrder {
         return status;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -78,6 +87,41 @@ public class WarehouseOrder {
 
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    public List<WarehouseOrderRevision> getRevisions() {
+        return revisions;
+    }
+
+    public void setRevisions(List<WarehouseOrderRevision> revisions) {
+        this.revisions = revisions;
+    }
+
+    public boolean addRevision(WarehouseOrderRevision revision) {
+        return revisions.add(revision);
+    }
+
+    public boolean addWarehouseOrderItem(WarehouseOrderItem warehouseOrderItem) {
+        return items.add(warehouseOrderItem);
+    }
+    public boolean removeWarehouseOrderItem(WarehouseOrderItem warehouseOrderItem) {
+        for (int i = 0; i < items.size(); i++) {
+            if(items.get(i).getProduct().getId() == warehouseOrderItem.getProduct().getId()) {
+                items.remove(i);
+                return true;
+            }
+        }
+        return items.remove(warehouseOrderItem);
+    }
+
+    public double calculateTotalPrice() {
+        double price = 0;
+
+        for (WarehouseOrderItem warehouseOrderItem: items) {
+            price += warehouseOrderItem.getProduct().getPrice() * warehouseOrderItem.getQuantity();
+        }
+
+        return price;
     }
 
     @Override

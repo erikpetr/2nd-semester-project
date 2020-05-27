@@ -66,6 +66,14 @@ public class Provider {
         if (!available) text += " - [Not available]";
         return text;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
 }
 
 
