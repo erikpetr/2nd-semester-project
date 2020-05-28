@@ -127,7 +127,15 @@ public class WarehouseOrderController {
 
     public boolean updateWarehouseOrder(WarehouseOrder warehouseOrder) throws ControlException {
         try {
-            return (warehouseOrderDAO.update(warehouseOrder) != 0);
+            if (warehouseOrderDAO.update(warehouseOrder) != 0) {
+                if (warehouseOrder.getStatus().equals(Status.DELIVERED)) {
+                    warehouseOrder = warehouseOrderDAO.selectByID(warehouseOrder.getId());
+                    updateStock(warehouseOrder);
+                }
+                return true;
+            } else {
+                return false;
+            }
         } catch (DataAccessException e) {
             throw new ControlException("Can't update warehouse order\n" + e.getMessage());
         }

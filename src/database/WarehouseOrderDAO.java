@@ -17,5 +17,4 @@ public interface WarehouseOrderDAO extends DAOInterface<WarehouseOrder> {
     int insertWarehouseOrderItems(List<WarehouseOrderItem> warehouseOrderItems, int warehouseOrderId) throws DataAccessException;
 
     int insertWarehouseOrderRevision(List<WarehouseOrderRevision> warehouseOrderRevisions, int warehouseOrderId) throws DataAccessException;
-
 }

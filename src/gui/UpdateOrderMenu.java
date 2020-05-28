@@ -177,7 +177,7 @@ public class UpdateOrderMenu extends JPanel {
                     revision.addItemChanged(revisionOrderItem);
                     order.removeOrderItem(orderItem);
                 } else {
-                    int diff = orderItem.getQuantity() - quantity;
+                    int diff = quantity - orderItem.getQuantity();
                     if (revision.hasOrderItem(orderItem)) {
                         revision.addQuantity(orderItem, diff);
                     } else {

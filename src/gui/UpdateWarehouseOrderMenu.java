@@ -18,7 +18,6 @@ public class UpdateWarehouseOrderMenu extends JPanel {
     private final JTextArea textRevisionNote;
     private final JList<WarehouseOrderItem> warehouseOrderItemList;
     private final JComboBox<String> statusBox;
-    private JTextField orderItemAmount;
     private WarehouseOrderController controller;
     private WarehouseOrder order;
     private WarehouseOrderRevision revision;
@@ -46,11 +45,6 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         add(splitPane, BorderLayout.CENTER);
 
         warehouseOrderItemList = new JList<>();
-        warehouseOrderItemList.addListSelectionListener(listSelectionEvent -> {
-            if (!listSelectionEvent.getValueIsAdjusting() && warehouseOrderItemList.getSelectedValue() != null) {
-                showControlsFor(warehouseOrderItemList.getSelectedValue());
-            }
-        });
         splitPane.setLeftComponent(warehouseOrderItemList);
 
         JPanel controlPanel = new JPanel();
@@ -106,73 +100,6 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         } catch (ControlException e) {
             PopUp.newPopUp(this, e.getMessage(), "Can't update warehouse order", PopUp.PopUpType.ERROR);
         }
-    }
-
-    private void showControlsFor(WarehouseOrderItem orderItem) {
-        int startQuantity = orderItem.getQuantity();
-        optionsPanel.removeAll();
-
-        JButton btnRemoveItem = ColorStyle.newButton("RemoveWarehouseOrderItem");
-        btnRemoveItem.addActionListener(e -> {
-            order.removeWarehouseOrderItem(orderItem);
-            PopUp.newPopUp(this, "Warehouse order updated", "Success", PopUp.PopUpType.INFORMATION);
-            init();
-        });
-        optionsPanel.add(btnRemoveItem);
-
-        JButton btnDecreaseAmount = ColorStyle.newButton("<< Decrement");
-        btnDecreaseAmount.addActionListener(event -> {
-            try {
-                int quantity = Integer.parseInt(orderItemAmount.getText());
-                if (quantity > 0) {
-                    quantity--;
-                    orderItemAmount.setText(quantity + "");
-                }
-            } catch (NumberFormatException e) {
-                PopUp.newPopUp(this, "Make sure the value is numeric", "Cannot continue", PopUp.PopUpType.WARNING);
-            }
-        });
-        optionsPanel.add(btnDecreaseAmount);
-
-        orderItemAmount = new JTextField(startQuantity + "");
-        optionsPanel.add(orderItemAmount);
-        orderItemAmount.setColumns(10);
-        orderItemAmount.setText(orderItem.getQuantity() + "");
-
-        JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
-        btnIncreaseAmount.addActionListener(event -> {
-            try {
-                int quantity = Integer.parseInt(orderItemAmount.getText());
-                quantity++;
-                orderItemAmount.setText(quantity + "");
-            } catch (NumberFormatException e) {
-                PopUp.newPopUp(this, "Make sure the value is numeric", "Cannot continue", PopUp.PopUpType.WARNING);
-            }
-        });
-        optionsPanel.add(btnIncreaseAmount);
-
-        JButton btnConfirmAmount = ColorStyle.newButton("Confirm");
-        btnConfirmAmount.addActionListener(event -> {
-            try {
-                int quantity = Integer.parseInt(orderItemAmount.getText());
-
-                if (quantity < 0) {
-                    WarehouseOrderItem revisionOrderItem = new WarehouseOrderItem(
-                            orderItem.getQuantity(),
-                            orderItem.getUnitPrice(),
-                            orderItem.getProduct()
-                    );
-                    order.removeWarehouseOrderItem(orderItem);
-                }
-                init();
-            } catch (NumberFormatException e) {
-                PopUp.newPopUp(this, "Make sure the value is numeric", "Cannot continue", PopUp.PopUpType.WARNING);
-            }
-        });
-        optionsPanel.add(btnConfirmAmount);
-
-        optionsPanel.revalidate();
-        optionsPanel.repaint();
     }
 
     private void loadOrderItems() {

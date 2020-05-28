@@ -2,9 +2,7 @@ package gui;
 
 import controller.WarehouseOrderController;
 import database.DataAccessException;
-import model.WarehouseOrder;
-import model.WarehouseOrderItem;
-import model.WarehouseOrderRevision;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,6 +65,15 @@ public class WarehouseOrderInformationMenu extends JPanel {
         // Revisions
         body.add(warehouseOrderRevisions());
         // --- /BODY ---*/
+
+        if (!warehouseOrder.getStatus().equals(Status.REJECTED) && !warehouseOrder.getStatus().equals(Status.DELIVERED)) {
+            JButton btnUpdate = ColorStyle.newButton("Update order");
+            btnUpdate.addActionListener(actionEvent -> {
+                UpdateWarehouseOrderMenu menu = new UpdateWarehouseOrderMenu(warehouseOrder.getId());
+                LayoutChangeMonitor.getInstance().setLayout(menu, "update_warehouse_order");
+            });
+            body.add(btnUpdate, SwingConstants.BOTTOM);
+        }
 
         add(panel);
         // Set visible
@@ -174,10 +181,21 @@ public class WarehouseOrderInformationMenu extends JPanel {
         revisions.add(title);
 
         for (WarehouseOrderRevision revision : warehouseOrder.getRevisions()) {
-            JLabel singleRevision = new JLabel(revision.toString());
-            singleRevision.add(revisions);
+            revisions.add(warehouseOrderRevision(revision));
         }
 
         return revisions;
+    }
+
+    private JPanel warehouseOrderRevision(WarehouseOrderRevision orderRevision) {
+        JPanel revision = new JPanel();
+        revision.setLayout(new BoxLayout(revision, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Revision from date: "+orderRevision.getDate().toString());
+        JLabel statusChange = new JLabel("Updated status to: "+orderRevision.getStatus().value);
+        revision.add(title);
+        revision.add(statusChange);
+
+        return revision;
     }
 }
