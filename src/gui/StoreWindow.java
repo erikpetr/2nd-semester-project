@@ -138,6 +138,13 @@ public class StoreWindow extends JFrame {
         JPanel account = new JPanel();
 
         JLabel user = new JLabel("Logged in as: " + LoginController.getLoggedInUser().getName());
+        JButton logout = ColorStyle.newButton("Logout");
+        logout.addActionListener(e -> {
+            LoginController.logOut();
+            this.setVisible(false);
+            LoginMenu.main(null);
+        });
+        account.add(logout);
         user.setForeground(new Color(47, 36, 131));
         account.add(user);
 
