@@ -4,6 +4,7 @@ import database.*;
 import model.*;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WarehouseOrderController {
@@ -67,17 +68,16 @@ public class WarehouseOrderController {
      */
     public List<WarehouseOrder> getWarehouseOrders() throws ControlException {
         try {
-            WarehouseOrderDAO warehouseOrderDAO = new WarehouseOrderDB();
             User loggedInUser = LoginController.getLoggedInUser();
             if (loggedInUser instanceof Warehouse) {
                 return warehouseOrderDAO.getWarehouseOrders((Warehouse) LoginController.getLoggedInUser());
             }
-            return null;
+            return new LinkedList<>();
         } catch (DataAccessException e) {
             throw new ControlException(e.getMessage());
         }
     }
-    public boolean addProduct(Product product, double unitPrice, int amount) throws ControlException {
+    public boolean addProduct(Product product, int amount) {
         if (warehouseOrder == null || product == null || amount <= 0) {
             throw new IllegalStateException("There's no Warehouse Order object initialized. Please call createWarehouseOrder() method first.");
         }
@@ -115,8 +115,6 @@ public class WarehouseOrderController {
         warehouseOrder.setStatus(Status.PENDING);
 
         try {
-            WarehouseOrderDAO warehouseOrderDAO = new WarehouseOrderDB();
-
             return warehouseOrderDAO.create(warehouseOrder);
         } catch (DataAccessException e) {
             throw new ControlException(e.getMessage());
@@ -125,14 +123,9 @@ public class WarehouseOrderController {
 
     public boolean updateWarehouseOrder(WarehouseOrder warehouseOrder) throws ControlException {
         try {
-            if (warehouseOrderDAO.update(warehouseOrder) != 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return (warehouseOrderDAO.update(warehouseOrder) != 0);
         } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new ControlException("Can't update warehouse order");
+            throw new ControlException("Can't update warehouse order\n" + e.getMessage());
         }
     }
 

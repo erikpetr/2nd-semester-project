@@ -3,10 +3,8 @@ package controller;
 import database.DAOInterface;
 import database.DataAccessException;
 import database.StoreDB;
-import model.Address;
 import model.Store;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,15 +25,11 @@ public class StoreController {
     }
 
     public boolean updateStore(Store store) throws DataAccessException {
-        if (storeDB.update(store) == 1) {
-            return true;
-        }
-        else { return false;}
+        return (storeDB.update(store) == 1);
     }
 
     public int deleteStore(Store store) throws DataAccessException {
-        int rowsAltered = storeDB.delete(store);;
-        return rowsAltered;
+        return storeDB.delete(store);
     }
 
     public List<Store> getStores() throws DataAccessException {

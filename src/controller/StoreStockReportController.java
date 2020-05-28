@@ -13,7 +13,7 @@ import model.StoreStockReportItem;
 
 /**
  * Controller class which connects the GUI with the DAO
- * TODO : fix doc
+ *
  * @author dmai0919-group3@UCNDK.onmicrosoft.com
  */
 public class StoreStockReportController {
@@ -38,6 +38,12 @@ public class StoreStockReportController {
         return reports ;
     }
 
+    /**
+     * This method finds all reports created by a specific store
+     * @param store the store we're searching for
+     * @return a list containing all reports
+     * @throws ControlException when there were an exception thrown by StoreStockReportDB.getByStore() method
+     */
     public static List<StoreStockReport> getReportStoreStockReportByStore(Store store) throws ControlException {
         // Get reports
         List<StoreStockReport> reports = null;
@@ -57,7 +63,7 @@ public class StoreStockReportController {
      *
      * @param store     the store for the order
      */
-    public void createOrder(Store store) throws ControlException {
+    public void createReport(Store store) throws ControlException {
         if (store == null) {
             throw new ControlException("Provide valid information");
         } else {
@@ -68,8 +74,8 @@ public class StoreStockReportController {
      * Creates a new report for login store
      *
      */
-    public void createOrder() throws ControlException {
-        createOrder((Store) LoginController.getLoggedInUser());
+    public void createReport() throws ControlException {
+        createReport((Store) LoginController.getLoggedInUser());
     }
 
     /**
@@ -82,7 +88,7 @@ public class StoreStockReportController {
      */
     public boolean removeProduct(Product product, int amount) {
         if (report == null || product == null || amount <= 0) {
-            throw new IllegalStateException("There's no Report object initialized. Please call createOrder() method first.");
+            throw new IllegalStateException("There's no Report object initialized. Please call createReport() method first.");
         }
 
         for (StoreStockReportItem reportItem : report.getItems()) {
@@ -124,9 +130,9 @@ public class StoreStockReportController {
         if (report == null || product == null || amount <= 0) {
             throw new IllegalStateException("There's no Report object initialized. Please call createOrder() method first.");
         }
-        StoreStockReportDAO reportDAO;
+        //StoreStockReportDAO reportDAO; TODO This line is unnecessary and should be removed, pls check!
         try {
-            reportDAO = new StoreStockReportDB();
+            //reportDAO = new StoreStockReportDB(); TODO This line is unnecessary and should be removed, pls check!
             for (StoreStockReportItem reportItem: report.getItems()) {
                 if (reportItem.getProduct().getId() == product.getId()) {
                     reportItem.setQuantity(reportItem.getQuantity() + amount);
@@ -144,23 +150,22 @@ public class StoreStockReportController {
         return this.report;
     }
 
-    /**
-     * @param report
-     */
     public void setReport(StoreStockReport report) {
         this.report = report;
     }
 
     /**
-     * @return int
+     * This method finalizes the report and saves it to the DB
+     * @return the ID of the newly created report
+     * @throws ControlException
      */
     public int finishReport() throws ControlException {
         if (report == null) {
-            throw new ControlException("Create Order first");
+            throw new ControlException("Create Report first");
         }
 
         if (report.getItems().isEmpty()) {
-            throw new ControlException("Please add items to your order");
+            throw new ControlException("Please add items to your report!");
         }
         report.setDate(LocalDateTime.now());
 

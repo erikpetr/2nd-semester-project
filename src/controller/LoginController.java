@@ -14,6 +14,8 @@ import model.User;
 public class LoginController {
     private static User loggedInUser;
 
+    private LoginController() {/* Private constructor to hide the implicit public one */}
+
     /**
      * Simple static getter for the loggedInUser
      *

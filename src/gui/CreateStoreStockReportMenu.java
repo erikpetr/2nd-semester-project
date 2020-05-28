@@ -1,6 +1,5 @@
 package gui;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import controller.ControlException;
@@ -33,7 +32,7 @@ public class CreateStoreStockReportMenu extends JPanel {
     public CreateStoreStockReportMenu () {
         try {
             storeStockReportController = new StoreStockReportController();
-            storeStockReportController.createOrder();
+            storeStockReportController.createReport();
             productController = new ProductController();
         } catch (DataAccessException e) {
             PopUp.newPopUp(this, e.getMessage(), "Error", PopUpType.ERROR);

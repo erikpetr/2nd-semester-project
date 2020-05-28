@@ -3,8 +3,8 @@ package controller;
 import database.*;
 import model.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -82,14 +82,13 @@ public class OrderController {
      */
     public List<Order> getOrders() throws ControlException {
         try {
-            OrderDAO orderDAO = new OrderDB();
             User loggedInUser = LoginController.getLoggedInUser();
             if (loggedInUser instanceof Warehouse) {
                 return orderDAO.getOrders((Warehouse) LoginController.getLoggedInUser());
             } else if (loggedInUser instanceof Store){
                 return orderDAO.getOrders((Store) LoginController.getLoggedInUser());
             }
-            return null;
+            return new LinkedList<>();
         } catch (DataAccessException e) {
             throw new ControlException(e.getMessage());
         }
@@ -172,8 +171,6 @@ public class OrderController {
         order.setStatus(Status.PENDING);
 
         try {
-            OrderDAO orderDAO = new OrderDB();
-
             return orderDAO.create(order);
         } catch (DataAccessException e) {
             throw new ControlException(e.getMessage());
@@ -182,28 +179,9 @@ public class OrderController {
 
     public boolean updateOrder(Order order) throws ControlException {
         try {
-            Status oldStatus = orderDAO.getOrderStatus(order.getId());
-            for (OrderRevision orderRevision : order.getRevisions()) {
-                if (orderRevision.getId() == 0) {
-                    updateStock(orderRevision);
-                }
-            }
-            if (orderDAO.update(order) != 0) {
-                if (oldStatus.equals(Status.PENDING) && !order.getStatus().equals(Status.REJECTED)) {
-                    order = orderDAO.selectByID(order.getId());
-                    updateStock(order, true);
-                }
-                if (!oldStatus.equals(Status.PENDING) && order.getStatus().equals(Status.REJECTED)) {
-                    order = orderDAO.selectByID(order.getId());
-                    updateStock(order, false);
-                }
-                return true;
-            } else {
-                return false;
-            }
+            return (orderDAO.update(order) != 0);
         } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new ControlException("Can't update order");
+            throw new ControlException("Can't update order\n" + e.getMessage());
         }
     }
 
