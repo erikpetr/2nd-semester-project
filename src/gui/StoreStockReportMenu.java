@@ -55,16 +55,20 @@ public abstract class StoreStockReportMenu extends JPanel {
         reportList = getReportJList();
         reportList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                reportPanel.setRightComponent(getStoreStockReportTable(reportList.getSelectedValue()));
+                JTable itemTable = getStoreStockReportTable(reportList.getSelectedValue());
+                JScrollPane itemScroll = new JScrollPane(itemTable);
+                reportPanel.setRightComponent(itemScroll);
                 this.revalidate();
             }
         });
         reportList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        reportPanel.setLeftComponent(reportList);
+        JScrollPane reportScroll = new JScrollPane(reportList);
+        reportPanel.setLeftComponent(reportScroll);
 
         // Item Table
         itemTable = new JTable();
-        reportPanel.setRightComponent(itemTable);
+        JScrollPane itemScroll = new JScrollPane(itemTable);
+        reportPanel.setRightComponent(itemScroll);
     }
 
     protected JTable getStoreStockReportTable (StoreStockReport report) {
@@ -104,8 +108,7 @@ public abstract class StoreStockReportMenu extends JPanel {
     }
 
     protected JList<StoreStockReport> getReportJList() {
-        JList<StoreStockReport> jList = new JList<>(reports.toArray(new StoreStockReport[reports.size()]));
-        return jList;
+        return new JList<>(reports.toArray(new StoreStockReport[reports.size()]));
     }
 
     protected abstract void reloadDataAndGui ();

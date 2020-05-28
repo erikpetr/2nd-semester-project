@@ -29,14 +29,15 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         // Report Split Panel
         storePanel = new JSplitPane();
         storePanel.setOrientation(SwingConstants.VERTICAL);
-        //storePanel.setResizeWeight(0.3);
 
         storePanel.setLeftComponent(storeList);
 
         // List Reports
         refreshStoreJList();
 
-        storePanel.setLeftComponent(storeList);
+        JScrollPane storeScroll = new JScrollPane(storeList);
+
+        storePanel.setLeftComponent(storeScroll);
 
         // Item Table
         itemTable = new JTable();
@@ -52,7 +53,7 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         storeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         storeList.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {// && (storeList.getSelectedValue() != null)) {
+            if (!e.getValueIsAdjusting()) {
                 currentStore = storeList.getSelectedValue();
                 loadReports();
                 refreshReportSplitPanel();
@@ -73,8 +74,6 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
 
     protected void reloadDataAndGui () {
         loadStores();
-        //refreshStoreSplitPanel();
-        //this.revalidate();
     }
 }
 
