@@ -66,7 +66,6 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         try {
             StoreController storeController = new StoreController();
             stores = storeController.getStores();
-            System.out.println(stores);
         } catch (DataAccessException e) {
             PopUp.newPopUp(this, e.getMessage(), "Error", PopUp.PopUpType.WARNING);
         }
