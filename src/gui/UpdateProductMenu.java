@@ -119,15 +119,17 @@ public class UpdateProductMenu extends JPanel {
 
     private void okClicked() {
         try {
-            product.setName(this.name.getText());
-            product.setWeight(Integer.parseInt(this.weight.getText()));
-            product.setPrice(Double.parseDouble(this.price.getText()));
+            Product product2 = new Product(
+                    this.name.getText(),
+                    Integer.parseInt(this.weight.getText()),
+                    Double.parseDouble(this.price.getText()));
             ProductController productController = new ProductController();
             if (product != null) {
-                productController.updateProduct(product);
+                product2.setId(product.getId());
+                productController.updateProduct(product2);
                 PopUp.newPopUp(this, "Product updated successfully!", "Success", PopUp.PopUpType.INFORMATION);
             } else {
-                productController.createProduct(product);
+                productController.createProduct(product2);
                 PopUp.newPopUp(this, "Product created successfully!", "Success", PopUp.PopUpType.INFORMATION);
             }
         } catch (NumberFormatException | DataAccessException nfe) {
