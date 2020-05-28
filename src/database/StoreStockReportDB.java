@@ -180,9 +180,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
 
         List<StoreStockReport> resultList = new LinkedList<>();
 
-        try {
-            PreparedStatement sReport = db.getDBConn().prepareStatement(queryReport);
-
+        try (PreparedStatement sReport = db.getDBConn().prepareStatement(queryReport)){
             sReport.setInt(1, store.getId());
             ResultSet rsReport = db.executeSelect(sReport);
             while (rsReport.next()) {
@@ -195,29 +193,28 @@ public class StoreStockReportDB implements StoreStockReportDAO {
                         new LinkedList<>()
                 );
 
-                PreparedStatement sItem = db.getDBConn().prepareStatement(queryItem);
-                sItem.setInt(1, reportId);
-                ResultSet rsItem = db.executeSelect(sItem);
-                while (rsItem.next()) {
-                    Product product = new Product(
-                            rsItem.getInt("product_id"),
-                            rsItem.getString("name"),
-                            rsItem.getInt("weight"),
-                            rsItem.getDouble("price")
-                    );
+                try (PreparedStatement sItem = db.getDBConn().prepareStatement(queryItem)) {
+                    sItem.setInt(1, reportId);
+                    ResultSet rsItem = db.executeSelect(sItem);
+                    while (rsItem.next()) {
+                        Product product = new Product(
+                                rsItem.getInt("product_id"),
+                                rsItem.getString("name"),
+                                rsItem.getInt("weight"),
+                                rsItem.getDouble("price")
+                        );
 
-                    // Add StoreStockReportItem to StoreStockReport
-                    report.addItem(new StoreStockReportItem(
-                            product,
-                            rsItem.getInt("quantity")
-                    ));
+                        // Add StoreStockReportItem to StoreStockReport
+                        report.addItem(new StoreStockReportItem(
+                                product,
+                                rsItem.getInt("quantity")
+                        ));
+                    }
                 }
-
                 resultList.add(report);
             }
             return resultList;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DataAccessException(e.getMessage());
         }
     }

@@ -13,7 +13,7 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
     DBConnection db = DBConnection.getInstance();
     
     public WarehouseDB() throws DataAccessException {
-
+        //Empty constructor which allows DataAccessException to be thrown
 	}
     
     /**
@@ -77,22 +77,21 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
     @Override
     public List<Warehouse> all() throws DataAccessException {
         String query = "SELECT * FROM Warehouse";
-        try {
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)){
         	AddressDB addressDB = new AddressDB();
-            PreparedStatement s = db.getDBConn().prepareStatement(query);
-            ResultSet rs = s.executeQuery();
-            List<Warehouse> resultList = new ArrayList<>();
+            try (ResultSet rs = s.executeQuery()) {
+                List<Warehouse> resultList = new ArrayList<>();
 
-            while (rs.next()) {
-                resultList.add(new Warehouse(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        addressDB.selectByID(rs.getInt("addressID"))));
+                while (rs.next()) {
+                    resultList.add(new Warehouse(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            addressDB.selectByID(rs.getInt("addressID"))));
+                }
+                return resultList;
             }
-            return resultList;
-
         } catch (SQLException e) {
             throw new DataAccessException();
         }

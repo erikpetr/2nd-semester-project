@@ -37,8 +37,6 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
             return id;
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
             throw new DataAccessException(e.getMessage());
         }
     }
@@ -79,26 +77,25 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                         new LinkedList<>()
                 );
 
-                PreparedStatement statement = con.prepareStatement(itemQuery);
-                statement.setInt(1, order.getId());
-                ProductDAO productDAO = new ProductDB();
-                ResultSet resultSet = dbConn.executeSelect(statement);
-                while (resultSet.next()) {
-                    // TODO rs.getInt("productID") throws exc for some reason
-                    WarehouseOrderItem orderItem = new WarehouseOrderItem(
-                            resultSet.getInt("quantity"),
-                            resultSet.getDouble("unitPrice"),
-                            productDAO.selectByID(resultSet.getInt("productID"))
-                    );
-                    warehouseOrderItems.add(orderItem);
+                try (PreparedStatement statement = con.prepareStatement(itemQuery)) {
+                    statement.setInt(1, order.getId());
+                    ProductDAO productDAO = new ProductDB();
+                    ResultSet resultSet = dbConn.executeSelect(statement);
+                    while (resultSet.next()) {
+                        // TODO rs.getInt("productID") throws exc for some reason
+                        WarehouseOrderItem orderItem = new WarehouseOrderItem(
+                                resultSet.getInt("quantity"),
+                                resultSet.getDouble("unitPrice"),
+                                productDAO.selectByID(resultSet.getInt("productID"))
+                        );
+                        warehouseOrderItems.add(orderItem);
+                    }
                 }
-
                 order.setItems(warehouseOrderItems);
                 return order;
             }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
         	throw new DataAccessException(e.getMessage());
         }
 
@@ -314,35 +311,31 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         String insertQuery = "insert into WarehouseOrderItem (orderID, productID, quantity, unitPrice) " +
                 "VALUES (?, ?, ?, ?);";
 
-        try {
-            PreparedStatement statement;
+        try (PreparedStatement statement = dbConn.getDBConn().prepareStatement(updateQuery)){
             for (WarehouseOrderItem warehouseOrderItem : warehouseOrderItems) {
-                statement = dbConn.getDBConn().prepareStatement(updateQuery);
-
                 statement.setInt(1, warehouseOrderItem.getQuantity());
                 statement.setDouble(2, warehouseOrderItem.getUnitPrice());
                 statement.setInt(3, warehouseOrderId);
                 statement.setInt(4, warehouseOrderItem.getProduct().getId());
 
                 int updated = dbConn.executeQuery(statement);
+                   try (PreparedStatement statement1 = dbConn.getDBConn().prepareStatement(insertQuery)){
 
-                if (updated == 0) {
-                    statement = dbConn.getDBConn().prepareStatement(insertQuery);
+                        statement1.setInt(1, warehouseOrderId);
+                        statement1.setInt(2, warehouseOrderItem.getProduct().getId());
+                        statement1.setInt(3, warehouseOrderItem.getQuantity());
+                        statement1.setDouble(4, warehouseOrderItem.getUnitPrice());
 
-                    statement.setInt(1, warehouseOrderId);
-                    statement.setInt(2, warehouseOrderItem.getProduct().getId());
-                    statement.setInt(3, warehouseOrderItem.getQuantity());
-                    statement.setDouble(4, warehouseOrderItem.getUnitPrice());
+                        changes += dbConn.executeQuery(statement1);
+                        changes += updated;
 
-                    changes += dbConn.executeQuery(statement);
-                } else {
-                    changes += updated;
-                }
+                       return changes;
+                   }
             }
-            return changes;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
+        return -1;
     }
 
     @Override
@@ -352,23 +345,22 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         String insertQuery = "insert into WarehouseOrderRevision (orderID, status, date, note)" +
                 "VALUES (?, ?, ?, ?);";
 
-        try {
             for (WarehouseOrderRevision orderRevision : warehouseOrderRevisions) {
                 if (orderRevision.getId() == 0) {
-                    PreparedStatement statement = dbConn.getDBConn().prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+                    try (PreparedStatement statement = dbConn.getDBConn().prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
 
-                    statement.setInt(1, warehouseOrderId);
-                    statement.setString(2, orderRevision.getStatus().toString());
-                    statement.setTimestamp(3, Timestamp.valueOf(orderRevision.getDate()));
-                    statement.setString(4, orderRevision.getNote());
-
-                    return dbConn.executeInsertWithID(statement);
+                        statement.setInt(1, warehouseOrderId);
+                        statement.setString(2, orderRevision.getStatus().toString());
+                        statement.setTimestamp(3, Timestamp.valueOf(orderRevision.getDate()));
+                        statement.setString(4, orderRevision.getNote());
+                        return dbConn.executeInsertWithID(statement);
+                    } catch (SQLException e) {
+                        throw new DataAccessException(e.getMessage());
+                    }
                 }
             }
             return -1;
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+
     }
 
 }

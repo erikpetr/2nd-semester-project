@@ -7,13 +7,14 @@ import model.Warehouse;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserDB implements DAOInterface<User>{
     DBConnection db = DBConnection.getInstance();
 
     public UserDB() throws DataAccessException {
-
+        //Empty constructor which allows DataAccessException to be thrown
     }
 
     /**
@@ -29,8 +30,8 @@ public class UserDB implements DAOInterface<User>{
         String queryWarehouse = "INSERT INTO 'Warehouse' ('name', 'email', 'password', 'addressID') VALUES (?, ?, ?, ?);";
         AddressDB addressDB = new AddressDB();
         int addressID = addressDB.create(value.getAddress());
+        PreparedStatement s;
         try {
-            PreparedStatement s;
             if (value instanceof Store) {
                 s = db.getDBConn().prepareStatement(queryStore);
             } else if (value instanceof Warehouse) {
@@ -41,10 +42,11 @@ public class UserDB implements DAOInterface<User>{
             s.setString(3, value.getPassword());
             s.setInt(4, addressID);
 
-            return db.executeInsertWithID(s);
+            int result = db.executeInsertWithID(s);
+            s.close();
+            return result;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
     }
 
@@ -59,8 +61,7 @@ public class UserDB implements DAOInterface<User>{
     public User selectByID(int id) throws DataAccessException {
         String queryStore = "SELECT TOP 1 * FROM 'Store' WHERE id=?";
         String queryWarehouse = "SELECT TOP 1 * FROM 'Warehouse' WHERE id=?";
-        try {
-            PreparedStatement s = db.getDBConn().prepareStatement(queryStore);
+        try (PreparedStatement s = db.getDBConn().prepareStatement(queryStore)){
             s.setInt(1, id);
             ResultSet rs = db.executeSelect(s);
             AddressDB addressDB = new AddressDB();
@@ -73,29 +74,29 @@ public class UserDB implements DAOInterface<User>{
                         addressDB.selectByID(rs.getInt("addressID"))
                 );
             } else {
-                s = db.getDBConn().prepareStatement(queryWarehouse);
-                s.setInt(1, id);
-                rs = db.executeSelect(s);
-                if (rs.next()) {
-                    return new Warehouse(
-                            rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getString("password"),
-                            rs.getString("email"),
-                            addressDB.selectByID(rs.getInt("addressID"))
-                    );
+                try (PreparedStatement ps = db.getDBConn().prepareStatement(queryWarehouse)) {
+                    ps.setInt(1, id);
+                    rs = db.executeSelect(ps);
+                    if (rs.next()) {
+                        return new Warehouse(
+                                rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getString("password"),
+                                rs.getString("email"),
+                                addressDB.selectByID(rs.getInt("addressID"))
+                        );
+                    }
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
         return null;
     }
 
     @Override
     public List<User> all() throws DataAccessException {
-        return null;
+        return new LinkedList<>(); //TODO
     }
 
     /**
@@ -123,9 +124,9 @@ public class UserDB implements DAOInterface<User>{
             s.setString(3, value.getPassword());
             rows = db.executeQuery(s);
             rows += addressDB.update(value.getAddress());
+            s.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
         return rows;
     }
@@ -151,9 +152,9 @@ public class UserDB implements DAOInterface<User>{
             } else return rows;
             s.setInt(1, value.getId());
             rows = db.executeQuery(s);
+            s.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage());
         }
         return rows;
     }

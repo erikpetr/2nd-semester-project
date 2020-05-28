@@ -139,10 +139,8 @@ public class StockDB implements StockDAO {
             s.setInt(3, value.getProduct().getId());
             s.setInt(4, value.getWarehouse().getId());
             rows = db.executeQuery(s);
-            if (rows == 0) {
-                if (create(value) != -1){
-                    return 1;
-                }
+            if (rows == 0 && create(value) != -1) {
+                return 1;
             }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
