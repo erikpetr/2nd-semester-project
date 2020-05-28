@@ -8,16 +8,9 @@ import javax.swing.SwingConstants;
 import controller.LoginController;
 import controller.OrderController;
 import database.DataAccessException;
-import model.Order;
-import model.OrderItem;
-import model.OrderRevision;
-import model.Store;
-import model.Warehouse;
+import model.*;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -84,6 +77,31 @@ public class OrderInformationMenu extends JPanel {
 		// Revisions
 		body.add(orderRevisions());
 		// --- /BODY ---*/
+
+		User loggedInUser = LoginController.getLoggedInUser();
+
+		if (loggedInUser instanceof Warehouse) {
+			JPanel buttonPane = new JPanel();
+			body.add(buttonPane);
+
+			JButton btnUpdateStatus = new JButton("Update status");
+			btnUpdateStatus.addActionListener(event -> {
+				openUpdateWindow();
+			});
+			buttonPane.add(btnUpdateStatus);
+		} else if (order.getStatus().equals(Status.IN_TRANSIT)) {
+			JPanel buttonPane = new JPanel();
+			body.add(buttonPane);
+
+			JButton btnUpdateStatus = new JButton("Confirm delivery");
+			btnUpdateStatus.addActionListener(event -> {
+				EventQueue.invokeLater(() -> {
+					OrderDeliveryConfirm deliveryConfirm = new OrderDeliveryConfirm(orderId);
+					LayoutChangeMonitor.getInstance().setLayout(deliveryConfirm, "order_delivery_confirm");
+				});
+			});
+			buttonPane.add(btnUpdateStatus);
+		}
 		
 		add(panel);
 		// Set visible
@@ -212,21 +230,9 @@ public class OrderInformationMenu extends JPanel {
 		
 		for(OrderRevision revision : order.getRevisions())
 		{
+			// TODO: Handle this like a human being not like a barbarian
 			JLabel single_revision = new JLabel(revision.toString());
 			single_revision.add(revisions);
-		}
-		
-		
-		if (LoginController.getLoggedInUser() instanceof Warehouse) 
-		{
-			JPanel buttonPane = new JPanel();
-			revisions.add(buttonPane);
-			
-			JButton btnUpdateStatus = new JButton("Update status");
-			btnUpdateStatus.addActionListener(event -> {
-				openUpdateWindow();
-			});
-			buttonPane.add(btnUpdateStatus);
 		}
 		
 		return revisions;

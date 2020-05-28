@@ -6,7 +6,7 @@ import model.Warehouse;
 import java.util.List;
 
 /**
- * This DAO interface is used by the **todo**
+ * This DAO interface is used by the
  *
  * @see controller.ProductController
  */

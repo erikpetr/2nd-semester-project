@@ -23,7 +23,7 @@ public class WarehouseOrder {
         revisions = new LinkedList<>();
     }
 
-    public WarehouseOrder(int id, LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items)
+    public WarehouseOrder(int id, LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items, List<WarehouseOrderRevision> revisions)
     {
         this.id = id;
         this.date = date;
@@ -31,14 +31,16 @@ public class WarehouseOrder {
         this.warehouse = warehouse;
         this.provider = provider;
         this.items = items;
+        this.revisions = revisions;
     }
 
-    public WarehouseOrder(LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items) {
+    public WarehouseOrder(LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items, List<WarehouseOrderRevision> revisions) {
         this.date = date;
         this.status = status;
         this.warehouse = warehouse;
         this.provider = provider;
         this.items = items;
+        this.revisions = revisions;
     }
 
     public int getId(){

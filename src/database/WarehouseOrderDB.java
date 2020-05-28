@@ -27,12 +27,20 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         try (PreparedStatement pstmt = con.prepareStatement(pstmtString, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, value.getProvider().getId());
             pstmt.setInt(2, value.getWarehouse().getId());
-            pstmt.setTimestamp(2, Timestamp.valueOf(value.getDate()));
-            pstmt.setString(3, value.getStatus().name());
+            pstmt.setTimestamp(3, Timestamp.valueOf(value.getDate()));
+            pstmt.setString(4, value.getStatus().name());
 
-            return dbConn.executeQuery(pstmt);
-        } catch (Exception e) {
-            throw new DataAccessException();
+
+            int id = dbConn.executeInsertWithID(pstmt);
+
+            insertWarehouseOrderItems(value.getItems(), id);
+            insertWarehouseOrderRevision(value.getRevisions(), id);
+
+            return id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new DataAccessException(e.getMessage());
         }
     }
 
@@ -47,8 +55,8 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         Connection con = dbConn.getDBConn();
 
         String query = "SELECT * FROM WarehouseOrder WHERE id=?";
-        String itemQuery = "select * from WarehouseOrderItem as w, Product as p " +
-                "JOIN Product on w.productID=p.id where orderID=?";
+        String itemQuery = "select * from WarehouseOrderItem as w " +
+                "JOIN Product p on p.id = w.productID where orderID=?";
 
         try (PreparedStatement s = con.prepareStatement(query)) {
             s.setInt(1, id);
@@ -69,7 +77,8 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                         Status.valueOf(rs.getString("status")),
                         warehouse,
                         provider,
-                        warehouseOrderItems
+                        warehouseOrderItems,
+                        new LinkedList<>()
                 );
 
                 PreparedStatement statement = con.prepareStatement(itemQuery);
@@ -94,7 +103,8 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
             }
         }
         catch (Exception e) {
-        	throw new DataAccessException();
+            System.out.println(e.getMessage());
+        	throw new DataAccessException(e.getMessage());
         }
 
         return null;
@@ -118,7 +128,8 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                         Status.valueOf(rs.getString("status")),
                         warehouseDAO.selectByID(rs.getInt("warehouseId")),
                         providerDAO.selectByID(rs.getInt("providerId")),
-                        null
+                        new LinkedList<>(),
+                        new LinkedList<>()
                 );
                 // Leave commented for better preformance
                 //order.setRevisions(getWarehouseOrderRevisions(order));
@@ -149,7 +160,13 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
             pstmt.setString(2, value.getStatus().name());
             pstmt.setInt(3, value.getId());
 
-            return dbConn.executeQuery(pstmt);
+            int updated = dbConn.executeQuery(pstmt);
+            if (updated == 1) {
+                insertWarehouseOrderItems(value.getItems(), value.getId());
+                insertWarehouseOrderRevision(value.getRevisions(), value.getId());
+            }
+
+            return updated;
         } catch (Exception e) {
             throw new DataAccessException();
         }
@@ -196,7 +213,8 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                         Status.valueOf(rs.getString("status")),
                         warehouse,
                         providerDAO.selectByID(rs.getInt("providerId")),
-                        null
+                        new LinkedList<>(),
+                        new LinkedList<>()
                 );
                 // Leave commented for better preformance
                 //order.setRevisions(getWarehouseOrderRevisions(order));
@@ -229,7 +247,8 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                         Status.valueOf(rs.getString("status")),
                         warehouseDAO.selectByID(rs.getInt("warehouseID")),
                         provider,
-                        null
+                        new LinkedList<>(),
+                        new LinkedList<>()
                 );
                 // Leave commented for better preformance
                 //order.setRevisions(getWarehouseOrderRevisions(order));
@@ -287,6 +306,46 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
             }
             return items;
 
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    @Override
+    public int insertWarehouseOrderItems(List<WarehouseOrderItem> warehouseOrderItems, int warehouseOrderId) throws DataAccessException {
+        DBConnection dbConn = DBConnection.getInstance();
+        int changes = 0;
+
+        String updateQuery = "update WarehouseOrderItem set quantity=?, unitPrice=? where orderID=? and productID=?";
+        String insertQuery = "insert into WarehouseOrderItem (orderID, productID, quantity, unitPrice) " +
+                "VALUES (?, ?, ?, ?);";
+
+        try {
+            PreparedStatement statement;
+            for (WarehouseOrderItem warehouseOrderItem : warehouseOrderItems) {
+                statement = dbConn.getDBConn().prepareStatement(updateQuery);
+
+                statement.setInt(1, warehouseOrderItem.getQuantity());
+                statement.setDouble(2, warehouseOrderItem.getUnitPrice());
+                statement.setInt(3, warehouseOrderId);
+                statement.setInt(4, warehouseOrderItem.getProduct().getId());
+
+                int updated = dbConn.executeQuery(statement);
+
+                if (updated == 0) {
+                    statement = dbConn.getDBConn().prepareStatement(insertQuery);
+
+                    statement.setInt(1, warehouseOrderId);
+                    statement.setInt(2, warehouseOrderItem.getProduct().getId());
+                    statement.setInt(3, warehouseOrderItem.getQuantity());
+                    statement.setDouble(4, warehouseOrderItem.getUnitPrice());
+
+                    changes += dbConn.executeQuery(statement);
+                } else {
+                    changes += updated;
+                }
+            }
+            return changes;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }

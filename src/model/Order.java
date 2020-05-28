@@ -63,39 +63,51 @@ public class Order {
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public LocalDateTime getDate() {
 		return date;
 	}
+
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
+
 	public Status getStatus() {
 		return status;
 	}
+
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
 	public Warehouse getWarehouse() {
 		return warehouse;
 	}
+
 	public void setWarehouse(Warehouse warehouse) {
 		this.warehouse = warehouse;
 	}
+
 	public Store getStore() {
 		return store;
 	}
+
 	public void setStore(Store store) {
 		this.store = store;
 	}
+
 	public List<OrderItem> getItems() {
 		return items;
 	}
+
 	public boolean addOrderItem(OrderItem orderItem) {
 		return items.add(orderItem);
 	}
+
 	public boolean removeOrderItem(OrderItem orderItem) {
 		for (int i = 0; i < items.size(); i++) {
 			if (items.get(i).getProduct().getId() == orderItem.getProduct().getId()) {
@@ -105,12 +117,25 @@ public class Order {
 		}
 		return items.remove(orderItem);
 	}
+
 	public void setItems(List<OrderItem> orderItems) {
 		this.items = orderItems;
 	}
+
+	public boolean setItemQuantity(Product product, int quantity) {
+    	for (OrderItem orderItem : items) {
+    		if (product.getId() == orderItem.getProduct().getId()) {
+    			orderItem.setQuantity(quantity);
+    			return true;
+			}
+		}
+    	return false;
+	}
+
 	public List<OrderRevision> getRevisions() {
 		return revisions;
 	}
+
 	public void setRevisions(List<OrderRevision> revisions) {
 		this.revisions = revisions;
 	}

@@ -25,6 +25,7 @@ public class WarehouseOrderController {
             throw new ControlException("Provide valid information");
         } else {
             this.warehouseOrder = new WarehouseOrder(warehouse);
+            this.warehouseOrder.setStatus(Status.PENDING);
         }
     }
 
@@ -76,21 +77,21 @@ public class WarehouseOrderController {
             throw new ControlException(e.getMessage());
         }
     }
-    public boolean addProduct(Product product, int amount) throws ControlException {
+    public boolean addProduct(Product product, double unitPrice, int amount) throws ControlException {
         if (warehouseOrder == null || product == null || amount <= 0) {
             throw new IllegalStateException("There's no Warehouse Order object initialized. Please call createWarehouseOrder() method first.");
         }
-        WarehouseOrderItem warehouseOrderItem = new WarehouseOrderItem(amount, product.getPrice(), product);
+        WarehouseOrderItem warehouseOrderItem = new WarehouseOrderItem(amount, unitPrice, product);
         return warehouseOrder.addWarehouseOrderItem(warehouseOrderItem);
     }
 
     public WarehouseOrder getWarehouseOrder(int id) throws DataAccessException {
         return warehouseOrderDAO.selectByID(id);
     }
+
     public void addProvider(Provider provider) {
         warehouseOrder.setProvider(provider);
     }
-
 
     public int finishWarehouseOrder() throws ControlException {
         if (warehouseOrder == null) {

@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -18,17 +18,28 @@ public class StockMenu extends JScrollPane {
 	 * Create the panel.
 	 */
 	public StockMenu() {
-		super(stocksTable());
+		new Loader().start();
 	}
-	
-	private static JTable stocksTable() {
+
+	private class Loader extends Thread {
+		@Override
+		public void run() {
+			JTable table = stocksTable();
+
+			EventQueue.invokeLater(() -> {
+				setViewportView(table);
+			});
+		}
+	}
+
+	// TODO: Mark low amount stocks with some color
+	private JTable stocksTable() {
 		// Column names
 		String[] columnNames = {"ProductID",
 				"Product",
 				"Quantity",
 				"Quantity Min",
 				"Price",
-				"Weight",
 		};
 
 		// Create table with row edit disable
@@ -44,8 +55,7 @@ public class StockMenu extends JScrollPane {
 						row.getProduct().getName(),
 						row.getQuantity(),
 						row.getMinQuantity(),
-						row.getProduct().getPrice(),
-						row.getProduct().getWeight(),
+						row.getProduct().getPrice() + " €",
 				};
 				alldata[i] = data;
 				i++;

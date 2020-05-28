@@ -66,8 +66,8 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
         // Column names
         String[] columnNames = {"ID",
                 "Date",
-                "Store",
-                "Revisons",
+                "Provider",
+                "Status",
                 ""};
 
         // Create table with row edit disable
@@ -88,7 +88,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
                         row.getId(),
                         row.getDate(),
                         row.getProvider(),
-                        row.getRevisions().size(),
+                        row.getStatus(),
                         "See more"
                 };
 

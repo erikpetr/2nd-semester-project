@@ -181,7 +181,7 @@ CREATE TABLE [WarehouseOrder]
 (
  [id]          int NOT NULL IDENTITY (1,1),
  [date]        datetime2(7) NOT NULL ,
- [status]      varchar NOT NULL ,
+ [status]      varchar(32) NOT NULL ,
  [providerID]  int NOT NULL ,
  [warehouseID] int NOT NULL ,
 

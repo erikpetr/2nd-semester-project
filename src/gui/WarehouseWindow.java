@@ -1,6 +1,7 @@
 package gui;
 
 import controller.LoginController;
+import model.WarehouseOrder;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,12 +15,6 @@ public class WarehouseWindow extends JFrame
 	private final CardLayout cardLayout;
 	
 	// Cards
-	JComponent ordersCard;
-	JComponent stockCard;
-	JComponent storesCard;
-	JComponent productsCard;
-	JComponent providersCard;
-	JComponent storeStockReportsCard;
 	
 	public WarehouseWindow()
 	{
@@ -177,17 +172,14 @@ public class WarehouseWindow extends JFrame
 	 */
 	public void openOrdersMenu() 
 	{
-		if (ordersCard == null)
-		{
-			ordersCard = new WarehouseOrderMenu();
-		}
+
+		WarehouseOrderMenu ordersCard = new WarehouseOrderMenu();
 		LayoutChangeMonitor.getInstance().setLayout(ordersCard, "orders");
 	}
 
 	public void openWarehouseOrdersMenu() {
 		WarehouseWarehouseOrderMenu warehouseWarehouseOrderMenu = new WarehouseWarehouseOrderMenu();
 		LayoutChangeMonitor.getInstance().setLayout(warehouseWarehouseOrderMenu, "warehouse_orders");
-		System.out.println("opened");
 	}
 	
 	/*
@@ -195,11 +187,10 @@ public class WarehouseWindow extends JFrame
 	 */
 	public void openStocksMenu() 
 	{
-		if (stockCard == null)
-		{
-			stockCard = new StockMenu();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(stockCard, "stock");
+		EventQueue.invokeLater(() -> {
+			StockMenu stockCard = new StockMenu();
+			LayoutChangeMonitor.getInstance().setLayout(stockCard, "stock");
+		});
 	}
 	
 	/*
@@ -207,11 +198,10 @@ public class WarehouseWindow extends JFrame
 	 */
 	public void openStoresMenu() 
 	{
-		if (storesCard == null)
-		{
-			storesCard = new StoreMenu();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(storesCard, "stores");
+		EventQueue.invokeLater(() -> {
+			StoreMenu storesCard = new StoreMenu();
+			LayoutChangeMonitor.getInstance().setLayout(storesCard, "stores");
+		});
 	}
 	
 	/*
@@ -219,11 +209,10 @@ public class WarehouseWindow extends JFrame
 	 */
 	public void openProductMenu() 
 	{
-		if (productsCard == null)
-		{
-			productsCard = new ProductMenu();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(productsCard, "products");
+		EventQueue.invokeLater(() -> {
+			ProductMenu productsCard = new ProductMenu();
+			LayoutChangeMonitor.getInstance().setLayout(productsCard, "products");
+		});
 	}
 	
 	/*
@@ -231,11 +220,10 @@ public class WarehouseWindow extends JFrame
 	 */
 	public void openProvidersMenu() 
 	{
-		if (providersCard == null)
-		{
-			providersCard = new ProviderMenu();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(providersCard, "providers");
+		EventQueue.invokeLater(() -> {
+			ProviderMenu providersCard = new ProviderMenu();
+			LayoutChangeMonitor.getInstance().setLayout(providersCard, "providers");
+		});
 	}
 	
 	/*
@@ -243,11 +231,10 @@ public class WarehouseWindow extends JFrame
 	 */
 	public void openStoreStockReportMenu() 
 	{
-		if (storeStockReportsCard == null)
-		{
-			storeStockReportsCard = new StoreStockReportMenuWarehouse();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(storeStockReportsCard, "store_stock_report");	
+		EventQueue.invokeLater(() -> {
+			StoreStockReportMenuWarehouse storeStockReportsCard = new StoreStockReportMenuWarehouse();
+			LayoutChangeMonitor.getInstance().setLayout(storeStockReportsCard, "store_stock_report");
+		});
 	}
 	
 	/*

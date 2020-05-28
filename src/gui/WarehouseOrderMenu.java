@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -41,11 +39,23 @@ public class WarehouseOrderMenu extends JPanel
 		setLayout(gridLayout);
 		
 		// List of orders
-		scroll_orders = new JScrollPane(ordersTable());
+		scroll_orders = new JScrollPane();
 		add(scroll_orders);
 
 		orderInfo = new OrderInformationMenu();
 		add(orderInfo);
+
+		new Loader().start();
+	}
+
+	private class Loader extends Thread {
+		@Override
+		public void run() {
+			JTable table = ordersTable();
+			EventQueue.invokeLater(() -> {
+				scroll_orders.setViewportView(table);
+			});
+		}
 	}
 	
 	/*
@@ -56,7 +66,7 @@ public class WarehouseOrderMenu extends JPanel
 		String[] columnNames = {"ID",
 				"Date",
 				"Store",
-				"Revisons",
+				"Status",
 				""};
 
 		// Create table with row edit disable
@@ -76,7 +86,7 @@ public class WarehouseOrderMenu extends JPanel
 						row.getId(),
 						row.getDate(),
 						row.getStore(),
-						row.getRevisions().size(),
+						row.getStatus().value,
 						"See more"
 				};
 
