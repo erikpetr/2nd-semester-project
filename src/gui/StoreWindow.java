@@ -12,11 +12,7 @@ public class StoreWindow extends JFrame
 	private final JPanel contentPanel;
 	// Layout
 	private final CardLayout cardLayout;
-	
-	// Cards
-	JComponent ordersCard;
-	JComponent storeStockReportsCard;
-	JComponent dashboardCard;
+
 	
 	public StoreWindow()
 	{
@@ -49,7 +45,7 @@ public class StoreWindow extends JFrame
 		// Set content pane
 		setContentPane(panel);
 
-		dashboardCard = new StoreDashboard();
+		StoreDashboard dashboardCard = new StoreDashboard();
 		contentPanel.add(dashboardCard,"dashboard");
 		cardLayout.show(contentPanel, "dashboard");
 		
@@ -124,15 +120,15 @@ public class StoreWindow extends JFrame
 		menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		// Buttons
-		JButton btnDashboard = new JButton("Dashboard");
+		JButton btnDashboard = ColorStyle.newButton("Dashboard");
 		btnDashboard.addActionListener(arg0 -> openDashboardMenu());
 		menuPanel.add(btnDashboard);
-		
-		JButton btnOrders = new JButton("Orders");
+
+		JButton btnOrders = ColorStyle.newButton("Orders");
 		btnOrders.addActionListener(arg0 -> openOrdersMenu());
 		menuPanel.add(btnOrders);
-		
-		JButton btnStock = new JButton("Stock");
+
+		JButton btnStock = ColorStyle.newButton("Stock");
 		btnStock.addActionListener(arg0 -> openStoreStockReportMenu());
 		menuPanel.add(btnStock);
 	
@@ -158,7 +154,10 @@ public class StoreWindow extends JFrame
 	 */
 	public void openDashboardMenu() 
 	{
-		LayoutChangeMonitor.getInstance().setLayout(dashboardCard, "dashboard");
+		EventQueue.invokeLater(() -> {
+			StoreDashboard dashboardCard = new StoreDashboard();
+			LayoutChangeMonitor.getInstance().setLayout(dashboardCard, "dashboard");
+		});
 	}
 	
 	/*
@@ -166,11 +165,10 @@ public class StoreWindow extends JFrame
 	 */
 	public void openOrdersMenu() 
 	{
-		if (ordersCard == null)
-		{
-			ordersCard = new StoreOrderMenu();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(ordersCard, "orders");
+		EventQueue.invokeLater(() -> {
+			StoreOrderMenu ordersCard = new StoreOrderMenu();
+			LayoutChangeMonitor.getInstance().setLayout(ordersCard, "orders");
+		});
 	}
 
 	/*
@@ -178,11 +176,10 @@ public class StoreWindow extends JFrame
 	 */
 	public void openStoreStockReportMenu() 
 	{
-		if (storeStockReportsCard == null)
-		{
-			storeStockReportsCard = new StoreStockReportMenuStore();
-		}
-		LayoutChangeMonitor.getInstance().setLayout(storeStockReportsCard, "store_stock_report");	
+		EventQueue.invokeLater(() -> {
+			StoreStockReportMenuStore storeStockReportsCard = new StoreStockReportMenuStore();
+			LayoutChangeMonitor.getInstance().setLayout(storeStockReportsCard, "store_stock_report");
+		});
 	}
 
 	private class LayoutMonitor extends Thread {

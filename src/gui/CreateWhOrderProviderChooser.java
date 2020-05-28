@@ -35,13 +35,13 @@ public class CreateWhOrderProviderChooser extends JDialog {
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
             {
-                JButton okButton = new JButton("OK");
+                JButton okButton = ColorStyle.newButton("OK");
                 okButton.addActionListener(actionEvent -> ok());
                 buttonPane.add(okButton);
                 getRootPane().setDefaultButton(okButton);
             }
             {
-                JButton cancelButton = new JButton("Cancel");
+                JButton cancelButton = ColorStyle.newButton("Cancel");
                 cancelButton.addActionListener(actionEvent -> this.dispose());
                 buttonPane.add(cancelButton);
             }

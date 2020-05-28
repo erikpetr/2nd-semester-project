@@ -80,7 +80,7 @@ public class OrderInformationMenu extends JPanel {
 
 		User loggedInUser = LoginController.getLoggedInUser();
 
-		if (loggedInUser instanceof Warehouse) {
+		if (loggedInUser instanceof Warehouse && !order.getStatus().equals(Status.REJECTED)) {
 			JPanel buttonPane = new JPanel();
 			body.add(buttonPane);
 

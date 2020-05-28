@@ -55,22 +55,12 @@ public class LoginMenu extends JFrame {
         buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-        JButton okButton = new JButton("Login");
-        okButton.setForeground(ColorStyle.BUTTON_TEXT);
-        okButton.setBackground(ColorStyle.BUTTON_BACKGROUND);
-        okButton.setOpaque(true);
-        okButton.setBorderPainted(false);
-        okButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        JButton okButton = ColorStyle.newButton("Login");
         buttonPane.add(okButton);
         okButton.addActionListener(e -> login());
         getRootPane().setDefaultButton(okButton);
 
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setForeground(ColorStyle.BUTTON_TEXT);
-        cancelButton.setBackground(ColorStyle.BUTTON_BACKGROUND);
-        cancelButton.setOpaque(true);
-        cancelButton.setBorderPainted(false);
-        cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        JButton cancelButton = ColorStyle.newButton("Cancel");
         cancelButton.setActionCommand("Cancel");
         buttonPane.add(cancelButton);
 

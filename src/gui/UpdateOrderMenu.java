@@ -77,11 +77,11 @@ public class UpdateOrderMenu extends JPanel {
 		buttonPanel.setAlignmentX(0.0f);
 		controlPanel.add(buttonPanel);
 
-		JButton btnSubmitButton = new JButton("Submit");
+		JButton btnSubmitButton = ColorStyle.newButton("Submit");
 		btnSubmitButton.addActionListener(actionEvent -> submit());
 		buttonPanel.add(btnSubmitButton);
 
-		JButton btnCancelButton = new JButton("Cancel");
+		JButton btnCancelButton = ColorStyle.newButton("Cancel");
 		btnCancelButton.addActionListener(actionEvent -> {
 			OrderInformationMenu informationMenu = new OrderInformationMenu(orderId);
 			LayoutChangeMonitor.getInstance().setLayout(informationMenu, "order_info");
@@ -115,7 +115,7 @@ public class UpdateOrderMenu extends JPanel {
     	int startQuantity = orderItem.getQuantity();
     	optionsPanel.removeAll();
     	
-    	JButton btnRemoveItem = new JButton("RemoveOrderItem");
+    	JButton btnRemoveItem = ColorStyle.newButton("RemoveOrderItem");
     	btnRemoveItem.addActionListener(e -> {
     		order.removeOrderItem(orderItem);
     		OrderItem revisionItem = new OrderItem(
@@ -130,7 +130,7 @@ public class UpdateOrderMenu extends JPanel {
     	});
         optionsPanel.add(btnRemoveItem);
         
-        JButton btnDecreaseAmount = new JButton("<< Decrement");
+        JButton btnDecreaseAmount = ColorStyle.newButton("<< Decrement");
         btnDecreaseAmount.addActionListener(event -> {
         	try {
 				int quantity = Integer.parseInt(orderItemAmount.getText());
@@ -149,7 +149,7 @@ public class UpdateOrderMenu extends JPanel {
         orderItemAmount.setColumns(10);
         orderItemAmount.setText(orderItem.getQuantity()+"");
         
-        JButton btnIncreaseAmount = new JButton("Increment >>");
+        JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(event -> {
         	try {
 				int quantity = Integer.parseInt(orderItemAmount.getText());
@@ -161,7 +161,7 @@ public class UpdateOrderMenu extends JPanel {
     	});
         optionsPanel.add(btnIncreaseAmount);
         
-        JButton btnConfirmAmount = new JButton("Confirm");
+        JButton btnConfirmAmount = ColorStyle.newButton("Confirm");
         btnConfirmAmount.addActionListener(event -> {
         	try {
 				int quantity = Integer.parseInt(orderItemAmount.getText());

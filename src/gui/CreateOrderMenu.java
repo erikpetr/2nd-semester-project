@@ -69,7 +69,7 @@ public class CreateOrderMenu extends JPanel {
         add(sidePanel, BorderLayout.EAST);
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
         
-        JButton btnChooseWarehouse = new JButton("Choose warehouse");
+        JButton btnChooseWarehouse = ColorStyle.newButton("Choose warehouse");
 		btnChooseWarehouse.addActionListener(button -> {
 			chooseWarehouse();
 		});
@@ -78,11 +78,11 @@ public class CreateOrderMenu extends JPanel {
         sidePanel.add(lblOrderStatus);
         sidePanel.add(btnChooseWarehouse);
 
-        JButton btnCancelOrder = new JButton("Cancel");
+        JButton btnCancelOrder = ColorStyle.newCancelButton("Cancel");
         btnCancelOrder.addActionListener(actionEvent -> cancelOrder());
         sidePanel.add(btnCancelOrder);
 
-        JButton btnSubmitOrder = new JButton("Submit");
+        JButton btnSubmitOrder = ColorStyle.newButton("Submit");
 		btnSubmitOrder.addActionListener(button -> createOrder());
 		sidePanel.add(btnSubmitOrder);
 	}
@@ -113,7 +113,7 @@ public class CreateOrderMenu extends JPanel {
         productAmount.setColumns(10);
         productAmount.setText("1");
         
-        JButton btnAddProduct = new JButton("Add product");
+        JButton btnAddProduct = ColorStyle.newButton("Add product");
         btnAddProduct.addActionListener(event -> {
         	int amount = Integer.parseInt(productAmount.getText());
         	try {
@@ -133,7 +133,7 @@ public class CreateOrderMenu extends JPanel {
     	int startQuantity = orderItem.getQuantity();
     	optionsPanel.removeAll();
     	
-    	JButton btnRemoveItem = new JButton("RemoveOrderItem");
+    	JButton btnRemoveItem = ColorStyle.newCancelButton("Remove order item");
     	btnRemoveItem.addActionListener(e -> {
     		orderController.removeProduct(orderItem.getProduct());
     		PopUp.newPopUp(this, "Order updated", "Success", PopUpType.INFORMATION);
@@ -141,7 +141,7 @@ public class CreateOrderMenu extends JPanel {
     	});
         optionsPanel.add(btnRemoveItem);
         
-        JButton btnDecreaseAmount = new JButton("<< Decrement");
+        JButton btnDecreaseAmount = ColorStyle.newButton("<< Decrement");
         btnDecreaseAmount.addActionListener(e -> {
     		int quantity = Integer.parseInt(orderItemAmount.getText());
     		quantity--;
@@ -154,7 +154,7 @@ public class CreateOrderMenu extends JPanel {
         orderItemAmount.setColumns(10);
         orderItemAmount.setText(orderItem.getQuantity()+"");
         
-        JButton btnIncreaseAmount = new JButton("Increment >>");
+        JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(e -> {
     		int quantity = Integer.parseInt(orderItemAmount.getText());
     		quantity++;
@@ -162,7 +162,7 @@ public class CreateOrderMenu extends JPanel {
     	});
         optionsPanel.add(btnIncreaseAmount);
         
-        JButton btnConfirmAmount = new JButton("Confirm");
+        JButton btnConfirmAmount = ColorStyle.newButton("Confirm");
         btnConfirmAmount.addActionListener(event -> {
         	try {
         		int quantity = Integer.parseInt(orderItemAmount.getText());

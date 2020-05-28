@@ -63,21 +63,21 @@ public class ProductMenu extends JPanel {
 	private void showControlsFor(Product product) {
 		optionPanel.removeAll();
 
-		JButton btnCreateProduct = new JButton("New product");
+		JButton btnCreateProduct = ColorStyle.newButton("New product");
 		btnCreateProduct.addActionListener(e -> {
 			createProduct();
 			init();
 		});
 		optionPanel.add(btnCreateProduct);
 
-		JButton btnUpdateProduct = new JButton("Update product");
+		JButton btnUpdateProduct = ColorStyle.newButton("Update product");
 		btnUpdateProduct.addActionListener(e -> {
 			LayoutChangeMonitor.getInstance().setLayout(new UpdateProductMenu(product), "update_product");
 			init();
 		});
 		optionPanel.add(btnUpdateProduct);
 
-		JButton btnDeleteProduct = new JButton("Delete");
+		JButton btnDeleteProduct = ColorStyle.newButton("Delete");
 		btnDeleteProduct.addActionListener(e -> {
 			try {
 				productController.deleteProduct(product);

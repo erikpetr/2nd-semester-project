@@ -30,6 +30,7 @@ public class StoreOrderMenu extends JPanel
 	
 	/*
 	 * Create the panel.
+	 * TODO: Optimize
 	 */
 	public StoreOrderMenu() {
 		// Initialize controllers
@@ -48,7 +49,7 @@ public class StoreOrderMenu extends JPanel
 			options = new JPanel();
 			add(options, BorderLayout.NORTH);
 			
-			JButton btnCreateOrder = new JButton("Create Order");
+			JButton btnCreateOrder = ColorStyle.newButton("Create Order");
 			options.add(btnCreateOrder);
 			btnCreateOrder.addActionListener(actionEvent -> createOrder());
 		}
@@ -62,8 +63,23 @@ public class StoreOrderMenu extends JPanel
 		content.setLayout(gridLayout);
 		
 		// List of orders
-		scroll_orders = new JScrollPane(ordersTable());
+		scroll_orders = new JScrollPane();
 		content.add(scroll_orders);
+
+		orderInfo = new OrderInformationMenu();
+		content.add(orderInfo);
+
+		new Loader().start();
+	}
+
+	private class Loader extends Thread {
+		@Override
+		public void run() {
+			JTable table = ordersTable();
+			EventQueue.invokeLater(() -> {
+				scroll_orders.setViewportView(table);
+			});
+		}
 	}
 
 	private void createOrder() 
@@ -158,6 +174,7 @@ public class StoreOrderMenu extends JPanel
 					}
 
 					// Create new panel
+					// TODO: Fix the layout
 					orderInfo = new OrderInformationMenu((int) valueAt);
 					// Add panel 
 					content.add(orderInfo);

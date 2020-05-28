@@ -36,7 +36,7 @@ public class UpdateAddressMenu extends JPanel {
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             panel.add(buttonPane);
             {
-                JButton okButton = new JButton("Save");
+                JButton okButton = ColorStyle.newButton("Save");
                 okButton.setActionCommand("Save");
                 buttonPane.add(okButton);
                 getRootPane().setDefaultButton(okButton);
@@ -47,7 +47,7 @@ public class UpdateAddressMenu extends JPanel {
                 });
             }
             {
-                JButton cancelButton = new JButton("Cancel");
+                JButton cancelButton = ColorStyle.newButton("Cancel");
                 cancelButton.setActionCommand("Cancel");
                 buttonPane.add(cancelButton);
                 cancelButton.addActionListener(new ActionListener() {

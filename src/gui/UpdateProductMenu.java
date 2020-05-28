@@ -90,12 +90,12 @@ public class UpdateProductMenu extends JPanel {
             panel.add(buttonPane, BorderLayout.SOUTH);
             buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
             {
-                JButton okButton = new JButton("Save");
+                JButton okButton = ColorStyle.newButton("Save");
                 buttonPane.add(okButton);
                 okButton.addActionListener(e -> okClicked());
             }
             {
-                JButton cancelButton = new JButton("Cancel");
+                JButton cancelButton = ColorStyle.newButton("Cancel");
                 buttonPane.add(cancelButton);
                 cancelButton.addActionListener(e -> goBack());
             }

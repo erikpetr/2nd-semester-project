@@ -63,21 +63,21 @@ public class ProviderMenu extends JPanel {
     private void showControlsFor(Provider provider) {
         optionPanel.removeAll();
 
-        JButton btnCreateProvider = new JButton("New provider");
+        JButton btnCreateProvider = ColorStyle.newButton("New provider");
         btnCreateProvider.addActionListener(e -> {
             createProvider();
             init();
         });
         optionPanel.add(btnCreateProvider);
 
-        JButton btnUpdateProvider = new JButton("Update provider");
+        JButton btnUpdateProvider = ColorStyle.newButton("Update provider");
         btnUpdateProvider.addActionListener(e -> {
             LayoutChangeMonitor.getInstance().setLayout(new UpdateProviderMenu(provider), "update_provider");
             init();
         });
         optionPanel.add(btnUpdateProvider);
 
-        JButton btnDeleteProvider = new JButton("Delete");
+        JButton btnDeleteProvider = ColorStyle.newButton("Delete");
         btnDeleteProvider.addActionListener(e -> {
             try {
                 providerController.deleteProvider(provider);

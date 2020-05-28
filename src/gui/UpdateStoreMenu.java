@@ -158,12 +158,12 @@ public class UpdateStoreMenu extends JPanel {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			southPane.add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Save");
+				JButton okButton = ColorStyle.newButton("Save");
 				buttonPane.add(okButton);
 				okButton.addActionListener(e -> okClicked());
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = ColorStyle.newButton("Cancel");
 				buttonPane.add(cancelButton);
 				cancelButton.addActionListener(e -> goBack());
 			}

@@ -41,7 +41,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
             JPanel optionsPane = new JPanel();
             add(optionsPane, BorderLayout.NORTH);
 
-            JButton btnCreateWarehouseOrder = new JButton("Create Warehouse Order");
+            JButton btnCreateWarehouseOrder = ColorStyle.newButton("Create Warehouse Order");
             optionsPane.add(btnCreateWarehouseOrder);
             btnCreateWarehouseOrder.addActionListener(actionEvent -> createWarehouseOrder());
         }

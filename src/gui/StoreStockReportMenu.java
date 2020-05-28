@@ -38,7 +38,7 @@ public abstract class StoreStockReportMenu extends JPanel {
         this.add(optionsPanel, BorderLayout.NORTH);
 
         // Button Actualize
-        JButton btnActualize = new JButton("Actualize");
+        JButton btnActualize = ColorStyle.newButton("Actualize");
         optionsPanel.add(btnActualize);
         btnActualize.addActionListener(actionEvent -> {
             this.reloadDataAndGui();

@@ -59,11 +59,11 @@ public class OrderDeliveryConfirm extends JPanel {
 		JPanel buttonPane = new JPanel();
 		add(buttonPane, BorderLayout.SOUTH);
 		
-		JButton btnConfirm = new JButton("Confirm");
+		JButton btnConfirm = ColorStyle.newButton("Confirm");
 		btnConfirm.addActionListener(actionEvent -> confirmDelivery());
 		buttonPane.add(btnConfirm);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = ColorStyle.newButton("Cancel");
 		btnCancel.addActionListener(actionEvent -> quit());
 		buttonPane.add(btnCancel);
 
@@ -144,7 +144,7 @@ public class OrderDeliveryConfirm extends JPanel {
         itemControlPane.add(orderItemAmount);
         orderItemAmount.setColumns(10);
         
-        JButton btnConfirmAmount = new JButton("Confirm");
+        JButton btnConfirmAmount = ColorStyle.newButton("Confirm");
         btnConfirmAmount.addActionListener(event -> {
 			try {
 				int amount = Integer.parseInt(orderItemAmount.getText());

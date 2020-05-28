@@ -75,11 +75,11 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         buttonPanel.setAlignmentX(0.0f);
         controlPanel.add(buttonPanel);
 
-        JButton btnSubmitButton = new JButton("Submit");
+        JButton btnSubmitButton = ColorStyle.newButton("Submit");
         btnSubmitButton.addActionListener(actionEvent -> submit());
         buttonPanel.add(btnSubmitButton);
 
-        JButton btnCancelButton = new JButton("Cancel");
+        JButton btnCancelButton = ColorStyle.newButton("Cancel");
         btnCancelButton.addActionListener(actionEvent -> {
             WarehouseOrderInformationMenu informationMenu = new WarehouseOrderInformationMenu(orderId);
             LayoutChangeMonitor.getInstance().setLayout(informationMenu, "warehouse_order_info");
@@ -113,7 +113,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         int startQuantity = orderItem.getQuantity();
         optionsPanel.removeAll();
 
-        JButton btnRemoveItem = new JButton("RemoveWarehouseOrderItem");
+        JButton btnRemoveItem = ColorStyle.newButton("RemoveWarehouseOrderItem");
         btnRemoveItem.addActionListener(e -> {
             order.removeWarehouseOrderItem(orderItem);
             PopUp.newPopUp(this, "Warehouse order updated", "Success", PopUp.PopUpType.INFORMATION);
@@ -121,7 +121,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         });
         optionsPanel.add(btnRemoveItem);
 
-        JButton btnDecreaseAmount = new JButton("<< Decrement");
+        JButton btnDecreaseAmount = ColorStyle.newButton("<< Decrement");
         btnDecreaseAmount.addActionListener(event -> {
             try {
                 int quantity = Integer.parseInt(orderItemAmount.getText());
@@ -140,7 +140,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         orderItemAmount.setColumns(10);
         orderItemAmount.setText(orderItem.getQuantity()+"");
 
-        JButton btnIncreaseAmount = new JButton("Increment >>");
+        JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(event -> {
             try {
                 int quantity = Integer.parseInt(orderItemAmount.getText());
@@ -152,7 +152,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         });
         optionsPanel.add(btnIncreaseAmount);
 
-        JButton btnConfirmAmount = new JButton("Confirm");
+        JButton btnConfirmAmount = ColorStyle.newButton("Confirm");
         btnConfirmAmount.addActionListener(event -> {
             try {
                 int quantity = Integer.parseInt(orderItemAmount.getText());

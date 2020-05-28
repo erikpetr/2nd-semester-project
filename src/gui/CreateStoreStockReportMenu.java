@@ -74,11 +74,11 @@ public class CreateStoreStockReportMenu extends JPanel {
         lblOrderStatus = new JLabel("Choose a warehouse");
         sidePanel.add(lblOrderStatus);
 
-        JButton btnCancelReport= new JButton("Cancel");
+        JButton btnCancelReport= ColorStyle.newCancelButton("Cancel");
         btnCancelReport.addActionListener(actionEvent -> cancelReport());
         sidePanel.add(btnCancelReport);
 
-        JButton btnSubmitOrder = new JButton("Submit");
+        JButton btnSubmitOrder = ColorStyle.newButton("Submit");
         btnSubmitOrder.addActionListener(button -> submitReport());
         sidePanel.add(btnSubmitOrder);
         init();
@@ -106,7 +106,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         productAmount.setColumns(10);
         productAmount.setText("1");
 
-        JButton btnAddProduct = new JButton("Add product");
+        JButton btnAddProduct = ColorStyle.newButton("Add product");
         btnAddProduct.addActionListener(event -> {
             int amount = Integer.parseInt(productAmount.getText());
             try {
@@ -126,7 +126,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         int startQuantity = storeStockReportItem.getQuantity();
         optionsPanel.removeAll();
 
-        JButton btnRemoveItem = new JButton("RemoveOrderItem");
+        JButton btnRemoveItem = ColorStyle.newCancelButton("Remove order item");
         btnRemoveItem.addActionListener(e -> {
             storeStockReportController.removeProduct(storeStockReportItem.getProduct());
             PopUp.newPopUp(this, "Report updated", "Success", PopUpType.INFORMATION);
@@ -134,7 +134,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         });
         optionsPanel.add(btnRemoveItem);
 
-        JButton btnDecreaseAmount = new JButton("<< Decrement");
+        JButton btnDecreaseAmount = ColorStyle.newButton("<< Decrement");
         btnDecreaseAmount.addActionListener(e -> {
             int quantity = Integer.parseInt(orderItemAmount.getText());
             quantity--;
@@ -147,7 +147,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         orderItemAmount.setColumns(10);
         orderItemAmount.setText(storeStockReportItem.getQuantity()+"");
 
-        JButton btnIncreaseAmount = new JButton("Increment >>");
+        JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(e -> {
             int quantity = Integer.parseInt(orderItemAmount.getText());
             quantity++;
@@ -155,7 +155,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         });
         optionsPanel.add(btnIncreaseAmount);
 
-        JButton btnConfirmAmount = new JButton("Confirm");
+        JButton btnConfirmAmount = ColorStyle.newButton("Confirm");
         btnConfirmAmount.addActionListener(event -> {
             try {
                 int quantity = Integer.parseInt(orderItemAmount.getText());

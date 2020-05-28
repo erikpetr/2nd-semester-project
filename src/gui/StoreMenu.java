@@ -61,20 +61,20 @@ public class StoreMenu extends JPanel {
 	private void showControlsFor(Store store) {
 		optionPanel.removeAll();
 
-		JButton btnCreateStore = new JButton("New store");
+		JButton btnCreateStore = ColorStyle.newButton("New store");
 		btnCreateStore.addActionListener(e -> {
 			createStore();
 		});
 		optionPanel.add(btnCreateStore);
 
-		JButton btnUpdateStore = new JButton("Update store");
+		JButton btnUpdateStore = ColorStyle.newButton("Update store");
 		btnUpdateStore.addActionListener(e -> {
 			LayoutChangeMonitor.getInstance().setLayout(new UpdateStoreMenu(store), "update_store");
 			init();
 		});
 		optionPanel.add(btnUpdateStore);
 		
-		JButton btnDeleteStore= new JButton("Delete store");
+		JButton btnDeleteStore= ColorStyle.newButton("Delete store");
 		btnDeleteStore.addActionListener(e -> {
 			try {
 				storeController.deleteStore(store);

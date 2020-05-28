@@ -122,31 +122,31 @@ public class WarehouseWindow extends JFrame
 		menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		// Buttons
-		JButton btnOrders = new JButton("Orders");
+		JButton btnOrders = ColorStyle.newButton("Orders");
 		btnOrders.addActionListener(arg0 -> openOrdersMenu());
 		menuPanel.add(btnOrders);
 
-		JButton btnStocks = new JButton("Stocks");
+		JButton btnStocks = ColorStyle.newButton("Stocks");
 		btnStocks.addActionListener(arg0 -> openStocksMenu());
 		menuPanel.add(btnStocks);
 
-		JButton btnWarehouseOrders = new JButton("Warehouse orders");
+		JButton btnWarehouseOrders = ColorStyle.newButton("Warehouse orders");
 		btnWarehouseOrders.addActionListener(arg0 -> openWarehouseOrdersMenu());
 		menuPanel.add(btnWarehouseOrders);
 
-		JButton btnStores = new JButton("Stores");
+		JButton btnStores = ColorStyle.newButton("Stores");
 		btnStores.addActionListener(arg0 -> openStoresMenu());
 		menuPanel.add(btnStores);
 
-		JButton btnProducts = new JButton("Products");
+		JButton btnProducts = ColorStyle.newButton("Products");
 		btnProducts.addActionListener(arg0 -> openProductMenu());
 		menuPanel.add(btnProducts);
 
-		JButton btnProviders = new JButton("Providers");
+		JButton btnProviders = ColorStyle.newButton("Providers");
 		btnProviders.addActionListener(arg0 -> openProvidersMenu());
 		menuPanel.add(btnProviders);
 
-		JButton btnStatistics = new JButton("Stock Reports");
+		JButton btnStatistics = ColorStyle.newButton("Stock Reports");
 		btnStatistics.addActionListener(arg0 -> openStoreStockReportMenu());
 		menuPanel.add(btnStatistics);
 		
