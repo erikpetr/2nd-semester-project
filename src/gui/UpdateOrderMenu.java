@@ -165,6 +165,8 @@ public class UpdateOrderMenu extends JPanel {
             try {
                 int quantity = Integer.parseInt(orderItemAmount.getText());
 
+
+                // TODO: Check this logic
                 if (quantity < 0) {
                     OrderItem revisionOrderItem = new OrderItem(
                             orderItem.getProduct(),

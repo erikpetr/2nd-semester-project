@@ -19,6 +19,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
      */
     public WarehouseOrderFinishedScreen(int id) {
         this.warehouseOrderId = id;
+        loadWarehouseOrder();
 
         setLayout(new BorderLayout(0, 0));
 
@@ -41,7 +42,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
         JLabel lblTotalPrice = new JLabel("Total price " + warehouseOrder.calculateTotalPrice() + " €");
         footerPanel.add(lblTotalPrice);
 
-        EventQueue.invokeLater(this::loadWarehouseOrder);
+        loadWarehouseOrderItems();
     }
 
     public void loadWarehouseOrder() {
@@ -53,7 +54,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
         }
     }
 
-    private void loadWarehuseOrderItems() {
+    private void loadWarehouseOrderItems() {
         if (warehouseOrder != null) {
             DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel = new DefaultListModel<>();
             List<WarehouseOrderItem> dataList = warehouseOrder.getItems();

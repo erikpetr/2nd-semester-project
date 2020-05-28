@@ -122,8 +122,7 @@ public class OrderInformationMenu extends JPanel {
 	private Component titlePanel() 
 	{
 		// Title label
-		JLabel title = new JLabel("ORDER DESCRIPTION (ORDER ID : " + order.getId() + ")");
-		return title;
+		return new JLabel("Order " + order.getId());
 	}
 	
 	/*
@@ -133,8 +132,7 @@ public class OrderInformationMenu extends JPanel {
 	{
 		// Details panel
 		JPanel details = new JPanel();
-		FlowLayout fl_details = new FlowLayout(FlowLayout.CENTER, 50, 30);
-		details.setLayout(fl_details);
+		details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
 		// labels
 		JLabel date = new JLabel("Date: " + order.getDate());
 		details.add(date);

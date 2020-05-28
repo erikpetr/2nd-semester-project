@@ -85,20 +85,16 @@ public class WarehouseOrderInformationMenu extends JPanel {
      */
     private Component titlePanel() {
         // Title label
-        return new JLabel("WAREHOUSE ORDER DESCRIPTION (WAREHOUSE ORDER ID : " + warehouseOrder.getId() + ")");
+        return new JLabel("Warehouse order " + warehouseOrder.getId());
     }
 
     /*
      * Creates panel for main details
      */
-
-    // TODO: decide what to show
-
     private Component warehouseOrderDetails() {
         // Details panel
         JPanel details = new JPanel();
-        FlowLayout flDetails = new FlowLayout(FlowLayout.CENTER, 50, 30);
-        details.setLayout(flDetails);
+        details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
         // labels
         JLabel date = new JLabel("Date: " + warehouseOrder.getDate());
         details.add(date);
@@ -106,7 +102,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         details.add(warehouse);
         JLabel provider = new JLabel("Provider: " + warehouseOrder.getProvider());
         details.add(provider);
-        JLabel price = new JLabel("Total Price: " + warehouseOrder.calculateTotalPrice());
+        JLabel price = new JLabel("Total Price: " + warehouseOrder.calculateTotalPrice() + " €");
         details.add(price);
 
         return details;

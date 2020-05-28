@@ -177,7 +177,25 @@ public class OrderController {
 
     public boolean updateOrder(Order order) throws ControlException {
         try {
-            return (orderDAO.update(order) != 0);
+            Status oldStatus = orderDAO.getOrderStatus(order.getId());
+            for (OrderRevision orderRevision : order.getRevisions()) {
+                if (orderRevision.getId() == 0) {
+                    updateStock(orderRevision);
+                }
+            }
+            if (orderDAO.update(order) != 0) {
+                if (oldStatus.equals(Status.PENDING) && !order.getStatus().equals(Status.REJECTED)) {
+                    order = orderDAO.selectByID(order.getId());
+                    updateStock(order, true);
+                }
+                if (!oldStatus.equals(Status.PENDING) && order.getStatus().equals(Status.REJECTED)) {
+                    order = orderDAO.selectByID(order.getId());
+                    updateStock(order, false);
+                }
+                return true;
+            } else {
+                return false;
+            }
         } catch (DataAccessException e) {
             throw new ControlException("Can't update order\n" + e.getMessage());
         }
