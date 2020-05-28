@@ -130,9 +130,9 @@ public class StoreStockReportController {
         if (report == null || product == null || amount <= 0) {
             throw new IllegalStateException("There's no Report object initialized. Please call createOrder() method first.");
         }
-        //StoreStockReportDAO reportDAO; TODO This line is unnecessary and should be removed, pls check!
+        StoreStockReportDAO reportDAO; //TODO This line is unnecessary and should be removed, pls check!
         try {
-            //reportDAO = new StoreStockReportDB(); TODO This line is unnecessary and should be removed, pls check!
+            reportDAO = new StoreStockReportDB(); //TODO This line is unnecessary and should be removed, pls check!
             for (StoreStockReportItem reportItem: report.getItems()) {
                 if (reportItem.getProduct().getId() == product.getId()) {
                     reportItem.setQuantity(reportItem.getQuantity() + amount);
