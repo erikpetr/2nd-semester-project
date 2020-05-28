@@ -83,23 +83,16 @@ public class UpdateProductMenu extends JPanel {
         pricePane.add(price);
         price.setColumns(10);
 
-
-        {
-            JPanel buttonPane = new JPanel();
-            buttonPane.setBackground(Color.LIGHT_GRAY);
-            panel.add(buttonPane, BorderLayout.SOUTH);
-            buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
-            {
-                JButton okButton = ColorStyle.newButton("Save");
-                buttonPane.add(okButton);
-                okButton.addActionListener(e -> okClicked());
-            }
-            {
-                JButton cancelButton = ColorStyle.newButton("Cancel");
-                buttonPane.add(cancelButton);
-                cancelButton.addActionListener(e -> goBack());
-            }
-        }
+        JPanel buttonPane = new JPanel();
+        buttonPane.setBackground(Color.LIGHT_GRAY);
+        panel.add(buttonPane, BorderLayout.SOUTH);
+        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
+        JButton okButton = ColorStyle.newButton("Save");
+        buttonPane.add(okButton);
+        okButton.addActionListener(e -> okClicked());
+        JButton cancelButton = ColorStyle.newButton("Cancel");
+        buttonPane.add(cancelButton);
+        cancelButton.addActionListener(e -> goBack());
 
         init(p);
 
@@ -107,7 +100,7 @@ public class UpdateProductMenu extends JPanel {
 
     private void init(Product p) {
         this.product = p;
-        System.out.println("yep");
+        //System.out.println("yep");
         if (p != null) {
             fillFields();
         }

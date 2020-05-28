@@ -14,12 +14,10 @@ public class CreateWarehouseOrderMenu extends JPanel {
     private WarehouseOrderController warehouseOrderController;
     private ProductController productController;
 
-    private DefaultListModel<Product> productListModel;
-    private DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel;
     private final JList<Product> productList;
     private final JList<WarehouseOrderItem> warehouseOrderItemList;
-    private JLabel lblProvider;
-    private JPanel optionsPanel;
+    private final JLabel lblProvider;
+    private final JPanel optionsPanel;
     private JTextField warehouseOrderItemAmount;
     private JTextField productAmount;
 
@@ -64,9 +62,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
         add(sidePanel, BorderLayout.EAST);
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
         JButton btnChooseProvider = ColorStyle.newButton("Choose provider");
-        btnChooseProvider.addActionListener(button -> {
-            chooseProvider();
-        });
+        btnChooseProvider.addActionListener(button -> chooseProvider());
 
         lblProvider = new JLabel("Choose a provider");
         sidePanel.add(lblProvider);
@@ -205,7 +201,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
 
     private void loadWarehouseOrderItems() {
         if (warehouseOrderController.getWarehouseOrder() != null) {
-            warehouseOrderItemListModel = new DefaultListModel<>();
+            DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel = new DefaultListModel<>();
             List<WarehouseOrderItem> dataList = warehouseOrderController.getWarehouseOrder().getItems();
             for(WarehouseOrderItem orderItem : dataList) {
                 warehouseOrderItemListModel.addElement(orderItem);
@@ -253,7 +249,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
         public void run() {
             if (warehouseOrderController.getWarehouseOrder() != null) {
                 try {
-                    productListModel = new DefaultListModel<>();
+                    DefaultListModel<Product> productListModel = new DefaultListModel<>();
                     Warehouse warehouse = warehouseOrderController.getWarehouseOrder().getWarehouse();
                     List<Product> dataList = productController.getProducts(warehouse);
                     for(Product product : dataList) {

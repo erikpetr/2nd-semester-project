@@ -10,10 +10,9 @@ import java.awt.*;
 import java.util.List;
 
 public class WarehouseOrderFinishedScreen extends JPanel {
-    private int warehouseOrderId;
+    private final int warehouseOrderId;
     private WarehouseOrder warehouseOrder;
-    private JList<WarehouseOrderItem> warehouseOrderItemList;
-    private DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel;
+    private final JList<WarehouseOrderItem> warehouseOrderItemList;
 
     /**
      * Create the panel.
@@ -33,7 +32,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
         JPanel orderItemsPanel = new JPanel();
         add(orderItemsPanel, BorderLayout.CENTER);
 
-        warehouseOrderItemList = new JList<WarehouseOrderItem>();
+        warehouseOrderItemList = new JList<>();
         orderItemsPanel.add(warehouseOrderItemList);
 
         JPanel footerPanel = new JPanel();
@@ -56,7 +55,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
 
     private void loadWarehuseOrderItems() {
         if (warehouseOrder != null) {
-            warehouseOrderItemListModel = new DefaultListModel<>();
+            DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel = new DefaultListModel<>();
             List<WarehouseOrderItem> dataList = warehouseOrder.getItems();
             for(WarehouseOrderItem orderItem : dataList) {
                 warehouseOrderItemListModel.addElement(orderItem);

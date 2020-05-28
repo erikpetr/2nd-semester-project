@@ -48,7 +48,7 @@ public class UpdateOrderMenu extends JPanel {
 		splitPane.setResizeWeight(0.5);
 		add(splitPane, BorderLayout.CENTER);
 		
-		orderItemList = new JList<OrderItem>();
+		orderItemList = new JList<>();
 		orderItemList.addListSelectionListener(listSelectionEvent -> {
 			if (!listSelectionEvent.getValueIsAdjusting() && orderItemList.getSelectedValue() != null) {
 				showControlsFor(orderItemList.getSelectedValue());

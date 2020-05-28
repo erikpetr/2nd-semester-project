@@ -7,7 +7,6 @@ import database.DataAccessException;
 import gui.PopUp.PopUpType;
 import model.Order;
 import model.Store;
-import model.User;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -76,9 +75,7 @@ public class StoreOrderMenu extends JPanel
 		@Override
 		public void run() {
 			JTable table = ordersTable();
-			EventQueue.invokeLater(() -> {
-				scroll_orders.setViewportView(table);
-			});
+			EventQueue.invokeLater(() -> scroll_orders.setViewportView(table));
 		}
 	}
 
@@ -91,8 +88,7 @@ public class StoreOrderMenu extends JPanel
 	/*
 	 * Create table and fetch data
 	 */
-	private JTable ordersTable() 
-	{
+	private JTable ordersTable() {
 		// Column names
 		String[] columnNames = {"ID",
 				"Date",
@@ -168,7 +164,7 @@ public class StoreOrderMenu extends JPanel
 				{
 					if (orderInfo != null)
 					{
-						System.out.println("Removing order info");
+						//System.out.println("Removing order info");
 						// Remove old panel
 						content.remove(orderInfo);
 					}

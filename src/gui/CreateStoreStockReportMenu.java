@@ -18,7 +18,6 @@ public class CreateStoreStockReportMenu extends JPanel {
     private ProductController productController;
 
     private DefaultListModel<Product> productListModel;
-    private DefaultListModel<StoreStockReportItem> reportItemListModel;
     private final JList<Product> productList;
     private final JList<StoreStockReportItem> reportItemList;
     private JLabel lblOrderStatus;
@@ -38,7 +37,6 @@ public class CreateStoreStockReportMenu extends JPanel {
             PopUp.newPopUp(this, e.getMessage(), "Error", PopUpType.ERROR);
         } catch (ControlException e) {
             PopUp.newPopUp(this, e.getMessage(), "Error", PopUpType.ERROR);
-            e.printStackTrace();
         }
         setLayout(new BorderLayout(0, 0));
 
@@ -184,7 +182,7 @@ public class CreateStoreStockReportMenu extends JPanel {
     private void loadReportItems() {
         StoreStockReport report = storeStockReportController.getReport();
         if (report != null) {
-            reportItemListModel = new DefaultListModel<>();
+            DefaultListModel<StoreStockReportItem> reportItemListModel = new DefaultListModel<>();
             List<StoreStockReportItem> dataList = report.getItems();
             for(StoreStockReportItem reportItem : dataList) {
                 reportItemListModel.addElement(reportItem);

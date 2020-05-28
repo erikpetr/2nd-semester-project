@@ -46,7 +46,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         splitPane.setResizeWeight(0.5);
         add(splitPane, BorderLayout.CENTER);
 
-        warehouseOrderItemList = new JList<WarehouseOrderItem>();
+        warehouseOrderItemList = new JList<>();
         warehouseOrderItemList.addListSelectionListener(listSelectionEvent -> {
             if (!listSelectionEvent.getValueIsAdjusting() && warehouseOrderItemList.getSelectedValue() != null) {
                 showControlsFor(warehouseOrderItemList.getSelectedValue());

@@ -20,9 +20,7 @@ public class StoreStockReportMenuStore extends StoreStockReportMenu {
         // Button Create for stores
         JButton btnCreateReport = ColorStyle.newButton("Create Stock Report");
         optionsPanel.add(btnCreateReport);
-        btnCreateReport.addActionListener(actionEvent -> {
-            openCreateStoreStockMenu();
-        });
+        btnCreateReport.addActionListener(actionEvent -> openCreateStoreStockMenu());
 
         // Add Report split panel to main panel
         this.add(reportPanel, BorderLayout.CENTER);

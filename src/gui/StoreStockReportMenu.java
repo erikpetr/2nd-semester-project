@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import controller.ControlException;
-import controller.LoginController;
 import controller.StoreStockReportController;
 
 import model.Store;
@@ -40,9 +39,7 @@ public abstract class StoreStockReportMenu extends JPanel {
         // Button Actualize
         JButton btnActualize = ColorStyle.newButton("Actualize");
         optionsPanel.add(btnActualize);
-        btnActualize.addActionListener(actionEvent -> {
-            this.reloadDataAndGui();
-        });
+        btnActualize.addActionListener(actionEvent -> reloadDataAndGui());
     }
 
 

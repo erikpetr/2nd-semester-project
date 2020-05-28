@@ -5,7 +5,6 @@ import controller.OrderController;
 import controller.ProductController;
 import database.DataAccessException;
 import gui.PopUp.PopUpType;
-import model.Order;
 import model.OrderItem;
 import model.Product;
 import model.Warehouse;
@@ -21,10 +20,9 @@ public class CreateOrderMenu extends JPanel {
 
 	private final JList<Product> productList;
     private final JList<OrderItem> orderItemList;
-    private JLabel lblOrderStatus;
-    private JPanel optionsPanel;
+    private final JLabel lblOrderStatus;
+    private final JPanel optionsPanel;
     private JTextField orderItemAmount;
-    private JTextField productAmount;
     
     /**
      * Create the panel.
@@ -67,9 +65,7 @@ public class CreateOrderMenu extends JPanel {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
         
         JButton btnChooseWarehouse = ColorStyle.newButton("Choose warehouse");
-		btnChooseWarehouse.addActionListener(button -> {
-			chooseWarehouse();
-		});
+		btnChooseWarehouse.addActionListener(button -> chooseWarehouse());
         
         lblOrderStatus = new JLabel("Choose a warehouse");
         sidePanel.add(lblOrderStatus);
@@ -106,7 +102,7 @@ public class CreateOrderMenu extends JPanel {
     	JLabel lblAmountLabel = new JLabel("Amount:");
         optionsPanel.add(lblAmountLabel);
         
-        productAmount = new JTextField();
+        JTextField productAmount = new JTextField();
         optionsPanel.add(productAmount);
         productAmount.setColumns(10);
         productAmount.setText("1");

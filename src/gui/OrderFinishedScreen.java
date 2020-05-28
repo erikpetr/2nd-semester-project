@@ -16,11 +16,10 @@ import java.util.List;
 import javax.swing.JList;
 
 public class OrderFinishedScreen extends JPanel {
-	private int orderId;
+	private final int orderId;
 	private Order order;
 
-	private JList<OrderItem> orderItemList;
-    private DefaultListModel<OrderItem> orderItemListModel;
+	private final JList<OrderItem> orderItemList;
 
 	/**
 	 * Create the panel.
@@ -41,7 +40,7 @@ public class OrderFinishedScreen extends JPanel {
 		JPanel orderItemsPanel = new JPanel();
 		add(orderItemsPanel, BorderLayout.CENTER);
 		
-		orderItemList = new JList<OrderItem>();
+		orderItemList = new JList<>();
 		orderItemsPanel.add(orderItemList);
 		
 		JPanel footerPanel = new JPanel();
@@ -62,7 +61,7 @@ public class OrderFinishedScreen extends JPanel {
 	
 	private void loadOrderItems() {
 		if (order != null) {
-			orderItemListModel = new DefaultListModel<>();
+			DefaultListModel<OrderItem> orderItemListModel = new DefaultListModel<>();
 			List<OrderItem> dataList = order.getItems();
 			for(OrderItem orderItem : dataList) {
                 orderItemListModel.addElement(orderItem);

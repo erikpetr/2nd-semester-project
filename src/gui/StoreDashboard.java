@@ -55,7 +55,7 @@ public class StoreDashboard extends JPanel {
 					lblTotalOrders.setText("Total Orders: "+totalOrders);
 				});
 			} catch (DataAccessException e) {
-				e.printStackTrace();
+				PopUp.newPopUp(StoreDashboard.this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
 			}
 		}
 	}

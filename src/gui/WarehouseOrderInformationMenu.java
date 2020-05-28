@@ -21,11 +21,10 @@ public class WarehouseOrderInformationMenu extends JPanel {
         try {
             warehouseOrder = new WarehouseOrderController().getWarehouseOrder(warehouseOrderId);
         } catch (DataAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            PopUp.newPopUp(this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
         }
 
-        System.out.println("Showing order number " + warehouseOrder.getId());
+        //System.out.println("Showing order number " + warehouseOrder.getId());
 
         // Main panel
         panel = new JPanel();
@@ -89,8 +88,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
     private Component titlePanel()
     {
         // Title label
-        JLabel title = new JLabel("WAREHOUSE ORDER DESCRIPTION (WAREHOUSE ORDER ID : " + warehouseOrder.getId() + ")");
-        return title;
+        return new JLabel("WAREHOUSE ORDER DESCRIPTION (WAREHOUSE ORDER ID : " + warehouseOrder.getId() + ")");
     }
 
     /*
@@ -103,8 +101,8 @@ public class WarehouseOrderInformationMenu extends JPanel {
     {
         // Details panel
         JPanel details = new JPanel();
-        FlowLayout fl_details = new FlowLayout(FlowLayout.CENTER, 50, 30);
-        details.setLayout(fl_details);
+        FlowLayout flDetails = new FlowLayout(FlowLayout.CENTER, 50, 30);
+        details.setLayout(flDetails);
         // labels
         JLabel date = new JLabel("Date: " + warehouseOrder.getDate());
         details.add(date);
@@ -130,7 +128,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         //title_items.setHorizontalAlignment(SwingConstants.CENTER);
         items.add(title);
 
-        if (warehouseOrder.getItems().size() > 0)
+        if (!warehouseOrder.getItems().isEmpty())
         {
             // Column names
             String[] columnNames = {
@@ -190,8 +188,8 @@ public class WarehouseOrderInformationMenu extends JPanel {
 
         for(WarehouseOrderRevision revision : warehouseOrder.getRevisions())
         {
-            JLabel single_revision = new JLabel(revision.toString());
-            single_revision.add(revisions);
+            JLabel singleRevision = new JLabel(revision.toString());
+            singleRevision.add(revisions);
         }
 
         return revisions;

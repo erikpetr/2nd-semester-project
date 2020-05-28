@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,18 +13,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import controller.ControlException;
-import controller.LoginController;
 import controller.OrderController;
 import database.DataAccessException;
 import gui.PopUp.PopUpType;
 import model.Order;
-import model.Store;
-import model.User;
-import javax.swing.JSplitPane;
 
 public class WarehouseOrderMenu extends JPanel
 {
-	JScrollPane scroll_orders;
+	JScrollPane scrollOrders;
 	JComponent orderInfo;
 	
 	/*
@@ -39,8 +34,8 @@ public class WarehouseOrderMenu extends JPanel
 		setLayout(gridLayout);
 		
 		// List of orders
-		scroll_orders = new JScrollPane();
-		add(scroll_orders);
+		scrollOrders = new JScrollPane();
+		add(scrollOrders);
 
 		orderInfo = new OrderInformationMenu();
 		add(orderInfo);
@@ -52,9 +47,7 @@ public class WarehouseOrderMenu extends JPanel
 		@Override
 		public void run() {
 			JTable table = ordersTable();
-			EventQueue.invokeLater(() -> {
-				scroll_orders.setViewportView(table);
-			});
+			EventQueue.invokeLater(() -> scrollOrders.setViewportView(table));
 		}
 	}
 	

@@ -32,8 +32,6 @@ public class OrderInformationMenu extends JPanel {
 			PopUp.newPopUp(this, e.getMessage(), "Error loading order", PopUp.PopUpType.ERROR);
 		}
 		
-		System.out.println("Shwoing order number " + order.getId());
-		
 		// Main panel
 		panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -84,21 +82,17 @@ public class OrderInformationMenu extends JPanel {
 			body.add(buttonPane);
 
 			JButton btnUpdateStatus = new JButton("Update status");
-			btnUpdateStatus.addActionListener(event -> {
-				openUpdateWindow();
-			});
+			btnUpdateStatus.addActionListener(event -> openUpdateWindow());
 			buttonPane.add(btnUpdateStatus);
 		} else if (order.getStatus().equals(Status.IN_TRANSIT)) {
 			JPanel buttonPane = new JPanel();
 			body.add(buttonPane);
 
 			JButton btnUpdateStatus = new JButton("Confirm delivery");
-			btnUpdateStatus.addActionListener(event -> {
-				EventQueue.invokeLater(() -> {
-					OrderDeliveryConfirm deliveryConfirm = new OrderDeliveryConfirm(orderId);
-					LayoutChangeMonitor.getInstance().setLayout(deliveryConfirm, "order_delivery_confirm");
-				});
-			});
+			btnUpdateStatus.addActionListener(event -> EventQueue.invokeLater(() -> {
+						OrderDeliveryConfirm deliveryConfirm = new OrderDeliveryConfirm(orderId);
+						LayoutChangeMonitor.getInstance().setLayout(deliveryConfirm, "order_delivery_confirm");
+					}));
 			buttonPane.add(btnUpdateStatus);
 		}
 		
@@ -121,8 +115,7 @@ public class OrderInformationMenu extends JPanel {
 	private Component titlePanel() 
 	{
 		// Title label
-		JLabel title = new JLabel("ORDER DESCRIPTION (ORDER ID : " + order.getId() + ")");
-		return title;
+		return new JLabel("ORDER DESCRIPTION (ORDER ID : " + order.getId() + ")");
 	}
 	
 	/*
@@ -167,7 +160,7 @@ public class OrderInformationMenu extends JPanel {
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		items.add(title);
 		
-		if (order.getItems().size() > 0)
+		if (!order.getItems().isEmpty())
 		{			
 			// Column names
 			String[] columnNames = {

@@ -1,21 +1,22 @@
 package gui;
+
 import database.DataAccessException;
 import model.*;
 import controller.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
 
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+
 public class CreateWhOrderProviderChooser extends JDialog {
-    private final JPanel contentPanel = new JPanel();
-    private DefaultListModel<Provider> providerListModel;
     private final JList<Provider> providerList;
     private final WarehouseOrderController warehouseOrderController;
     private final CreateWarehouseOrderMenu parent;
 
     /**
-     *
      * Create the dialog.
      */
     public CreateWhOrderProviderChooser(CreateWarehouseOrderMenu parent, WarehouseOrderController warehouseOrderController) {
@@ -23,29 +24,22 @@ public class CreateWhOrderProviderChooser extends JDialog {
         this.parent = parent;
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(new BorderLayout());
+        JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new FlowLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-        {
             providerList = new JList<>();
             contentPanel.add(providerList);
-        }
-        {
             JPanel buttonPane = new JPanel();
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
-            {
-                JButton okButton = ColorStyle.newButton("OK");
-                okButton.addActionListener(actionEvent -> ok());
-                buttonPane.add(okButton);
-                getRootPane().setDefaultButton(okButton);
-            }
-            {
-                JButton cancelButton = ColorStyle.newButton("Cancel");
-                cancelButton.addActionListener(actionEvent -> this.dispose());
-                buttonPane.add(cancelButton);
-            }
-        }
+            JButton okButton = ColorStyle.newButton("OK");
+            okButton.addActionListener(actionEvent -> ok());
+            buttonPane.add(okButton);
+            getRootPane().setDefaultButton(okButton);
+            JButton cancelButton = ColorStyle.newButton("Cancel");
+            cancelButton.addActionListener(actionEvent -> this.dispose());
+            buttonPane.add(cancelButton);
         loadProviders();
     }
 
@@ -55,7 +49,7 @@ public class CreateWhOrderProviderChooser extends JDialog {
     public static void main(CreateWarehouseOrderMenu parent, WarehouseOrderController warehouseOrderController) {
         try {
             CreateWhOrderProviderChooser dialog = new CreateWhOrderProviderChooser(parent, warehouseOrderController);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
         } catch (Exception e) {
             PopUp.newPopUp(null, "There has been a catastrophic error.\nThe program will terminate\n" +
@@ -66,7 +60,7 @@ public class CreateWhOrderProviderChooser extends JDialog {
 
     private void loadProviders() {
         try {
-            providerListModel = new DefaultListModel<>();
+            DefaultListModel<Provider> providerListModel = new DefaultListModel<>();
             List<Provider> dataList;
             dataList = new ProviderController().all();
 

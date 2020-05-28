@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -27,9 +26,7 @@ public class StockMenu extends JScrollPane {
 		public void run() {
 			JTable table = stocksTable();
 
-			EventQueue.invokeLater(() -> {
-				setViewportView(table);
-			});
+			EventQueue.invokeLater(() -> setViewportView(table));
 		}
 	}
 

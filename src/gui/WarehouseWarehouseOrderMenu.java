@@ -1,11 +1,8 @@
 package gui;
 
 import controller.ControlException;
-import controller.LoginController;
 import controller.WarehouseOrderController;
 import database.DataAccessException;
-import model.User;
-import model.Warehouse;
 import model.WarehouseOrder;
 
 import javax.swing.*;
@@ -15,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 
 public class WarehouseWarehouseOrderMenu extends JPanel {
-    JScrollPane scroll_warehouse_orders;
+    JScrollPane scrollWarehouseOrders;
     JComponent warehouseOrderInfo;
     private WarehouseOrderController warehouseOrderController;
 
@@ -40,8 +37,8 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
         btnCreateWarehouseOrder.addActionListener(actionEvent -> createWarehouseOrder());
 
         // List of orders
-        scroll_warehouse_orders = new JScrollPane(warehouseOrdersTable());
-        add(scroll_warehouse_orders, BorderLayout.WEST);
+        scrollWarehouseOrders = new JScrollPane(warehouseOrdersTable());
+        add(scrollWarehouseOrders, BorderLayout.WEST);
 
         warehouseOrderInfo = new WarehouseOrderInformationMenu();
         add(warehouseOrderInfo, BorderLayout.EAST);
@@ -132,7 +129,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
                 {
                     if (warehouseOrderInfo != null)
                     {
-                        System.out.println("Removing warehouse order info");
+                        //System.out.println("Removing warehouse order info");
                         // Remove old panel
                         remove(warehouseOrderInfo);
                         revalidate();

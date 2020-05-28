@@ -62,9 +62,7 @@ public class StoreMenu extends JPanel {
 		optionPanel.removeAll();
 
 		JButton btnCreateStore = ColorStyle.newButton("New store");
-		btnCreateStore.addActionListener(e -> {
-			createStore();
-		});
+		btnCreateStore.addActionListener(e -> createStore());
 		optionPanel.add(btnCreateStore);
 
 		JButton btnUpdateStore = ColorStyle.newButton("Update store");

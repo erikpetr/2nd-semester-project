@@ -191,7 +191,7 @@ public class StoreWindow extends JFrame
 				String componentName = monitor.getConstrains();
 				contentPanel.add(component, componentName);
 				cardLayout.show(contentPanel, componentName);
-				System.out.println("Component shown: "+ componentName);
+				//System.out.println("Component shown: "+ componentName);
 			}
 		}
 	}

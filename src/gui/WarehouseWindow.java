@@ -1,7 +1,6 @@
 package gui;
 
 import controller.LoginController;
-import model.WarehouseOrder;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -249,7 +248,7 @@ public class WarehouseWindow extends JFrame
 				String componentName = monitor.getConstrains();
 				contentPanel.add(component, componentName);
 				cardLayout.show(contentPanel, componentName);
-				System.out.println("Component shown: "+ componentName);
+				//System.out.println("Component shown: "+ componentName);
 			}
 		}
 	}

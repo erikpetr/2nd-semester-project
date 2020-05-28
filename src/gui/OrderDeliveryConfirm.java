@@ -18,9 +18,9 @@ import model.Status;
 
 public class OrderDeliveryConfirm extends JPanel {
 	
-	private JList<OrderItem> orderItemList;
-	private JList<OrderItem> missingItemsList;
-	private JPanel itemControlPane;
+	private final JList<OrderItem> orderItemList;
+	private final JList<OrderItem> missingItemsList;
+	private final JPanel itemControlPane;
     private JTextField orderItemAmount;
 
     private final int orderId;
@@ -82,7 +82,7 @@ public class OrderDeliveryConfirm extends JPanel {
 			controller.updateOrder(order);
 			quit();
 		} catch (DataAccessException | ControlException e) {
-			e.printStackTrace();
+			PopUp.newPopUp(this, e.getMessage(), "Error", PopUpType.ERROR);
 		}
 	}
 

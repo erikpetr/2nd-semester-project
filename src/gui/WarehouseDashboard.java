@@ -75,7 +75,7 @@ public class WarehouseDashboard extends JPanel {
 					lblTotalStocks.setText("Total Stocks: " + totalStocks);
 				});
 			} catch (DataAccessException e) {
-				e.printStackTrace();
+				PopUp.newPopUp(WarehouseDashboard.this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
 			}
 		}
 	}
