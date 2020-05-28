@@ -25,7 +25,7 @@ public class Order {
         revisions = new LinkedList<>();
     }
 
-    public Order(int id, LocalDateTime date, Status status, List<OrderRevision> revisions, Warehouse warehouse, Store store){
+    public Order(int id, LocalDateTime date, Status status, List<OrderRevision> revisions, Warehouse warehouse, Store store) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -34,164 +34,163 @@ public class Order {
         this.store = store;
         items = new LinkedList<>();
     }
-    
+
     public Order(int id, LocalDateTime date, Status status, Warehouse warehouse, Store store, List<OrderItem> items, List<OrderRevision> revisions) {
-		super();
-		this.id = id;
-		this.date = date;
-		this.status = status;
-		this.warehouse = warehouse;
-		this.store = store;
-		this.items = items;
-		this.revisions = revisions;
-	}
-    
-    // Create object to list in table
-    public Order(int id, Store store, Warehouse warehouse, LocalDateTime date, Status status)
-    {
-    	this.id = id;
-    	this.store = store;
-    	this.warehouse = warehouse;
-    	this.status = status;
-    	this.date = date;
-    	
-    	// Inicialize lists
-    	this.items = new LinkedList<>();
-    	this.revisions = new LinkedList<>();
+        super();
+        this.id = id;
+        this.date = date;
+        this.status = status;
+        this.warehouse = warehouse;
+        this.store = store;
+        this.items = items;
+        this.revisions = revisions;
     }
-    
-	public int getId() {
-		return id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    // Create object to list in table
+    public Order(int id, Store store, Warehouse warehouse, LocalDateTime date, Status status) {
+        this.id = id;
+        this.store = store;
+        this.warehouse = warehouse;
+        this.status = status;
+        this.date = date;
 
-	public LocalDateTime getDate() {
-		return date;
-	}
+        // Inicialize lists
+        this.items = new LinkedList<>();
+        this.revisions = new LinkedList<>();
+    }
 
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public LocalDateTime getDate() {
+        return date;
+    }
 
-	public Warehouse getWarehouse() {
-		return warehouse;
-	}
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
-	public void setWarehouse(Warehouse warehouse) {
-		this.warehouse = warehouse;
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public Store getStore() {
-		return store;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-	public void setStore(Store store) {
-		this.store = store;
-	}
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
 
-	public List<OrderItem> getItems() {
-		return items;
-	}
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
 
-	public boolean addOrderItem(OrderItem orderItem) {
-		return items.add(orderItem);
-	}
+    public Store getStore() {
+        return store;
+    }
 
-	public boolean removeOrderItem(OrderItem orderItem) {
-		for (OrderItem item : items) {
-			if (item.getProduct().getId() == orderItem.getProduct().getId()) {
-				items.remove(item);
-				return true;
-			}
-		}
-		return items.remove(orderItem);
-	}
+    public void setStore(Store store) {
+        this.store = store;
+    }
 
-	public void setItems(List<OrderItem> orderItems) {
-		this.items = orderItems;
-	}
+    public List<OrderItem> getItems() {
+        return items;
+    }
 
-	public boolean setItemQuantity(Product product, int quantity) {
-    	for (OrderItem orderItem : items) {
-    		if (product.getId() == orderItem.getProduct().getId()) {
-    			orderItem.setQuantity(quantity);
-    			return true;
-			}
-		}
-    	return false;
-	}
+    public void setItems(List<OrderItem> orderItems) {
+        this.items = orderItems;
+    }
 
-	public List<OrderRevision> getRevisions() {
-		return revisions;
-	}
+    public boolean addOrderItem(OrderItem orderItem) {
+        return items.add(orderItem);
+    }
 
-	public void setRevisions(List<OrderRevision> revisions) {
-		this.revisions = revisions;
-	}
+    public boolean removeOrderItem(OrderItem orderItem) {
+        for (OrderItem item : items) {
+            if (item.getProduct().getId() == orderItem.getProduct().getId()) {
+                items.remove(item);
+                return true;
+            }
+        }
+        return items.remove(orderItem);
+    }
 
-	public boolean addRevision(OrderRevision revision) {
-    	return revisions.add(revision);
-	}
+    public boolean setItemQuantity(Product product, int quantity) {
+        for (OrderItem orderItem : items) {
+            if (product.getId() == orderItem.getProduct().getId()) {
+                orderItem.setQuantity(quantity);
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public boolean setQuantity(OrderItem orderItem, int quantity) {
-    	for (OrderItem item : items) {
-    		if (item.getProduct().getId() == orderItem.getProduct().getId()) {
-    			item.setQuantity(quantity);
-    			return true;
-			}
-		}
-    	return false;
-	}
+    public List<OrderRevision> getRevisions() {
+        return revisions;
+    }
 
-	public double calculateTotalPrice() {
-    	double price = 0;
+    public void setRevisions(List<OrderRevision> revisions) {
+        this.revisions = revisions;
+    }
 
-    	for (OrderItem orderItem: items) {
-    		price += orderItem.getProduct().getPrice() * orderItem.getQuantity();
-		}
+    public boolean addRevision(OrderRevision revision) {
+        return revisions.add(revision);
+    }
 
-    	return price;
-	}
+    public boolean setQuantity(OrderItem orderItem, int quantity) {
+        for (OrderItem item : items) {
+            if (item.getProduct().getId() == orderItem.getProduct().getId()) {
+                item.setQuantity(quantity);
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public double calculateTotalWeight() {
-    	double weight = 0;
+    public double calculateTotalPrice() {
+        double price = 0;
 
-		for (OrderItem orderItem: items) {
-			weight += orderItem.getProduct().getWeight() * orderItem.getQuantity();
-		}
+        for (OrderItem orderItem : items) {
+            price += orderItem.getProduct().getPrice() * orderItem.getQuantity();
+        }
 
-		return weight;
-	}
+        return price;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder string = new StringBuilder("Order\n");
-		if (date != null) {
-			string.append("Date: ").append(date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))).append("\n");
-		}
-		string.append("Warehouse: ").append(warehouse.toString()).append("\n");
-		string.append("Store: ").append(store.toString()).append("\n");
-		string.append("Items: \n");
+    public double calculateTotalWeight() {
+        double weight = 0;
 
-		for (OrderItem orderItem : items) {
-			string.append("\t- ").append(orderItem.toString()).append("\n");
-		}
+        for (OrderItem orderItem : items) {
+            weight += orderItem.getProduct().getWeight() * orderItem.getQuantity();
+        }
 
-		string.append("\nTotal Price: ").append(calculateTotalPrice()).append(" EUR");
+        return weight;
+    }
 
-		return string.toString();
-	}
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder("Order\n");
+        if (date != null) {
+            string.append("Date: ").append(date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))).append("\n");
+        }
+        string.append("Warehouse: ").append(warehouse.toString()).append("\n");
+        string.append("Store: ").append(store.toString()).append("\n");
+        string.append("Items: \n");
+
+        for (OrderItem orderItem : items) {
+            string.append("\t- ").append(orderItem.toString()).append("\n");
+        }
+
+        string.append("\nTotal Price: ").append(calculateTotalPrice()).append(" EUR");
+
+        return string.toString();
+    }
 }
 
 

@@ -35,6 +35,7 @@ public class StoreController {
     public List<Store> getStores() throws DataAccessException {
         return storeDB.all();
     }
+
     public Store getStoreByID(int id) throws DataAccessException {
         return storeDB.selectByID(id);
     }

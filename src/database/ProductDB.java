@@ -50,9 +50,9 @@ public class ProductDB implements ProductDAO {
     }
 
     /**
-     * @inheritDoc
      * @param id is the ID which we want to search for in the database
      * @return the single object with the given ID
+     * @inheritDoc
      * @see DBConnection executeSelect() method
      */
     @Override
@@ -76,9 +76,9 @@ public class ProductDB implements ProductDAO {
     }
 
     /**
-     * @inheritDoc
      * @return List of all entities
      * @throws DataAccessException
+     * @inheritDoc
      */
     @Override
     public List<Product> all() throws DataAccessException {
@@ -103,9 +103,9 @@ public class ProductDB implements ProductDAO {
     }
 
     /**
-     * @inheritDoc
      * @param value it's the given T type object (in this case Product)
      * @return the number of rows affected by the update
+     * @inheritDoc
      * @see DBConnection executeQuery() method
      */
     @Override
@@ -123,9 +123,9 @@ public class ProductDB implements ProductDAO {
     }
 
     /**
-     * @inheritDoc
      * @param value it's the given T type object (in this case Product)
      * @return the number of rows deleted from the table (1 or 0)
+     * @inheritDoc
      * @see DBConnection executeQuery()
      */
     @Override
@@ -141,9 +141,9 @@ public class ProductDB implements ProductDAO {
     }
 
     /**
-     * @inheritDoc
      * @param warehouse
      * @return the list of products of the warehouse
+     * @inheritDoc
      * @see DBConnection executeSelect() method
      */
     public List<Product> getProducts(Warehouse warehouse) throws DataAccessException {

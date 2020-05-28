@@ -21,17 +21,16 @@ public class StockController {
      *
      * @return List of Stock
      */
-    public static List<Stock> getStocks () throws ControlException
-    {
-    	// Get stocks
+    public static List<Stock> getStocks() throws ControlException {
+        // Get stocks
         List<Stock> stocks = null;
         try {
             StockDB stockDB = new StockDB();
 
-			stocks = stockDB.getStocks((Warehouse) LoginController.getLoggedInUser());
-		} catch (DataAccessException e1) {
+            stocks = stockDB.getStocks((Warehouse) LoginController.getLoggedInUser());
+        } catch (DataAccessException e1) {
             throw new ControlException(e1.getMessage());
-		}
+        }
 
         return stocks;
     }

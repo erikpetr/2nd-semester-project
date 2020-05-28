@@ -19,8 +19,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
     /*
      * Create the panel.
      */
-    public WarehouseWarehouseOrderMenu()
-    {
+    public WarehouseWarehouseOrderMenu() {
         try {
             warehouseOrderController = new WarehouseOrderController();
         } catch (DataAccessException e) {
@@ -28,10 +27,10 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
         }
 
         setLayout(new BorderLayout(0, 0));
-        
+
         JPanel optionsPane = new JPanel();
         add(optionsPane, BorderLayout.NORTH);
-        
+
         JButton btnCreateWarehouseOrder = ColorStyle.newButton("Create Warehouse Order");
         optionsPane.add(btnCreateWarehouseOrder);
         btnCreateWarehouseOrder.addActionListener(actionEvent -> createWarehouseOrder());
@@ -46,7 +45,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
 
     private void createWarehouseOrder() {
         CreateWarehouseOrderMenu component = new CreateWarehouseOrderMenu();
-        
+
         LayoutChangeMonitor.getInstance().setLayout(component, "create_warehouse_order_menu");
     }
 
@@ -72,8 +71,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
             }
             Object[][] alldata = new Object[warehouseOrders.size()][];
             int i = 0;
-            for (WarehouseOrder row : warehouseOrders)
-            {
+            for (WarehouseOrder row : warehouseOrders) {
                 Object[] data = {
                         row.getId(),
                         row.getDate(),
@@ -102,8 +100,7 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
 
             cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
                 @Override
-                public void valueChanged(ListSelectionEvent arg0)
-                {
+                public void valueChanged(ListSelectionEvent arg0) {
                     String selected = null;
 
                     int[] selectedRow = table.getSelectedRows();
@@ -112,11 +109,9 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
                     for (int i = 0; i < selectedRow.length; i++) {
                         for (int j = 0; j < selectedColumns.length; j++) {
                             // Get click listener at column "see more"
-                            if (selectedColumns[j] == 4)
-                            {
+                            if (selectedColumns[j] == 4) {
                                 // Set values adjust to true
-                                if (!arg0.getValueIsAdjusting())
-                                {
+                                if (!arg0.getValueIsAdjusting()) {
                                     // Get id of order and open details
                                     openWarehouseOrder(table.getValueAt(selectedRow[i], 0));
                                 }
@@ -125,10 +120,8 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
                     }
                 }
 
-                private void openWarehouseOrder(Object valueAt)
-                {
-                    if (warehouseOrderInfo != null)
-                    {
+                private void openWarehouseOrder(Object valueAt) {
+                    if (warehouseOrderInfo != null) {
                         //System.out.println("Removing warehouse order info");
                         // Remove old panel
                         remove(warehouseOrderInfo);

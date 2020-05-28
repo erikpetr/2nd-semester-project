@@ -12,8 +12,8 @@ public class UpdateProductMenu extends JPanel {
     private final JTextField weight;
     private final JTextField price;
     private final JPanel panel;
-    private Product product;
     private final JLabel lblProductView;
+    private Product product;
 
     /**
      * Create the panel.

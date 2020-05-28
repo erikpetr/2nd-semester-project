@@ -22,8 +22,7 @@ public class WarehouseOrder {
         revisions = new LinkedList<>();
     }
 
-    public WarehouseOrder(int id, LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items, List<WarehouseOrderRevision> revisions)
-    {
+    public WarehouseOrder(int id, LocalDateTime date, Status status, Warehouse warehouse, Provider provider, List<WarehouseOrderItem> items, List<WarehouseOrderRevision> revisions) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -42,20 +41,20 @@ public class WarehouseOrder {
         this.revisions = revisions;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public LocalDateTime getDate(){
+    public LocalDateTime getDate() {
         return date;
-    }
-
-    public Status getStatus(){
-        return status;
     }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public void setStatus(Status status) {
@@ -101,9 +100,10 @@ public class WarehouseOrder {
     public boolean addWarehouseOrderItem(WarehouseOrderItem warehouseOrderItem) {
         return items.add(warehouseOrderItem);
     }
+
     public boolean removeWarehouseOrderItem(WarehouseOrderItem warehouseOrderItem) {
         for (WarehouseOrderItem item : items) {
-            if(item.getProduct().getId() == warehouseOrderItem.getProduct().getId()) {
+            if (item.getProduct().getId() == warehouseOrderItem.getProduct().getId()) {
                 items.remove(item);
                 return true;
             }
@@ -114,7 +114,7 @@ public class WarehouseOrder {
     public double calculateTotalPrice() {
         double price = 0;
 
-        for (WarehouseOrderItem warehouseOrderItem: items) {
+        for (WarehouseOrderItem warehouseOrderItem : items) {
             price += warehouseOrderItem.getProduct().getPrice() * warehouseOrderItem.getQuantity();
         }
 

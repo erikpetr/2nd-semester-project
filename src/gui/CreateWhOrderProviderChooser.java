@@ -1,15 +1,14 @@
 package gui;
 
+import controller.ProviderController;
+import controller.WarehouseOrderController;
 import database.DataAccessException;
-import model.*;
-import controller.*;
+import model.Provider;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
-
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class CreateWhOrderProviderChooser extends JDialog {
     private final JList<Provider> providerList;
@@ -28,18 +27,18 @@ public class CreateWhOrderProviderChooser extends JDialog {
         contentPanel.setLayout(new FlowLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-            providerList = new JList<>();
-            contentPanel.add(providerList);
-            JPanel buttonPane = new JPanel();
-            buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-            getContentPane().add(buttonPane, BorderLayout.SOUTH);
-            JButton okButton = ColorStyle.newButton("OK");
-            okButton.addActionListener(actionEvent -> ok());
-            buttonPane.add(okButton);
-            getRootPane().setDefaultButton(okButton);
-            JButton cancelButton = ColorStyle.newButton("Cancel");
-            cancelButton.addActionListener(actionEvent -> this.dispose());
-            buttonPane.add(cancelButton);
+        providerList = new JList<>();
+        contentPanel.add(providerList);
+        JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        getContentPane().add(buttonPane, BorderLayout.SOUTH);
+        JButton okButton = ColorStyle.newButton("OK");
+        okButton.addActionListener(actionEvent -> ok());
+        buttonPane.add(okButton);
+        getRootPane().setDefaultButton(okButton);
+        JButton cancelButton = ColorStyle.newButton("Cancel");
+        cancelButton.addActionListener(actionEvent -> this.dispose());
+        buttonPane.add(cancelButton);
         loadProviders();
     }
 

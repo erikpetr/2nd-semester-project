@@ -12,7 +12,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public int getQuantity(){
+    public int getQuantity() {
         return quantity;
     }
 

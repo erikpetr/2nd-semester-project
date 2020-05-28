@@ -1,8 +1,5 @@
 package controller;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import database.DataAccessException;
 import database.StoreStockReportDAO;
 import database.StoreStockReportDB;
@@ -10,6 +7,9 @@ import model.Product;
 import model.Store;
 import model.StoreStockReport;
 import model.StoreStockReportItem;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Controller class which connects the GUI with the DAO
@@ -24,8 +24,8 @@ public class StoreStockReportController {
      *
      * @return List of Stock
      */
-    public static List<StoreStockReport> getReportStoreStockReportByStore () throws ControlException {
-    	// Get reports 
+    public static List<StoreStockReport> getReportStoreStockReportByStore() throws ControlException {
+        // Get reports
         List<StoreStockReport> reports = null;
         try {
             StoreStockReportDB storeStockReportDB = new StoreStockReportDB();
@@ -35,11 +35,12 @@ public class StoreStockReportController {
             throw new ControlException(e1.getMessage());
         }
 
-        return reports ;
+        return reports;
     }
 
     /**
      * This method finds all reports created by a specific store
+     *
      * @param store the store we're searching for
      * @return a list containing all reports
      * @throws ControlException when there were an exception thrown by StoreStockReportDB.getByStore() method
@@ -55,13 +56,13 @@ public class StoreStockReportController {
             throw new ControlException(e1.getMessage());
         }
 
-        return reports ;
+        return reports;
     }
 
     /**
      * Creates a new report for a given store
      *
-     * @param store     the store for the order
+     * @param store the store for the order
      */
     public void createReport(Store store) throws ControlException {
         if (store == null) {
@@ -70,9 +71,9 @@ public class StoreStockReportController {
             this.report = new StoreStockReport(store);
         }
     }
+
     /**
      * Creates a new report for login store
-     *
      */
     public void createReport() throws ControlException {
         createReport((Store) LoginController.getLoggedInUser());
@@ -92,11 +93,11 @@ public class StoreStockReportController {
         }
 
         for (StoreStockReportItem reportItem : report.getItems()) {
-            if (reportItem .getProduct().equals(product)) {
+            if (reportItem.getProduct().equals(product)) {
                 if (reportItem.getQuantity() > amount) {
-                    reportItem.setQuantity(reportItem .getQuantity() - amount);
+                    reportItem.setQuantity(reportItem.getQuantity() - amount);
                 } else {
-                    report.removeReportItem(reportItem );
+                    report.removeReportItem(reportItem);
                 }
                 return true;
             }
@@ -106,14 +107,15 @@ public class StoreStockReportController {
 
     /**
      * Removes the whole product from the order
-     ntroller.addProduct(*
+     * ntroller.addProduct(*
+     *
      * @param product the product to be removed
      * @return the value of {@link StoreStockReport#removeReportItem(StoreStockReportItem)} (reportItem)}
      */
     public boolean removeProduct(Product product) {
         for (StoreStockReportItem reportItem : report.getItems()) {
-            if (product.equals(reportItem .getProduct())) {
-                return report.removeReportItem(reportItem );
+            if (product.equals(reportItem.getProduct())) {
+                return report.removeReportItem(reportItem);
             }
         }
         return false;
@@ -133,20 +135,20 @@ public class StoreStockReportController {
         StoreStockReportDAO reportDAO; //TODO This line is unnecessary and should be removed, pls check!
         try {
             reportDAO = new StoreStockReportDB(); //TODO This line is unnecessary and should be removed, pls check!
-            for (StoreStockReportItem reportItem: report.getItems()) {
+            for (StoreStockReportItem reportItem : report.getItems()) {
                 if (reportItem.getProduct().getId() == product.getId()) {
                     reportItem.setQuantity(reportItem.getQuantity() + amount);
                     return true;
                 }
             }
-            StoreStockReportItem reportItem = new StoreStockReportItem (product, amount);
+            StoreStockReportItem reportItem = new StoreStockReportItem(product, amount);
             return report.addItem(reportItem);
         } catch (DataAccessException e) {
             throw new ControlException("Unable to connect to server.\n" + e.getMessage());
         }
     }
 
-    public StoreStockReport getReport () {
+    public StoreStockReport getReport() {
         return this.report;
     }
 
@@ -156,6 +158,7 @@ public class StoreStockReportController {
 
     /**
      * This method finalizes the report and saves it to the DB
+     *
      * @return the ID of the newly created report
      * @throws ControlException
      */

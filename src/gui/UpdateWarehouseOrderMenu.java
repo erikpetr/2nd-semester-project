@@ -16,10 +16,9 @@ import java.util.List;
 public class UpdateWarehouseOrderMenu extends JPanel {
     private final JPanel optionsPanel;
     private final JTextArea textRevisionNote;
-    private JTextField orderItemAmount;
     private final JList<WarehouseOrderItem> warehouseOrderItemList;
     private final JComboBox<String> statusBox;
-
+    private JTextField orderItemAmount;
     private WarehouseOrderController controller;
     private WarehouseOrder order;
     private WarehouseOrderRevision revision;
@@ -127,7 +126,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
                 int quantity = Integer.parseInt(orderItemAmount.getText());
                 if (quantity > 0) {
                     quantity--;
-                    orderItemAmount.setText(quantity+"");
+                    orderItemAmount.setText(quantity + "");
                 }
             } catch (NumberFormatException e) {
                 PopUp.newPopUp(this, "Make sure the value is numeric", "Cannot continue", PopUp.PopUpType.WARNING);
@@ -135,10 +134,10 @@ public class UpdateWarehouseOrderMenu extends JPanel {
         });
         optionsPanel.add(btnDecreaseAmount);
 
-        orderItemAmount = new JTextField(startQuantity+"");
+        orderItemAmount = new JTextField(startQuantity + "");
         optionsPanel.add(orderItemAmount);
         orderItemAmount.setColumns(10);
-        orderItemAmount.setText(orderItem.getQuantity()+"");
+        orderItemAmount.setText(orderItem.getQuantity() + "");
 
         JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(event -> {
@@ -179,7 +178,7 @@ public class UpdateWarehouseOrderMenu extends JPanel {
     private void loadOrderItems() {
         DefaultListModel<WarehouseOrderItem> orderItemListModel = new DefaultListModel<>();
         List<WarehouseOrderItem> dataList = order.getItems();
-        for(WarehouseOrderItem warehouseOrderItem : dataList) {
+        for (WarehouseOrderItem warehouseOrderItem : dataList) {
             orderItemListModel.addElement(warehouseOrderItem);
         }
 
@@ -190,8 +189,8 @@ public class UpdateWarehouseOrderMenu extends JPanel {
     }
 
     private String[] loadStatuses() {
-        Status [] statuses = Status.values();
-        String [] options = new String [statuses.length];
+        Status[] statuses = Status.values();
+        String[] options = new String[statuses.length];
 
         for (int i = 0; i < options.length; i++) {
             options[i] = statuses[i].value;

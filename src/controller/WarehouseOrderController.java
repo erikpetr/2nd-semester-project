@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class WarehouseOrderController {
-    private WarehouseOrder warehouseOrder;
     private final WarehouseOrderDAO warehouseOrderDAO;
+    private WarehouseOrder warehouseOrder;
 
     public WarehouseOrderController() throws DataAccessException {
         this.warehouseOrderDAO = new WarehouseOrderDB();
@@ -78,6 +78,7 @@ public class WarehouseOrderController {
             throw new ControlException(e.getMessage());
         }
     }
+
     public boolean addProduct(Product product, double unitPrice, int amount) throws ControlException {
         if (warehouseOrder == null || product == null || amount <= 0) {
             throw new IllegalStateException("There's no Warehouse Order object initialized. Please call createWarehouseOrder() method first.");

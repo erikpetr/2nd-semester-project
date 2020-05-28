@@ -1,7 +1,7 @@
 package database;
 
-import model.Stock;
 import model.Product;
+import model.Stock;
 import model.Warehouse;
 
 import java.sql.PreparedStatement;
@@ -54,10 +54,10 @@ public class StockDB implements StockDAO {
     }
 
     /**
-     * @inheritDoc
      * @param id is the ID which we want to search for in the database
-     * @hidden This can't be implemented, do not use
      * @return null
+     * @inheritDoc
+     * @hidden This can't be implemented, do not use
      * @see DBConnection executeSelect() method
      */
     @Override
@@ -90,9 +90,9 @@ public class StockDB implements StockDAO {
     }
 
     /**
-     * @inheritDoc
      * @return List of all entities
      * @throws DataAccessException
+     * @inheritDoc
      */
     @Override
     public List<Stock> all() throws DataAccessException {
@@ -102,11 +102,12 @@ public class StockDB implements StockDAO {
             ResultSet rs = db.executeSelect(s);
             List<Stock> resultList = new ArrayList<>();
 
-            while (rs.next()) {ProductDB productDB = new ProductDB();
+            while (rs.next()) {
+                ProductDB productDB = new ProductDB();
                 Product product = productDB.selectByID(rs.getInt("productID"));
                 WarehouseDB warehouseDB = new WarehouseDB();
                 Warehouse warehouse = warehouseDB.selectByID(rs.getInt("warehouseID"));
-                resultList.add( new Stock(
+                resultList.add(new Stock(
                         rs.getInt("quantity"),
                         rs.getInt("minQuantity"),
                         product,
@@ -120,9 +121,9 @@ public class StockDB implements StockDAO {
     }
 
     /**
-     * @inheritDoc
      * @param value it's the given T type object (in this case Stock)
      * @return the number of rows affected by the update
+     * @inheritDoc
      * @see DBConnection executeQuery() method
      */
     @Override
@@ -149,9 +150,9 @@ public class StockDB implements StockDAO {
     }
 
     /**
-     * @inheritDoc
      * @param value it's the given T type object (in this case Stock)
      * @return the number of rows deleted from the table (1 or 0)
+     * @inheritDoc
      * @see DBConnection executeQuery()
      */
     @Override
@@ -168,15 +169,15 @@ public class StockDB implements StockDAO {
     }
 
     /**
-     * @inheritDoc
      * @param warehouse
      * @return the list of stocks of the warehouse
+     * @inheritDoc
      * @see DBConnection executeSelect() method
      */
     @Override
     public List<Stock> getStocks(Warehouse warehouse) throws DataAccessException {
         String query = "SELECT * FROM Stock s " +
-            "WHERE warehouseID = ?;";
+                "WHERE warehouseID = ?;";
 
 
         try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {

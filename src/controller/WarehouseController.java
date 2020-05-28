@@ -9,13 +9,13 @@ import java.util.List;
 
 public class WarehouseController {
 
-	private DAOInterface<Warehouse> warehouseDAO;
+    private DAOInterface<Warehouse> warehouseDAO;
 
-	public WarehouseController() throws DataAccessException {
-		warehouseDAO = new WarehouseDB();
-	}
-	
-	public List<Warehouse> getWarehouses() throws DataAccessException {
-		return warehouseDAO.all();
-	}
+    public WarehouseController() throws DataAccessException {
+        warehouseDAO = new WarehouseDB();
+    }
+
+    public List<Warehouse> getWarehouses() throws DataAccessException {
+        return warehouseDAO.all();
+    }
 }

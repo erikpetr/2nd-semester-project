@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDB implements DAOInterface<User>{
+public class UserDB implements DAOInterface<User> {
     DBConnection db = DBConnection.getInstance();
 
     public UserDB() throws DataAccessException {
@@ -20,6 +20,7 @@ public class UserDB implements DAOInterface<User>{
     /**
      * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
      * Given a valid user which doesnt exist in the database, it inserts it to the DB
+     *
      * @param value it's the given T type object (in this case User)
      * @return the generated key after the insertion to the DB
      * @see DBConnection executeInsertWithID() method
@@ -61,7 +62,7 @@ public class UserDB implements DAOInterface<User>{
     public User selectByID(int id) throws DataAccessException {
         String queryStore = "SELECT TOP 1 * FROM 'Store' WHERE id=?";
         String queryWarehouse = "SELECT TOP 1 * FROM 'Warehouse' WHERE id=?";
-        try (PreparedStatement s = db.getDBConn().prepareStatement(queryStore)){
+        try (PreparedStatement s = db.getDBConn().prepareStatement(queryStore)) {
             s.setInt(1, id);
             ResultSet rs = db.executeSelect(s);
             AddressDB addressDB = new AddressDB();

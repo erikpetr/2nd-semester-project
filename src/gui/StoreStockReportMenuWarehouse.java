@@ -1,20 +1,20 @@
 package gui;
 
+import controller.StoreController;
+import database.DataAccessException;
+import model.Store;
+
+import javax.swing.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import controller.StoreController;
-import database.DataAccessException;
-import javax.swing.*;
-import model.Store;
-
 public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
-    private JSplitPane storePanel;
     protected JList<Store> storeList;
+    private JSplitPane storePanel;
     private List<Store> stores = new LinkedList<>();
 
 
-    public StoreStockReportMenuWarehouse () {
+    public StoreStockReportMenuWarehouse() {
         super();
         this.currentStore = null;
 
@@ -25,7 +25,7 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         this.setVisible(true);
     }
 
-    protected void refreshStoreSplitPanel () {
+    protected void refreshStoreSplitPanel() {
         // Report Split Panel
         storePanel = new JSplitPane();
         storePanel.setOrientation(SwingConstants.VERTICAL);
@@ -45,7 +45,7 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         storePanel.setRightComponent(reportPanel);
     }
 
-    private void refreshStoreJList () {
+    private void refreshStoreJList() {
         storeList = new JList<>(stores.toArray(new Store[reports.size()]));
 
         storeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -63,7 +63,7 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         });
     }
 
-    private void loadStores () {
+    private void loadStores() {
         try {
             StoreController storeController = new StoreController();
             stores = storeController.getStores();
@@ -72,7 +72,7 @@ public class StoreStockReportMenuWarehouse extends StoreStockReportMenu {
         }
     }
 
-    protected void reloadDataAndGui () {
+    protected void reloadDataAndGui() {
         loadStores();
     }
 }

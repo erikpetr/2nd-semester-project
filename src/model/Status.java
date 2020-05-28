@@ -12,18 +12,18 @@ public enum Status {
     IN_TRANSIT("In transit"),
     DELIVERED("Delivered");
 
-    public final String value;
-
-    Status(String value) {
-        this.value = value;
-    }
-
     private static final Map<String, Status> lookup = new HashMap<>();
 
     static {
         for (Status status : Status.values()) {
             lookup.put(status.value, status);
         }
+    }
+
+    public final String value;
+
+    Status(String value) {
+        this.value = value;
     }
 
     public static Status get(String value) {

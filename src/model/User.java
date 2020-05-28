@@ -8,8 +8,7 @@ public class User {
     protected String email;
     protected Address address;
 
-    public User(int id, String name, String password, String email, Address address)
-    {
+    public User(int id, String name, String password, String email, Address address) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -17,45 +16,47 @@ public class User {
         this.address = address;
     }
 
-    public User(String name, String password, String email, Address address)
-    {
+    public User(String name, String password, String email, Address address) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.address = address;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public String getName(){
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
         return name;
-    }
-
-    public String getPassword(){
-        return password;
-    }
-
-    public String getEmail(){
-        return email;
-    }
-
-    public Address getAddress() {
-        return address;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-    public void setId(int id) { this.id = id; }
+
+    public String getPassword() {
+        return password;
+    }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setEmail(String email ) {
-        this.email  = email ;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     public void setAddress(Address address) {

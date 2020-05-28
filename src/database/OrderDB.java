@@ -388,86 +388,86 @@ public class OrderDB implements OrderDAO {
         return -1;
     }
 
-        @Override
-        public int insertOrderRevisionItems (List < OrderItem > orderItems,int revisionId) throws DataAccessException {
-            String insertQuery = "insert into OrderItem (orderID, quantity, unitPrice, productID, orderRevisionID) VALUES (?, ?, ?, ?, ?);";
-            int updated = 0;
-            for (OrderItem orderItem : orderItems) {
-                    try (PreparedStatement statement = db.getDBConn().prepareStatement(insertQuery)) {
+    @Override
+    public int insertOrderRevisionItems(List<OrderItem> orderItems, int revisionId) throws DataAccessException {
+        String insertQuery = "insert into OrderItem (orderID, quantity, unitPrice, productID, orderRevisionID) VALUES (?, ?, ?, ?, ?);";
+        int updated = 0;
+        for (OrderItem orderItem : orderItems) {
+            try (PreparedStatement statement = db.getDBConn().prepareStatement(insertQuery)) {
 
-                        statement.setString(1, null);
-                        statement.setInt(2, orderItem.getQuantity());
-                        statement.setDouble(3, orderItem.getUnitPrice());
-                        statement.setInt(4, orderItem.getProduct().getId());
-                        statement.setInt(5, revisionId);
+                statement.setString(1, null);
+                statement.setInt(2, orderItem.getQuantity());
+                statement.setDouble(3, orderItem.getUnitPrice());
+                statement.setInt(4, orderItem.getProduct().getId());
+                statement.setInt(5, revisionId);
 
-                        updated += db.executeQuery(statement);
-                    } catch (SQLException throwables) {
-                        throw new DataAccessException(throwables.getMessage());
-                    }
-            }
-            return updated;
-        }
-
-        @Override
-        public int getOrdersAmount (User user) throws DataAccessException {
-            String query;
-            if (user instanceof Warehouse) {
-                query = "SELECT count(*) as total FROM [Order] where warehouseID=?";
-            } else {
-                query = "select count(*) as total from [Order] where storeID=?";
-            }
-
-            try (PreparedStatement statement = db.getDBConn().prepareStatement(query)){
-                statement.setInt(1, user.getId());
-
-                ResultSet resultSet = db.executeSelect(statement);
-                if (resultSet.next()) {
-                    return resultSet.getInt("total");
-                }
-                return 0;
-            } catch (SQLException e) {
-                throw new DataAccessException(e.getMessage());
+                updated += db.executeQuery(statement);
+            } catch (SQLException throwables) {
+                throw new DataAccessException(throwables.getMessage());
             }
         }
+        return updated;
+    }
 
-        @Override
-        public int getPendingOrdersAmount (User user) throws DataAccessException {
-            String query;
-            if (user instanceof Warehouse) {
-                query = "SELECT count(*) as total FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
-            } else {
-                query = "select count(*) as total from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
-            }
-
-            try (PreparedStatement statement = db.getDBConn().prepareStatement(query)){
-                statement.setInt(1, user.getId());
-
-                ResultSet resultSet = db.executeSelect(statement);
-                if (resultSet.next()) {
-                    return resultSet.getInt("total");
-                }
-                return 0;
-
-            } catch (SQLException e) {
-                throw new DataAccessException(e.getMessage());
-            }
+    @Override
+    public int getOrdersAmount(User user) throws DataAccessException {
+        String query;
+        if (user instanceof Warehouse) {
+            query = "SELECT count(*) as total FROM [Order] where warehouseID=?";
+        } else {
+            query = "select count(*) as total from [Order] where storeID=?";
         }
 
-        @Override
-        public Status getOrderStatus ( int orderId) throws DataAccessException {
-            String query = "SELECT status from [Order] where id=?;";
+        try (PreparedStatement statement = db.getDBConn().prepareStatement(query)) {
+            statement.setInt(1, user.getId());
 
-            try (PreparedStatement statement = db.getDBConn().prepareStatement(query)){
-                statement.setInt(1, orderId);
-
-                ResultSet resultSet = db.executeSelect(statement);
-                if (resultSet.next()) {
-                    return Status.valueOf(resultSet.getString("status"));
-                }
-                return null;
-            } catch (SQLException e) {
-                throw new DataAccessException(e.getMessage());
+            ResultSet resultSet = db.executeSelect(statement);
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
             }
+            return 0;
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
         }
     }
+
+    @Override
+    public int getPendingOrdersAmount(User user) throws DataAccessException {
+        String query;
+        if (user instanceof Warehouse) {
+            query = "SELECT count(*) as total FROM [Order] where warehouseID=? and status not in ('DELIVERED', 'REJECTED')";
+        } else {
+            query = "select count(*) as total from [Order] where storeID=? and status not in ('DELIVERED', 'REJECTED')";
+        }
+
+        try (PreparedStatement statement = db.getDBConn().prepareStatement(query)) {
+            statement.setInt(1, user.getId());
+
+            ResultSet resultSet = db.executeSelect(statement);
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Status getOrderStatus(int orderId) throws DataAccessException {
+        String query = "SELECT status from [Order] where id=?;";
+
+        try (PreparedStatement statement = db.getDBConn().prepareStatement(query)) {
+            statement.setInt(1, orderId);
+
+            ResultSet resultSet = db.executeSelect(statement);
+            if (resultSet.next()) {
+                return Status.valueOf(resultSet.getString("status"));
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+}

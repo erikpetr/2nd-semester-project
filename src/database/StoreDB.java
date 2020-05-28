@@ -9,16 +9,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreDB implements DAOInterface<Store>{
+public class StoreDB implements DAOInterface<Store> {
     DBConnection db = DBConnection.getInstance();
-    
+
     public StoreDB() throws DataAccessException {
         //This constructor is empty because it only exists to pass along DataAccessException from DBConnection.getInstance()
-	}
-    
+    }
+
     /**
      * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
      * Given a valid user which doesnt exist in the database, it inserts it to the DB
+     *
      * @param value it's the given T type object (in this case Store)
      * @return the generated key after the insertion to the DB
      * @see DBConnection executeInsertWithID() method
@@ -70,7 +71,6 @@ public class StoreDB implements DAOInterface<Store>{
     }
 
     /**
-     *
      * @return List of all entities
      * @throws DataAccessException
      */
@@ -78,7 +78,7 @@ public class StoreDB implements DAOInterface<Store>{
     public List<Store> all() throws DataAccessException {
         String query = "SELECT * FROM Store;";
         try {
-        	AddressDB addressDB = new AddressDB();
+            AddressDB addressDB = new AddressDB();
             PreparedStatement s = db.getDBConn().prepareStatement(query);
             ResultSet rs = db.executeSelect(s);
             List<Store> resultList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class StoreDB implements DAOInterface<Store>{
                         rs.getString("name"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        addressDB.selectByID(rs.getInt("addressID")))) ;
+                        addressDB.selectByID(rs.getInt("addressID"))));
             }
             return resultList;
 
@@ -99,13 +99,12 @@ public class StoreDB implements DAOInterface<Store>{
     }
 
 
-
     /**
      * This method takes an object and converts it to a valid SQL UPDATE query, which is the executed
      *
      * @param value it's the given T type object
      * @return the number of rows affected by the update
-     * @throws DataAccessException 
+     * @throws DataAccessException
      * @see DBConnection executeQuery() method
      */
 
@@ -132,7 +131,7 @@ public class StoreDB implements DAOInterface<Store>{
      *
      * @param value it's the given T type object
      * @return the number of rows deleted from the table
-     * @throws DataAccessException 
+     * @throws DataAccessException
      * @see DBConnection executeQuery()
      */
     @Override

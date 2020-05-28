@@ -9,6 +9,6 @@ import model.User;
  */
 public interface LoginDAO {
 
-	User getByCredentials(String username, String password) throws DataAccessException;
+    User getByCredentials(String username, String password) throws DataAccessException;
 
 }

@@ -1,64 +1,61 @@
 package gui;
 
-import javax.swing.JPanel;
-
 import controller.LoginController;
 import database.DataAccessException;
 import database.OrderDAO;
 import database.OrderDB;
 import model.User;
 
+import javax.swing.*;
 import java.awt.*;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 
 public class StoreDashboard extends JPanel {
-	
-	private JLabel lblPendingOrders;
-	private JLabel lblTotalOrders;
 
-	/**
-	 * Create the panel.
-	 */
-	public StoreDashboard() {
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JPanel ordersInfoPane = new JPanel();
-		add(ordersInfoPane);
-		ordersInfoPane.setLayout(new BoxLayout(ordersInfoPane, BoxLayout.Y_AXIS));
-		
-		JLabel lblOrderPane = new JLabel("Orders");
-		ordersInfoPane.add(lblOrderPane);
-		
-		lblPendingOrders = new JLabel("");
-		ordersInfoPane.add(lblPendingOrders);
-		
-		lblTotalOrders = new JLabel("");
-		ordersInfoPane.add(lblTotalOrders);
+    private JLabel lblPendingOrders;
+    private JLabel lblTotalOrders;
 
-		new InfoLoader().run();
-	}
+    /**
+     * Create the panel.
+     */
+    public StoreDashboard() {
+        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-	private class InfoLoader implements Runnable {
+        JPanel ordersInfoPane = new JPanel();
+        add(ordersInfoPane);
+        ordersInfoPane.setLayout(new BoxLayout(ordersInfoPane, BoxLayout.Y_AXIS));
 
-		@Override
-		public void run() {
-			try {
-				OrderDAO orderDAO = new OrderDB();
+        JLabel lblOrderPane = new JLabel("Orders");
+        ordersInfoPane.add(lblOrderPane);
 
-				User user = LoginController.getLoggedInUser();
-				int pendingOrders = orderDAO.getPendingOrdersAmount(user);
-				int totalOrders = orderDAO.getOrdersAmount(user);
+        lblPendingOrders = new JLabel("");
+        ordersInfoPane.add(lblPendingOrders);
 
-				EventQueue.invokeLater(() -> {
-					lblPendingOrders.setText("Pending Orders: "+pendingOrders);
-					lblTotalOrders.setText("Total Orders: "+totalOrders);
-				});
-			} catch (DataAccessException e) {
-				PopUp.newPopUp(StoreDashboard.this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
-			}
-		}
-	}
+        lblTotalOrders = new JLabel("");
+        ordersInfoPane.add(lblTotalOrders);
+
+        new InfoLoader().run();
+    }
+
+    private class InfoLoader implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                OrderDAO orderDAO = new OrderDB();
+
+                User user = LoginController.getLoggedInUser();
+                int pendingOrders = orderDAO.getPendingOrdersAmount(user);
+                int totalOrders = orderDAO.getOrdersAmount(user);
+
+                EventQueue.invokeLater(() -> {
+                    lblPendingOrders.setText("Pending Orders: " + pendingOrders);
+                    lblTotalOrders.setText("Total Orders: " + totalOrders);
+                });
+            } catch (DataAccessException e) {
+                PopUp.newPopUp(StoreDashboard.this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
+            }
+        }
+    }
 
 
 }

@@ -18,6 +18,7 @@ public class WarehouseOrderRevision {
         this.status = status;
         this.warehouseOrder = warehouseOrder;
     }
+
     public WarehouseOrderRevision(LocalDateTime date, Status status, String note, WarehouseOrder warehouseOrder) {
         this.date = date;
         this.note = note;
@@ -30,6 +31,7 @@ public class WarehouseOrderRevision {
         this.note = note;
         this.status = status;
     }
+
     public WarehouseOrderRevision(WarehouseOrder warehouseOrder) {
         this.warehouseOrder = warehouseOrder;
 

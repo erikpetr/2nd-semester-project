@@ -15,8 +15,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
 
     // TODO: Add some fancy looking warehouse order information
 
-    public WarehouseOrderInformationMenu(int warehouseOrderId)
-    {
+    public WarehouseOrderInformationMenu(int warehouseOrderId) {
         //Get order
         try {
             warehouseOrder = new WarehouseOrderController().getWarehouseOrder(warehouseOrderId);
@@ -55,7 +54,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
 
         // Body panel
         JPanel body = new JPanel();
-        body.setLayout(new GridLayout(0,1));
+        body.setLayout(new GridLayout(0, 1));
         // Add body panel to scroll panel
         scrollPane.setViewportView(body);
 
@@ -74,8 +73,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         setVisible(true);
     }
 
-    public WarehouseOrderInformationMenu()
-    {
+    public WarehouseOrderInformationMenu() {
         JLabel noresults = new JLabel("No warehouse order selected.");
         add(noresults);
 
@@ -85,8 +83,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
     /*
      * Title panel for window
      */
-    private Component titlePanel()
-    {
+    private Component titlePanel() {
         // Title label
         return new JLabel("WAREHOUSE ORDER DESCRIPTION (WAREHOUSE ORDER ID : " + warehouseOrder.getId() + ")");
     }
@@ -97,8 +94,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
 
     // TODO: decide what to show
 
-    private Component warehouseOrderDetails()
-    {
+    private Component warehouseOrderDetails() {
         // Details panel
         JPanel details = new JPanel();
         FlowLayout flDetails = new FlowLayout(FlowLayout.CENTER, 50, 30);
@@ -119,8 +115,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
     /*
      * Creates scroll panel for order items
      */
-    private Component warehouseOrderItems()
-    {
+    private Component warehouseOrderItems() {
         JPanel items = new JPanel();
 
         // Title
@@ -128,8 +123,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         //title_items.setHorizontalAlignment(SwingConstants.CENTER);
         items.add(title);
 
-        if (!warehouseOrder.getItems().isEmpty())
-        {
+        if (!warehouseOrder.getItems().isEmpty()) {
             // Column names
             String[] columnNames = {
                     "Product",
@@ -140,8 +134,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
             // Convert items list
             Object[][] alldata = new Object[warehouseOrder.getItems().size()][];
             int i = 0;
-            for (WarehouseOrderItem row : warehouseOrder.getItems())
-            {
+            for (WarehouseOrderItem row : warehouseOrder.getItems()) {
                 Object[] data = {
                         row.getProduct(),
                         row.getQuantity(),
@@ -165,20 +158,18 @@ public class WarehouseOrderInformationMenu extends JPanel {
 
             // Add table to scroll pane
             items.add(table);
-        }
-        else
-        {
+        } else {
             JLabel noresults = new JLabel("No items on this warehouse order.");
             items.add(noresults);
         }
 
         return items;
     }
+
     /*
      * Creates panel for revisions
      */
-    private Component warehouseOrderRevisions()
-    {
+    private Component warehouseOrderRevisions() {
         // Panel
         JPanel revisions = new JPanel();
         revisions.setLayout(new BoxLayout(revisions, BoxLayout.Y_AXIS));
@@ -186,8 +177,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         JLabel title = new JLabel("Revisions");
         revisions.add(title);
 
-        for(WarehouseOrderRevision revision : warehouseOrder.getRevisions())
-        {
+        for (WarehouseOrderRevision revision : warehouseOrder.getRevisions()) {
             JLabel singleRevision = new JLabel(revision.toString());
             singleRevision.add(revisions);
         }

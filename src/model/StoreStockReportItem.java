@@ -10,7 +10,7 @@ public class StoreStockReportItem {
         this.quantity = quantity;
     }
 
-    public int getQuantity(){
+    public int getQuantity() {
         return quantity;
     }
 

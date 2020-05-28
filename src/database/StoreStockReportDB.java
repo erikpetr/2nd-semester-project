@@ -1,17 +1,17 @@
 package database;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import java.sql.*;
-import model.Store;
 import model.Product;
+import model.Store;
 import model.StoreStockReport;
 import model.StoreStockReportItem;
 
+import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
+
 public class StoreStockReportDB implements StoreStockReportDAO {
     DBConnection db = DBConnection.getInstance();
-    
+
     public StoreStockReportDB() throws DataAccessException {
         //This constructor is empty because it only exists to pass along DataAccessException from DBConnection.getInstance()
     }
@@ -19,6 +19,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
     /**
      * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
      * Given a valid StockReport object which doesn't exist in the database, it inserts it into the DB
+     *
      * @param value it's the given T type object (in this case StockReport)
      * @return the generated key after the insertion to the DB
      * @see DBConnection executeInsertWithID() method
@@ -58,6 +59,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
     /**
      * This method takes an ID and converts it to a valid SQL SELECT query, which is the executed
      * Given an ID this method returns a single StoreStockReport which has the given ID
+     *
      * @param id is the ID which we want to search for in the database
      * @return the single object with the given ID
      * @see DBConnection executeSelect() method
@@ -96,7 +98,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
-		return report;
+        return report;
     }
 
     /**
@@ -165,11 +167,11 @@ public class StoreStockReportDB implements StoreStockReportDAO {
     @Override
     public List<StoreStockReport> getByStore(Store store) throws DataAccessException {
         String queryReport = "SELECT "
-               + "[StoreStockReport].id as storestockreport_id,"
-               + "[StoreStockReport].note, [StoreStockReport].date "
-               + "FROM [StoreStockReport] "
-               + "WHERE [StoreStockReport].storeID= ? "
-               + "ORDER BY [StoreStockReport].id DESC;";
+                + "[StoreStockReport].id as storestockreport_id,"
+                + "[StoreStockReport].note, [StoreStockReport].date "
+                + "FROM [StoreStockReport] "
+                + "WHERE [StoreStockReport].storeID= ? "
+                + "ORDER BY [StoreStockReport].id DESC;";
 
         String queryItem = "SELECT "
                 + "[StoreStockReportItem].quantity,"
@@ -180,7 +182,7 @@ public class StoreStockReportDB implements StoreStockReportDAO {
 
         List<StoreStockReport> resultList = new LinkedList<>();
 
-        try (PreparedStatement sReport = db.getDBConn().prepareStatement(queryReport)){
+        try (PreparedStatement sReport = db.getDBConn().prepareStatement(queryReport)) {
             sReport.setInt(1, store.getId());
             ResultSet rsReport = db.executeSelect(sReport);
             while (rsReport.next()) {

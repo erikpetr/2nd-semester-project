@@ -13,6 +13,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
     /**
      * This method takes a WarehouseOrder and converts it to a valid SQL INSERT query, which is the executed
+     *
      * @param value it's the given WarehouseOrder Model
      * @return the generated key after the insertion to the DB
      * @see DBConnection executeInsertWithID() method
@@ -43,6 +44,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
     /**
      * This method takes an ID and converts it to a valid SQL SELECT query, which is the executed
+     *
      * @param id is the ID which we want to search for in the database
      * @return the single WarehouseOrder with the given ID
      * @see DBConnection executeSelect() method
@@ -94,24 +96,22 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                 order.setItems(warehouseOrderItems);
                 return order;
             }
-        }
-        catch (Exception e) {
-        	throw new DataAccessException(e.getMessage());
+        } catch (Exception e) {
+            throw new DataAccessException(e.getMessage());
         }
 
         return null;
     }
 
-	@Override
-	public List<WarehouseOrder> all() throws DataAccessException {
+    @Override
+    public List<WarehouseOrder> all() throws DataAccessException {
         DBConnection dbConn = DBConnection.getInstance();
 
         String query = "SELECT * FROM WarehouseOrder";
         List<WarehouseOrder> orders = new LinkedList<>();
         DAOInterface<Provider> providerDAO = new ProviderDB();
         DAOInterface<Warehouse> warehouseDAO = new WarehouseDB();
-        try (PreparedStatement s = dbConn.getDBConn().prepareStatement(query))
-        {
+        try (PreparedStatement s = dbConn.getDBConn().prepareStatement(query)) {
             ResultSet rs = dbConn.executeSelect(s);
             while (rs.next()) {
                 WarehouseOrder order = new WarehouseOrder(
@@ -136,6 +136,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
     /**
      * This method takes an object and converts it to a valid SQL UPDATE query, which is the executed
+     *
      * @param value it's the given T type object
      * @return the number of rows affected by the update
      * @see DBConnection executeQuery() method
@@ -165,6 +166,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
     /**
      * This method takes an object and converts it to a valid SQL DELETE query, which is the executed
+     *
      * @param value it's the given WarehouseOrder
      * @return the number of rows deleted from the table
      * @see DBConnection executeQuery()
@@ -192,8 +194,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                 "WHERE warehouseID=?;";
         List<WarehouseOrder> orders = new LinkedList<>();
         DAOInterface<Provider> providerDAO = new ProviderDB();
-        try (PreparedStatement s = dbConn.getDBConn().prepareStatement(query))
-        {
+        try (PreparedStatement s = dbConn.getDBConn().prepareStatement(query)) {
             s.setInt(1, warehouse.getId());
 
             ResultSet rs = dbConn.executeSelect(s);
@@ -226,8 +227,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                 "WHERE providerID=?;";
         List<WarehouseOrder> orders = new LinkedList<>();
         DAOInterface<Warehouse> warehouseDAO = new WarehouseDB();
-        try (PreparedStatement s = dbConn.getDBConn().prepareStatement(query))
-        {
+        try (PreparedStatement s = dbConn.getDBConn().prepareStatement(query)) {
             s.setInt(1, provider.getId());
 
             ResultSet rs = dbConn.executeSelect(s);
@@ -311,7 +311,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         String insertQuery = "insert into WarehouseOrderItem (orderID, productID, quantity, unitPrice) " +
                 "VALUES (?, ?, ?, ?);";
 
-        try (PreparedStatement statement = dbConn.getDBConn().prepareStatement(updateQuery)){
+        try (PreparedStatement statement = dbConn.getDBConn().prepareStatement(updateQuery)) {
             for (WarehouseOrderItem warehouseOrderItem : warehouseOrderItems) {
                 statement.setInt(1, warehouseOrderItem.getQuantity());
                 statement.setDouble(2, warehouseOrderItem.getUnitPrice());
@@ -319,18 +319,18 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
                 statement.setInt(4, warehouseOrderItem.getProduct().getId());
 
                 int updated = dbConn.executeQuery(statement);
-                   try (PreparedStatement statement1 = dbConn.getDBConn().prepareStatement(insertQuery)){
+                try (PreparedStatement statement1 = dbConn.getDBConn().prepareStatement(insertQuery)) {
 
-                        statement1.setInt(1, warehouseOrderId);
-                        statement1.setInt(2, warehouseOrderItem.getProduct().getId());
-                        statement1.setInt(3, warehouseOrderItem.getQuantity());
-                        statement1.setDouble(4, warehouseOrderItem.getUnitPrice());
+                    statement1.setInt(1, warehouseOrderId);
+                    statement1.setInt(2, warehouseOrderItem.getProduct().getId());
+                    statement1.setInt(3, warehouseOrderItem.getQuantity());
+                    statement1.setDouble(4, warehouseOrderItem.getUnitPrice());
 
-                        changes += dbConn.executeQuery(statement1);
-                        changes += updated;
+                    changes += dbConn.executeQuery(statement1);
+                    changes += updated;
 
-                       return changes;
-                   }
+                    return changes;
+                }
             }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
@@ -345,21 +345,21 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         String insertQuery = "insert into WarehouseOrderRevision (orderID, status, date, note)" +
                 "VALUES (?, ?, ?, ?);";
 
-            for (WarehouseOrderRevision orderRevision : warehouseOrderRevisions) {
-                if (orderRevision.getId() == 0) {
-                    try (PreparedStatement statement = dbConn.getDBConn().prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+        for (WarehouseOrderRevision orderRevision : warehouseOrderRevisions) {
+            if (orderRevision.getId() == 0) {
+                try (PreparedStatement statement = dbConn.getDBConn().prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
 
-                        statement.setInt(1, warehouseOrderId);
-                        statement.setString(2, orderRevision.getStatus().toString());
-                        statement.setTimestamp(3, Timestamp.valueOf(orderRevision.getDate()));
-                        statement.setString(4, orderRevision.getNote());
-                        return dbConn.executeInsertWithID(statement);
-                    } catch (SQLException e) {
-                        throw new DataAccessException(e.getMessage());
-                    }
+                    statement.setInt(1, warehouseOrderId);
+                    statement.setString(2, orderRevision.getStatus().toString());
+                    statement.setTimestamp(3, Timestamp.valueOf(orderRevision.getDate()));
+                    statement.setString(4, orderRevision.getNote());
+                    return dbConn.executeInsertWithID(statement);
+                } catch (SQLException e) {
+                    throw new DataAccessException(e.getMessage());
                 }
             }
-            return -1;
+        }
+        return -1;
 
     }
 

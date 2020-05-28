@@ -1,9 +1,14 @@
 package gui;
 
 
-import database.*;
-import model.*;
-import controller.*;
+import controller.ControlException;
+import controller.LoginController;
+import controller.ProductController;
+import controller.WarehouseOrderController;
+import database.DataAccessException;
+import model.Product;
+import model.Warehouse;
+import model.WarehouseOrderItem;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +16,12 @@ import java.util.List;
 
 // TODO: Make this menu actually work
 public class CreateWarehouseOrderMenu extends JPanel {
-    private WarehouseOrderController warehouseOrderController;
-    private ProductController productController;
-
     private final JList<Product> productList;
     private final JList<WarehouseOrderItem> warehouseOrderItemList;
     private final JLabel lblProvider;
     private final JPanel optionsPanel;
+    private WarehouseOrderController warehouseOrderController;
+    private ProductController productController;
     private JTextField warehouseOrderItemAmount;
     private JTextField productAmount;
 
@@ -87,7 +91,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
 
     public void updateWarehouseOrderStatus() {
         if (warehouseOrderController.getWarehouseOrder() != null) {
-            lblProvider.setText("Total price: "+warehouseOrderController.getWarehouseOrder().calculateTotalPrice());
+            lblProvider.setText("Total price: " + warehouseOrderController.getWarehouseOrder().calculateTotalPrice());
         }
     }
 
@@ -104,7 +108,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
 
         JLabel lblUnitPrice = new JLabel("Unit price: ");
         optionsPanel.add(lblUnitPrice);
-        JTextField inputUnitPrice = new JTextField(product.getPrice()+"");
+        JTextField inputUnitPrice = new JTextField(product.getPrice() + "");
         inputUnitPrice.setColumns(10);
         optionsPanel.add(inputUnitPrice);
 
@@ -119,7 +123,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
                     PopUp.newPopUp(this, e.getMessage(), "Warning", PopUp.PopUpType.WARNING);
                 }
                 init();
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 PopUp.newPopUp(this, e.getMessage(), "Warning", PopUp.PopUpType.WARNING);
             }
         });
@@ -145,26 +149,26 @@ public class CreateWarehouseOrderMenu extends JPanel {
         btnDecreaseAmount.addActionListener(e -> {
             int quantity = Integer.parseInt(warehouseOrderItemAmount.getText());
             quantity--;
-            warehouseOrderItemAmount.setText(quantity+"");
+            warehouseOrderItemAmount.setText(quantity + "");
         });
         optionsPanel.add(btnDecreaseAmount);
 
         warehouseOrderItemAmount = new JTextField();
         optionsPanel.add(warehouseOrderItemAmount);
         warehouseOrderItemAmount.setColumns(10);
-        warehouseOrderItemAmount.setText(warehouseOrderItem.getQuantity()+"");
+        warehouseOrderItemAmount.setText(warehouseOrderItem.getQuantity() + "");
 
         JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(e -> {
             int quantity = Integer.parseInt(warehouseOrderItemAmount.getText());
             quantity++;
-            warehouseOrderItemAmount.setText(quantity+"");
+            warehouseOrderItemAmount.setText(quantity + "");
         });
         optionsPanel.add(btnIncreaseAmount);
 
         JLabel lblUnitPrice = new JLabel("Unit price: ");
         optionsPanel.add(lblUnitPrice);
-        JTextField inputUnitPrice = new JTextField(warehouseOrderItem.getUnitPrice()+"");
+        JTextField inputUnitPrice = new JTextField(warehouseOrderItem.getUnitPrice() + "");
         inputUnitPrice.setColumns(10);
         optionsPanel.add(inputUnitPrice);
 
@@ -189,6 +193,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
         optionsPanel.revalidate();
         optionsPanel.repaint();
     }
+
     private void chooseProvider() {
         CreateWhOrderProviderChooser.main(this, warehouseOrderController);
     }
@@ -203,7 +208,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
         if (warehouseOrderController.getWarehouseOrder() != null) {
             DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel = new DefaultListModel<>();
             List<WarehouseOrderItem> dataList = warehouseOrderController.getWarehouseOrder().getItems();
-            for(WarehouseOrderItem orderItem : dataList) {
+            for (WarehouseOrderItem orderItem : dataList) {
                 warehouseOrderItemListModel.addElement(orderItem);
             }
 
@@ -243,6 +248,10 @@ public class CreateWarehouseOrderMenu extends JPanel {
 
     }
 
+    private CreateWarehouseOrderMenu getThis() {
+        return this;
+    }
+
     private class ProductLoader extends Thread {
 
         @Override
@@ -252,7 +261,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
                     DefaultListModel<Product> productListModel = new DefaultListModel<>();
                     Warehouse warehouse = warehouseOrderController.getWarehouseOrder().getWarehouse();
                     List<Product> dataList = productController.getProducts(warehouse);
-                    for(Product product : dataList) {
+                    for (Product product : dataList) {
                         productListModel.addElement(product);
                     }
 
@@ -264,9 +273,5 @@ public class CreateWarehouseOrderMenu extends JPanel {
                 }
             }
         }
-    }
-
-    private CreateWarehouseOrderMenu getThis() {
-        return this;
     }
 }

@@ -30,10 +30,10 @@ public class OrderRevision {
         this.order = order;
         this.itemsChanged = itemsChanged;
     }
-    
+
     public OrderRevision(Order order) {
-    	this.order = order;
-    	this.itemsChanged = new LinkedList<>();
+        this.order = order;
+        this.itemsChanged = new LinkedList<>();
     }
 
     public int getId() {
@@ -101,7 +101,7 @@ public class OrderRevision {
     }
 
     public boolean hasOrderItem(OrderItem orderItem) {
-        for (OrderItem item: itemsChanged) {
+        for (OrderItem item : itemsChanged) {
             if (orderItem.getProduct().getId() == item.getProduct().getId()) {
                 return true;
             }

@@ -9,16 +9,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarehouseDB implements DAOInterface<Warehouse>{
+public class WarehouseDB implements DAOInterface<Warehouse> {
     DBConnection db = DBConnection.getInstance();
-    
+
     public WarehouseDB() throws DataAccessException {
         //Empty constructor which allows DataAccessException to be thrown
-	}
-    
+    }
+
     /**
      * This method takes an object and converts it to a valid SQL INSERT query, which is the executed
      * Given a valid user which doesnt exist in the database, it inserts it to the DB
+     *
      * @param value it's the given T type object (in this case Warehouse)
      * @return the generated key after the insertion to the DB
      * @see DBConnection executeInsertWithID() method
@@ -64,21 +65,20 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
                 );
             }
         } catch (SQLException e) {
-        	throw new DataAccessException();
+            throw new DataAccessException();
         }
         return null;
     }
 
     /**
-     *
      * @return List of all entities
      * @throws DataAccessException
      */
     @Override
     public List<Warehouse> all() throws DataAccessException {
         String query = "SELECT * FROM Warehouse";
-        try (PreparedStatement s = db.getDBConn().prepareStatement(query)){
-        	AddressDB addressDB = new AddressDB();
+        try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
+            AddressDB addressDB = new AddressDB();
             try (ResultSet rs = s.executeQuery()) {
                 List<Warehouse> resultList = new ArrayList<>();
 
@@ -102,13 +102,13 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
      *
      * @param value it's the given T type object
      * @return the number of rows affected by the update
-     * @throws DataAccessException 
+     * @throws DataAccessException
      * @see DBConnection executeQuery() method
      */
     @Override
     public int update(Warehouse value) throws DataAccessException {
         // Address is updated separately in AddressController
-        String query= "UPDATE Warehouse SET name=?, password=?, email=? WHERE id=?;";
+        String query = "UPDATE Warehouse SET name=?, password=?, email=? WHERE id=?;";
         int rows = -1;
         try (PreparedStatement s = db.getDBConn().prepareStatement(query)) {
             s.setString(1, value.getName());
@@ -127,7 +127,7 @@ public class WarehouseDB implements DAOInterface<Warehouse>{
      *
      * @param value it's the given T type object
      * @return the number of rows deleted from the table
-     * @throws DataAccessException 
+     * @throws DataAccessException
      * @see DBConnection executeQuery()
      */
     @Override

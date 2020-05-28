@@ -12,8 +12,7 @@ public class Address {
     private String region;
     private String country;
 
-    public Address (int id, String number, String supplement, String street, String city, String zipcode, String region, String country)
-    {
+    public Address(int id, String number, String supplement, String street, String city, String zipcode, String region, String country) {
         this.id = id;
         this.number = number;
         this.supplement = supplement;
@@ -24,8 +23,7 @@ public class Address {
         this.country = country;
     }
 
-    public Address (String number, String supplement, String street, String city, String zipcode, String region, String country)
-    {
+    public Address(String number, String supplement, String street, String city, String zipcode, String region, String country) {
         this.number = number;
         this.supplement = supplement;
         this.street = street;
@@ -39,64 +37,64 @@ public class Address {
         return id;
     }
 
-    public String getNumber(){
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
         return number;
-    }
-
-    public String getSupplement(){
-        return supplement;
-    }
-
-    public String getStreet(){
-        return street;
-    }
-
-    public String getCity(){
-        return city;
-    }
-
-    public String getZipcode(){
-        return zipcode;
-    }
-
-    public String getRegion(){
-        return region;
-    }
-
-    public String getCountry(){
-        return country;
     }
 
     public void setNumber(String number) {
         this.number = number;
     }
 
+    public String getSupplement() {
+        return supplement;
+    }
+
     public void setSupplement(String supplement) {
         this.supplement = supplement;
+    }
+
+    public String getStreet() {
+        return street;
     }
 
     public void setStreet(String street) {
         this.street = street;
     }
 
+    public String getCity() {
+        return city;
+    }
+
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getZipcode() {
+        return zipcode;
     }
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 
+    public String getRegion() {
+        return region;
+    }
+
     public void setRegion(String region) {
         this.region = region;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public String getCountry() {
+        return country;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override

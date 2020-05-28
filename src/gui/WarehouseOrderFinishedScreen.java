@@ -11,8 +11,8 @@ import java.util.List;
 
 public class WarehouseOrderFinishedScreen extends JPanel {
     private final int warehouseOrderId;
-    private WarehouseOrder warehouseOrder;
     private final JList<WarehouseOrderItem> warehouseOrderItemList;
+    private WarehouseOrder warehouseOrder;
 
     /**
      * Create the panel.
@@ -25,7 +25,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
         JPanel infoPanel = new JPanel();
         add(infoPanel, BorderLayout.NORTH);
 
-        JLabel lblOrderInfo = new JLabel("Warehouse order " +warehouseOrderId+ " finished");
+        JLabel lblOrderInfo = new JLabel("Warehouse order " + warehouseOrderId + " finished");
         lblOrderInfo.setFont(new Font("Dialog", Font.BOLD, 20));
         infoPanel.add(lblOrderInfo);
 
@@ -38,7 +38,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
         JPanel footerPanel = new JPanel();
         add(footerPanel, BorderLayout.SOUTH);
 
-        JLabel lblTotalPrice = new JLabel("Total price "+warehouseOrder.calculateTotalPrice()+" €");
+        JLabel lblTotalPrice = new JLabel("Total price " + warehouseOrder.calculateTotalPrice() + " €");
         footerPanel.add(lblTotalPrice);
 
         EventQueue.invokeLater(this::loadWarehouseOrder);
@@ -57,7 +57,7 @@ public class WarehouseOrderFinishedScreen extends JPanel {
         if (warehouseOrder != null) {
             DefaultListModel<WarehouseOrderItem> warehouseOrderItemListModel = new DefaultListModel<>();
             List<WarehouseOrderItem> dataList = warehouseOrder.getItems();
-            for(WarehouseOrderItem orderItem : dataList) {
+            for (WarehouseOrderItem orderItem : dataList) {
                 warehouseOrderItemListModel.addElement(orderItem);
             }
 

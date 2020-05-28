@@ -1,25 +1,25 @@
 package gui;
 
-import java.util.List;
-
 import controller.ControlException;
-import controller.StoreStockReportController;
 import controller.ProductController;
+import controller.StoreStockReportController;
 import database.DataAccessException;
 import gui.PopUp.PopUpType;
-import java.awt.*;
-import javax.swing.*;
+import model.Product;
+import model.StoreStockReport;
+import model.StoreStockReportItem;
 
-import model.*;
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 public class CreateStoreStockReportMenu extends JPanel {
 
-    private StoreStockReportController storeStockReportController;
-    private ProductController productController;
-
-    private DefaultListModel<Product> productListModel;
     private final JList<Product> productList;
     private final JList<StoreStockReportItem> reportItemList;
+    private StoreStockReportController storeStockReportController;
+    private ProductController productController;
+    private DefaultListModel<Product> productListModel;
     private JLabel lblOrderStatus;
     private JPanel optionsPanel;
     private JTextField orderItemAmount;
@@ -28,7 +28,7 @@ public class CreateStoreStockReportMenu extends JPanel {
     /**
      * Create the panel.
      */
-    public CreateStoreStockReportMenu () {
+    public CreateStoreStockReportMenu() {
         try {
             storeStockReportController = new StoreStockReportController();
             storeStockReportController.createReport();
@@ -71,7 +71,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         lblOrderStatus = new JLabel("Choose a warehouse");
         sidePanel.add(lblOrderStatus);
 
-        JButton btnCancelReport= ColorStyle.newCancelButton("Cancel");
+        JButton btnCancelReport = ColorStyle.newCancelButton("Cancel");
         btnCancelReport.addActionListener(actionEvent -> cancelReport());
         sidePanel.add(btnCancelReport);
 
@@ -89,7 +89,7 @@ public class CreateStoreStockReportMenu extends JPanel {
     }
 
     public void updateReportStatus() {
-        lblOrderStatus.setText("Total price: "+ storeStockReportController.getReport().calculateTotalPrice());
+        lblOrderStatus.setText("Total price: " + storeStockReportController.getReport().calculateTotalPrice());
     }
 
     private void showControlsFor(Product product) {
@@ -135,20 +135,20 @@ public class CreateStoreStockReportMenu extends JPanel {
         btnDecreaseAmount.addActionListener(e -> {
             int quantity = Integer.parseInt(orderItemAmount.getText());
             quantity--;
-            orderItemAmount.setText(quantity+"");
+            orderItemAmount.setText(quantity + "");
         });
         optionsPanel.add(btnDecreaseAmount);
 
         orderItemAmount = new JTextField();
         optionsPanel.add(orderItemAmount);
         orderItemAmount.setColumns(10);
-        orderItemAmount.setText(storeStockReportItem.getQuantity()+"");
+        orderItemAmount.setText(storeStockReportItem.getQuantity() + "");
 
         JButton btnIncreaseAmount = ColorStyle.newButton("Increment >>");
         btnIncreaseAmount.addActionListener(e -> {
             int quantity = Integer.parseInt(orderItemAmount.getText());
             quantity++;
-            orderItemAmount.setText(quantity+"");
+            orderItemAmount.setText(quantity + "");
         });
         optionsPanel.add(btnIncreaseAmount);
 
@@ -184,7 +184,7 @@ public class CreateStoreStockReportMenu extends JPanel {
         if (report != null) {
             DefaultListModel<StoreStockReportItem> reportItemListModel = new DefaultListModel<>();
             List<StoreStockReportItem> dataList = report.getItems();
-            for(StoreStockReportItem reportItem : dataList) {
+            for (StoreStockReportItem reportItem : dataList) {
                 reportItemListModel.addElement(reportItem);
             }
 
@@ -208,7 +208,7 @@ public class CreateStoreStockReportMenu extends JPanel {
     }
 
     private void submitReport() {
-        String noteReport = (String)JOptionPane.showInputDialog(
+        String noteReport = (String) JOptionPane.showInputDialog(
                 this,
                 "Please attach a note to this report",
                 "Save Report",
@@ -230,9 +230,11 @@ public class CreateStoreStockReportMenu extends JPanel {
 
     private class ProductLoader extends Thread {
         JComponent parent;
+
         public ProductLoader(JComponent parent) {
             this.parent = parent;
         }
+
         @Override
         public void run() {
             try {
@@ -240,7 +242,7 @@ public class CreateStoreStockReportMenu extends JPanel {
                     try {
                         productListModel = new DefaultListModel<>();
                         List<Product> dataList = productController.all();
-                        for(Product product : dataList) {
+                        for (Product product : dataList) {
                             productListModel.addElement(product);
                         }
 

@@ -13,13 +13,12 @@ import java.util.List;
  * @author dmai0919-group3@UCNDK.onmicrosoft.com
  */
 public class OrderController {
+    private final OrderDAO orderDAO;
     private Order order;
-	private final OrderDAO orderDAO;
-	
-	public OrderController() throws DataAccessException
-	{
-		 this.orderDAO = new OrderDB();
-	}
+
+    public OrderController() throws DataAccessException {
+        this.orderDAO = new OrderDB();
+    }
 
 
     /**
@@ -85,7 +84,7 @@ public class OrderController {
             User loggedInUser = LoginController.getLoggedInUser();
             if (loggedInUser instanceof Warehouse) {
                 return orderDAO.getOrders((Warehouse) LoginController.getLoggedInUser());
-            } else if (loggedInUser instanceof Store){
+            } else if (loggedInUser instanceof Store) {
                 return orderDAO.getOrders((Store) LoginController.getLoggedInUser());
             }
             return new LinkedList<>();
@@ -129,8 +128,7 @@ public class OrderController {
         }
     }
 
-    public Order getOrder(int id) throws DataAccessException 
-    {
+    public Order getOrder(int id) throws DataAccessException {
         return orderDAO.selectByID(id);
     }
 

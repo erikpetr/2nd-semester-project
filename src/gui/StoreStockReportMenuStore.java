@@ -1,16 +1,15 @@
 package gui;
 
 import controller.LoginController;
-
 import model.Store;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 
 public class StoreStockReportMenuStore extends StoreStockReportMenu {
 
-    public StoreStockReportMenuStore () {
+    public StoreStockReportMenuStore() {
         super();
         this.currentStore = (Store) LoginController.getLoggedInUser();
         this.reloadDataAndGui();
@@ -27,11 +26,11 @@ public class StoreStockReportMenuStore extends StoreStockReportMenu {
         this.setVisible(true);
     }
 
-    protected void reloadDataAndGui () {
+    protected void reloadDataAndGui() {
         loadReports();
     }
 
-    private void openCreateStoreStockMenu () {
+    private void openCreateStoreStockMenu() {
         JComponent createStoreStockReports = new CreateStoreStockReportMenu();
         LayoutChangeMonitor.getInstance().setLayout(createStoreStockReports, "createStoreStockMenu");
     }

@@ -35,20 +35,20 @@ public class StoreStockReport {
         this.items = new LinkedList<>();
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public LocalDateTime getDate(){
+    public LocalDateTime getDate() {
         return date;
-    }
-
-    public String getNote(){
-        return note;
     }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getNote() {
+        return note;
     }
 
     public void setNote(String note) {
@@ -92,7 +92,7 @@ public class StoreStockReport {
     public double calculateTotalPrice() {
         double price = 0;
 
-        for (StoreStockReportItem reportItem: items) {
+        for (StoreStockReportItem reportItem : items) {
             price += reportItem.getProduct().getPrice() * reportItem.getQuantity();
         }
 

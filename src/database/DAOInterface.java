@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * This interface is used in connection with the DAO pattern
+ *
  * @param <T> with this parameter you can set a type which you will use in later methods as parameters
  */
 public interface DAOInterface<T> {
@@ -46,10 +47,11 @@ public interface DAOInterface<T> {
 
     /**
      * This method takes an object and converts it to a valid SQL DELETE query, which is the executed
+     *
      * @param value it's the given T type object
      * @return the number of rows deleted from the table
-     * @see DBConnection executeQuery()
      * @throws DataAccessException when SQLException inside the method
+     * @see DBConnection executeQuery()
      */
     int delete(T value) throws DataAccessException;
 }

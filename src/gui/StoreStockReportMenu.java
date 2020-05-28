@@ -1,20 +1,15 @@
 package gui;
 
-import java.awt.Color;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import controller.ControlException;
 import controller.StoreStockReportController;
-
 import model.Store;
-
-
-import java.awt.*;
-import javax.swing.*;
 import model.StoreStockReport;
 import model.StoreStockReportItem;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public abstract class StoreStockReportMenu extends JPanel {
@@ -29,7 +24,7 @@ public abstract class StoreStockReportMenu extends JPanel {
     /**
      * Create the panel.
      */
-    protected StoreStockReportMenu () {
+    protected StoreStockReportMenu() {
         setLayout(new BorderLayout(0, 0));
 
         // Option Panel
@@ -43,7 +38,7 @@ public abstract class StoreStockReportMenu extends JPanel {
     }
 
 
-    protected void refreshReportSplitPanel () {
+    protected void refreshReportSplitPanel() {
         // Report Split Panel
         reportPanel = new JSplitPane();
         reportPanel.setResizeWeight(0.2);
@@ -68,7 +63,7 @@ public abstract class StoreStockReportMenu extends JPanel {
         reportPanel.setRightComponent(itemScroll);
     }
 
-    protected JTable getStoreStockReportTable (StoreStockReport report) {
+    protected JTable getStoreStockReportTable(StoreStockReport report) {
         String[] columnNames = {"ProductID",
                 "Product",
                 "Quantity",
@@ -108,9 +103,9 @@ public abstract class StoreStockReportMenu extends JPanel {
         return new JList<>(reports.toArray(new StoreStockReport[reports.size()]));
     }
 
-    protected abstract void reloadDataAndGui ();
+    protected abstract void reloadDataAndGui();
 
-    protected void loadReports () {
+    protected void loadReports() {
         try {
             reports = StoreStockReportController.getReportStoreStockReportByStore(currentStore);
         } catch (ControlException e) {

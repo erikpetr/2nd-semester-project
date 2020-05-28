@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProviderDB implements DAOInterface<Provider> {
     DBConnection db = DBConnection.getInstance();
-    
+
     public ProviderDB() throws DataAccessException {
         //This constructor is empty because it only exists to pass along DataAccessException from DBConnection.getInstance()
     }
@@ -71,7 +71,6 @@ public class ProviderDB implements DAOInterface<Provider> {
     }
 
     /**
-     *
      * @return List of all entities
      * @throws DataAccessException
      */
