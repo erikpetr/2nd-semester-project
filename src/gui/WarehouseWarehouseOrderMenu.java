@@ -30,32 +30,26 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
             PopUp.newPopUp(this, e.getMessage(), "Error", PopUp.PopUpType.ERROR);
         }
 
-        // Set layout
-        GridLayout gridLayout = new GridLayout(1,2);
-        gridLayout.setHgap(10);
-        setLayout(gridLayout);
-
-        User user = LoginController.getLoggedInUser();
-
-        if (user instanceof Warehouse) {
-            JPanel optionsPane = new JPanel();
-            add(optionsPane, BorderLayout.NORTH);
-
-            JButton btnCreateWarehouseOrder = ColorStyle.newButton("Create Warehouse Order");
-            optionsPane.add(btnCreateWarehouseOrder);
-            btnCreateWarehouseOrder.addActionListener(actionEvent -> createWarehouseOrder());
-        }
+        setLayout(new BorderLayout(0, 0));
+        
+        JPanel optionsPane = new JPanel();
+        add(optionsPane, BorderLayout.NORTH);
+        
+        JButton btnCreateWarehouseOrder = ColorStyle.newButton("Create Warehouse Order");
+        optionsPane.add(btnCreateWarehouseOrder);
+        btnCreateWarehouseOrder.addActionListener(actionEvent -> createWarehouseOrder());
 
         // List of orders
         scroll_warehouse_orders = new JScrollPane(warehouseOrdersTable());
-        add(scroll_warehouse_orders);
+        add(scroll_warehouse_orders, BorderLayout.WEST);
 
         warehouseOrderInfo = new WarehouseOrderInformationMenu();
-        add(warehouseOrderInfo);
+        add(warehouseOrderInfo, BorderLayout.EAST);
     }
 
     private void createWarehouseOrder() {
         CreateWarehouseOrderMenu component = new CreateWarehouseOrderMenu();
+        
         LayoutChangeMonitor.getInstance().setLayout(component, "create_warehouse_order_menu");
     }
 
@@ -81,7 +75,6 @@ public class WarehouseWarehouseOrderMenu extends JPanel {
             }
             Object[][] alldata = new Object[warehouseOrders.size()][];
             int i = 0;
-            // TODO: decide what to show
             for (WarehouseOrder row : warehouseOrders)
             {
                 Object[] data = {

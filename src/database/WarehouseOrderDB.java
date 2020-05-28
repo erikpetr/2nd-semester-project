@@ -23,7 +23,6 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
         String pstmtString = "INSERT INTO WarehouseOrder (providerID, warehouseID, date, status) VALUES (?, ?, ?, ?) ;";
 
-        // TODO: Insert orderItems and revisions too
         try (PreparedStatement pstmt = con.prepareStatement(pstmtString, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, value.getProvider().getId());
             pstmt.setInt(2, value.getWarehouse().getId());
@@ -55,8 +54,7 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
         Connection con = dbConn.getDBConn();
 
         String query = "SELECT * FROM WarehouseOrder WHERE id=?";
-        String itemQuery = "select * from WarehouseOrderItem as w " +
-                "JOIN Product p on p.id = w.productID where orderID=?";
+        String itemQuery = "select * from WarehouseOrderItem where orderID=?";
 
         try (PreparedStatement s = con.prepareStatement(query)) {
             s.setInt(1, id);
@@ -83,17 +81,14 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
                 PreparedStatement statement = con.prepareStatement(itemQuery);
                 statement.setInt(1, order.getId());
+                ProductDAO productDAO = new ProductDB();
                 ResultSet resultSet = dbConn.executeSelect(statement);
                 while (resultSet.next()) {
+                    // TODO rs.getInt("productID") throws exc for some reason
                     WarehouseOrderItem orderItem = new WarehouseOrderItem(
-                            resultSet.getInt("w.quantity"),
-                            resultSet.getDouble("w.unitPrice"),
-                            new Product(
-                                    resultSet.getInt("p.id"),
-                                    resultSet.getString("p.name"),
-                                    resultSet.getDouble("p.weight"),
-                                    resultSet.getDouble("p.price")
-                            )
+                            resultSet.getInt("quantity"),
+                            resultSet.getDouble("unitPrice"),
+                            productDAO.selectByID(resultSet.getInt("productID"))
                     );
                     warehouseOrderItems.add(orderItem);
                 }
@@ -154,7 +149,6 @@ public class WarehouseOrderDB implements WarehouseOrderDAO {
 
         String query = "UPDATE WarehouseOrder SET date = ?, status = ? WHERE id=?;";
 
-        // TODO: Also WarehousOrderRevision should be added when update happened
         try (PreparedStatement pstmt = con.prepareStatement(query)) {
             pstmt.setTimestamp(1, Timestamp.valueOf(value.getDate()));
             pstmt.setString(2, value.getStatus().name());

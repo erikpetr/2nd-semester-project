@@ -132,13 +132,18 @@ public class StockDB implements StockDAO {
         // There are two keys which point to product and a warehouse.
         // Since stock is attached to only one product and one warehouse it's enough
         // We DO NOT update warehouseID nor productID
-        int rows = -1;
+        int rows = 0;
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryStock)) {
             s.setInt(1, value.getQuantity());
             s.setInt(2, value.getMinQuantity());
             s.setInt(3, value.getProduct().getId());
             s.setInt(4, value.getWarehouse().getId());
             rows = db.executeQuery(s);
+            if (rows == 0) {
+                if (create(value) != -1){
+                    return 1;
+                }
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }

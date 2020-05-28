@@ -132,8 +132,6 @@ public class WarehouseOrderController {
         }
     }
 
-    // TODO: find all the products and make sure they have stocks
-
     public boolean updateStock(WarehouseOrder warehouseOrder) throws ControlException {
         StockDAO stockDAO = null;
         try {

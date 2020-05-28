@@ -19,9 +19,7 @@ public class CreateOrderMenu extends JPanel {
     private OrderController orderController;
     private ProductController productController;
 
-    private DefaultListModel<Product> productListModel;
-    private DefaultListModel<OrderItem> orderItemListModel;
-    private final JList<Product> productList;
+	private final JList<Product> productList;
     private final JList<OrderItem> orderItemList;
     private JLabel lblOrderStatus;
     private JPanel optionsPanel;
@@ -30,7 +28,6 @@ public class CreateOrderMenu extends JPanel {
     
     /**
      * Create the panel.
-	 * TODO: Add weight limit, for popup
      */
     public CreateOrderMenu() {
         try {
@@ -92,6 +89,7 @@ public class CreateOrderMenu extends JPanel {
     	loadOrderItems();
     	loadProducts();
     	resetOptionsPanel();
+    	checkWeightLimit();
     }
 
     public void updateOrderStatus() {
@@ -182,8 +180,14 @@ public class CreateOrderMenu extends JPanel {
         optionsPanel.revalidate();
         optionsPanel.repaint();
     }
-    
-    private void resetOptionsPanel() {
+
+	private void checkWeightLimit() {
+		if (orderController.getOrder().calculateTotalWeight() > 1000) {
+			PopUp.newPopUp(this, "However, you can still continue, but keep that in mind", "Weight limit reached", PopUpType.INFORMATION);
+		}
+	}
+
+	private void resetOptionsPanel() {
     	optionsPanel.removeAll();
     	optionsPanel.revalidate();
     	optionsPanel.repaint();
@@ -195,7 +199,7 @@ public class CreateOrderMenu extends JPanel {
 	
 	private void loadOrderItems() {
 		if (orderController.getOrder() != null) {
-			orderItemListModel = new DefaultListModel<>();
+			DefaultListModel<OrderItem> orderItemListModel = new DefaultListModel<>();
 			List<OrderItem> dataList = orderController.getOrder().getItems();
 			for(OrderItem orderItem : dataList) {
                 orderItemListModel.addElement(orderItem);
@@ -235,7 +239,7 @@ public class CreateOrderMenu extends JPanel {
 		public void run() {
 			if (orderController.getOrder() != null) {
 				try {
-					productListModel = new DefaultListModel<>();
+					DefaultListModel<Product> productListModel = new DefaultListModel<>();
 					Warehouse warehouse = orderController.getOrder().getWarehouse();
 					List<Product> dataList = productController.getProducts(warehouse);
 					for(Product product : dataList) {

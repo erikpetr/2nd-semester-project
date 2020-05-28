@@ -164,6 +164,16 @@ public class Order {
     	return price;
 	}
 
+	public double calculateTotalWeight() {
+    	double weight = 0;
+
+		for (OrderItem orderItem: items) {
+			weight += orderItem.getProduct().getWeight() * orderItem.getQuantity();
+		}
+
+		return weight;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder("Order\n");

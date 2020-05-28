@@ -12,6 +12,7 @@ import controller.ControlException;
 import controller.StockController;
 import model.Stock;
 
+// TODO: Quantity Min should be changable
 public class StockMenu extends JScrollPane {
 
 	/**

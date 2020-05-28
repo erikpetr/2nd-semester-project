@@ -201,15 +201,18 @@ public class CreateStoreStockReportMenu extends JPanel {
     }
 
     private void cancelReport() {
-        // TODO : Show all report instead of nothing when canceling
         storeStockReportController.setReport(null);
-        this.setVisible(false);
+        EventQueue.invokeLater(() -> {
+            StoreStockReportMenuStore reportMenuStore = new StoreStockReportMenuStore();
+            LayoutChangeMonitor.getInstance().setLayout(reportMenuStore, "report_store_menu");
+            this.setVisible(false);
+        });
     }
 
     private void submitReport() {
         String noteReport = (String)JOptionPane.showInputDialog(
                 this,
-                "Please attech a note to this report",
+                "Please attach a note to this report",
                 "Save Report",
                 JOptionPane.PLAIN_MESSAGE,
                 null,

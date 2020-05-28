@@ -29,8 +29,7 @@ public class OrderInformationMenu extends JPanel {
 		try {
 			order = new OrderController().getOrder(orderId);
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			PopUp.newPopUp(this, e.getMessage(), "Error loading order", PopUp.PopUpType.ERROR);
 		}
 		
 		System.out.println("Shwoing order number " + order.getId());
@@ -230,7 +229,7 @@ public class OrderInformationMenu extends JPanel {
 		
 		for(OrderRevision revision : order.getRevisions())
 		{
-			// TODO: Handle this like a human being not like a barbarian
+			// TODO: Show revisions like a human being not like a barbarian
 			JLabel single_revision = new JLabel(revision.toString());
 			single_revision.add(revisions);
 		}

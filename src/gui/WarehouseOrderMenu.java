@@ -137,17 +137,19 @@ public class WarehouseOrderMenu extends JPanel
 				{
 					if (orderInfo != null)
 					{
-						System.out.println("Removing order info");
 						// Remove old panel
 						remove(orderInfo);
 					}
 
-					// Create new panel
-					orderInfo = new OrderInformationMenu((int) valueAt);
-					// Add panel 
-					add(orderInfo);
-					revalidate();
-					repaint();
+					EventQueue.invokeLater(() -> {
+
+						// Create new panel
+						orderInfo = new OrderInformationMenu((int) valueAt);
+						// Add panel
+						add(orderInfo);
+						revalidate();
+						repaint();
+					});
 				}
 		    });
 			

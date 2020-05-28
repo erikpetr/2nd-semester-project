@@ -72,7 +72,7 @@ public class CreateWarehouseOrderMenu extends JPanel {
         sidePanel.add(lblProvider);
         sidePanel.add(btnChooseProvider);
 
-        JButton btnCancelWarehouseOrder = ColorStyle.newButton("Cancel");
+        JButton btnCancelWarehouseOrder = ColorStyle.newCancelButton("Cancel");
         btnCancelWarehouseOrder.addActionListener(actionEvent -> cancelWarehouseOrder());
         sidePanel.add(btnCancelWarehouseOrder);
 

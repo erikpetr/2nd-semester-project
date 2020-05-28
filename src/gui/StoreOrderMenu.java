@@ -16,7 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.List;
 
-// TODO: Make this faster and make orderInfo better
+// TODO: Make orderInfo look better
 public class StoreOrderMenu extends JPanel 
 {
 	// Controllers
