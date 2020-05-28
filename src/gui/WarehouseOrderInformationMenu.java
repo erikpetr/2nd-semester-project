@@ -6,6 +6,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
 
 public class WarehouseOrderInformationMenu extends JPanel {
     private WarehouseOrder warehouseOrder;
@@ -103,7 +104,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         JPanel details = new JPanel();
         details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
         // labels
-        JLabel date = new JLabel("Date: " + warehouseOrder.getDate());
+        JLabel date = new JLabel("Date: " + warehouseOrder.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - H:m")));
         details.add(date);
         JLabel warehouse = new JLabel("Warehouse: " + warehouseOrder.getWarehouse());
         details.add(warehouse);
@@ -191,7 +192,7 @@ public class WarehouseOrderInformationMenu extends JPanel {
         JPanel revision = new JPanel();
         revision.setLayout(new BoxLayout(revision, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel("Revision from date: "+orderRevision.getDate().toString());
+        JLabel title = new JLabel("Revision from date: "+orderRevision.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - H:m")));
         JLabel statusChange = new JLabel("Updated status to: "+orderRevision.getStatus().value);
         revision.add(title);
         revision.add(statusChange);

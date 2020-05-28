@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 // TODO: Make orderInfo look better
@@ -97,7 +98,7 @@ public class StoreOrderMenu extends JPanel {
             for (Order row : orders) {
                 Object[] data = {
                         row.getId(),
-                        row.getDate(),
+                        row.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - H:m")),
                         row.getWarehouse(),
                         row.getStatus(),
                         "See more"

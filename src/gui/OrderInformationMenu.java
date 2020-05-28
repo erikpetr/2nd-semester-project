@@ -11,6 +11,7 @@ import database.DataAccessException;
 import model.*;
 
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -136,7 +137,7 @@ public class OrderInformationMenu extends JPanel {
 		JPanel details = new JPanel();
 		details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
 		// labels
-		JLabel date = new JLabel("Date: " + order.getDate());
+		JLabel date = new JLabel("Date: " + order.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - H:m")));
 		details.add(date);
 		if (LoginController.getLoggedInUser() instanceof Warehouse)
 		{
@@ -240,7 +241,7 @@ public class OrderInformationMenu extends JPanel {
 		JPanel revision = new JPanel();
 		revision.setLayout(new BoxLayout(revision, BoxLayout.Y_AXIS));
 
-		JLabel title = new JLabel("Revision from date: "+orderRevision.getDate().toString());
+		JLabel title = new JLabel("Revision from date: "+orderRevision.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - H:m")));
 		JLabel statusChange = new JLabel("Updated status to: "+orderRevision.getStatus().value);
 		revision.add(title);
 		revision.add(statusChange);
