@@ -6,6 +6,8 @@ import database.ProviderDB;
 import model.Provider;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProviderController {
     private final DAOInterface<Provider> providerDAO;
@@ -29,6 +31,12 @@ public class ProviderController {
 
     public List<Provider> all() throws DataAccessException {
         return providerDAO.all();
+    }
+
+    public List<Provider> getAvailableProviders() throws DataAccessException {
+        List<Provider> all = providerDAO.all();
+        Stream<Provider> providers = all.stream();
+        return providers.filter(Provider::isAvailable).collect(Collectors.toList());
     }
 
     public int updateProvider(Provider value) throws DataAccessException {

@@ -61,7 +61,7 @@ public class CreateWhOrderProviderChooser extends JDialog {
         try {
             DefaultListModel<Provider> providerListModel = new DefaultListModel<>();
             List<Provider> dataList;
-            dataList = new ProviderController().all();
+            dataList = new ProviderController().getAvailableProviders();
 
             for (Provider provider : dataList) {
                 providerListModel.addElement(provider);

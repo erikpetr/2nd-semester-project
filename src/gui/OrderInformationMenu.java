@@ -80,7 +80,9 @@ public class OrderInformationMenu extends JPanel {
 
 		User loggedInUser = LoginController.getLoggedInUser();
 
-		if (loggedInUser instanceof Warehouse && !order.getStatus().equals(Status.REJECTED)) {
+		boolean immutable = order.getStatus().equals(Status.REJECTED) || order.getStatus().equals(Status.DELIVERED);
+
+		if (loggedInUser instanceof Warehouse && !immutable) {
 			JPanel buttonPane = new JPanel();
 			body.add(buttonPane);
 
