@@ -173,7 +173,7 @@ public class UpdateProviderMenu extends JPanel {
         lblProviderView.setText("Edit provider");
         this.name.setText("" + provider.getName());
         this.email.setText("" + provider.getEmail());
-        this.available.setSelected(provider.getAvailable());
+        this.available.setSelected(provider.isAvailable());
         this.city.setText(provider.getAddress().getCity());
         this.zipcode.setText(provider.getAddress().getZipcode());
         this.street.setText(provider.getAddress().getStreet());

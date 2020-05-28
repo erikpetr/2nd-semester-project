@@ -99,7 +99,7 @@ public class ProviderMenu extends JPanel {
         info += "<html><h1><b>Provider name: </b>" + selectedValue.getName() + " (ID: " + selectedValue.getId() + ")</h1></br>";
         info += "<h2>Email address: " + selectedValue.getEmail() + "</h2></br>";
         info += "<h2>Address: " + selectedValue.getAddress().toString() + "</h2>";
-        info += "<h2>Available: " + (selectedValue.getAvailable() ? "Yes" : "No") + "</h2>";
+        info += "<h2>Available: " + (selectedValue.isAvailable() ? "Yes" : "No") + "</h2>";
         providerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
         providerInfo.setEditable(false);
         providerInfo.setContentType("text/html");

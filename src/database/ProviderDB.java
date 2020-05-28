@@ -32,7 +32,7 @@ public class ProviderDB implements DAOInterface<Provider> {
         try (PreparedStatement s = db.getDBConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             s.setString(1, value.getName());
             s.setString(2, value.getEmail());
-            s.setBoolean(3, value.getAvailable());
+            s.setBoolean(3, value.isAvailable());
             s.setInt(4, addressID);
             providerID = db.executeInsertWithID(s);
         } catch (SQLException e) {
@@ -112,7 +112,7 @@ public class ProviderDB implements DAOInterface<Provider> {
         try (PreparedStatement s = db.getDBConn().prepareStatement(queryProduct)) {
             s.setString(1, value.getName());
             s.setString(2, value.getEmail());
-            s.setBoolean(3, value.getAvailable());
+            s.setBoolean(3, value.isAvailable());
             rows = db.executeQuery(s);
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());

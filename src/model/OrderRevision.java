@@ -33,7 +33,7 @@ public class OrderRevision {
     
     public OrderRevision(Order order) {
     	this.order = order;
-    	this.itemsChanged = new LinkedList<OrderItem>();
+    	this.itemsChanged = new LinkedList<>();
     }
 
     public int getId() {

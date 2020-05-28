@@ -32,7 +32,7 @@ public class StoreStockReport {
         this.date = null;
         this.note = "";
         this.store = store;
-        this.items = new LinkedList<StoreStockReportItem>();
+        this.items = new LinkedList<>();
     }
 
     public int getId(){
@@ -80,9 +80,9 @@ public class StoreStockReport {
     }
 
     public boolean removeReportItem(StoreStockReportItem reportItem) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getProduct().getId() == reportItem.getProduct().getId()) {
-                items.remove(i);
+        for (StoreStockReportItem item : items) {
+            if (item.getProduct().getId() == reportItem.getProduct().getId()) {
+                items.remove(item);
                 return true;
             }
         }

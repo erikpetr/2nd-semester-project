@@ -56,8 +56,8 @@ public class Order {
     	this.date = date;
     	
     	// Inicialize lists
-    	this.items = new LinkedList<OrderItem>();
-    	this.revisions = new LinkedList<OrderRevision>();
+    	this.items = new LinkedList<>();
+    	this.revisions = new LinkedList<>();
     }
     
 	public int getId() {
@@ -109,9 +109,9 @@ public class Order {
 	}
 
 	public boolean removeOrderItem(OrderItem orderItem) {
-		for (int i = 0; i < items.size(); i++) {
-			if (items.get(i).getProduct().getId() == orderItem.getProduct().getId()) {
-				items.remove(i);
+		for (OrderItem item : items) {
+			if (item.getProduct().getId() == orderItem.getProduct().getId()) {
+				items.remove(item);
 				return true;
 			}
 		}

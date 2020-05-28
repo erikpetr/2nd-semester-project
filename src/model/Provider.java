@@ -36,7 +36,7 @@ public class Provider {
         return email;
     }
 
-    public boolean getAvailable(){
+    public boolean isAvailable(){
         return available;
     }
 
@@ -69,10 +69,6 @@ public class Provider {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public boolean isAvailable() {
-        return available;
     }
 }
 

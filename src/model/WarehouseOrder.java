@@ -1,6 +1,5 @@
 package model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -103,9 +102,9 @@ public class WarehouseOrder {
         return items.add(warehouseOrderItem);
     }
     public boolean removeWarehouseOrderItem(WarehouseOrderItem warehouseOrderItem) {
-        for (int i = 0; i < items.size(); i++) {
-            if(items.get(i).getProduct().getId() == warehouseOrderItem.getProduct().getId()) {
-                items.remove(i);
+        for (WarehouseOrderItem item : items) {
+            if(item.getProduct().getId() == warehouseOrderItem.getProduct().getId()) {
+                items.remove(item);
                 return true;
             }
         }
